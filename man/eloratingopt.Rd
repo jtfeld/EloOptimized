@@ -2,16 +2,18 @@
 % Please edit documentation in R/eloratingopt.R
 \name{eloratingopt}
 \alias{eloratingopt}
-\title{Get optimal Elo ratings and save rank file}
+\title{Create daily elo ranks and multiple derivatives}
 \usage{
-eloratingopt(agofile, presencefile, sex, outputfile)
+eloratingopt(agofile, presencefile, sex, dateformat, outputfile)
 }
 \arguments{
-\item{agofile}{Input file with dominant interactions.}
+\item{agofile}{Input csv file with dominance interactions, should only contain Date, Winner, Loser}
 
-\item{presencefile}{Input file with date in rows, individuals in columns, and 0/1 for absent/present}
+\item{presencefile}{Input csv file with date in rows, individuals in columns, and 0/1 for absent/present}
 
 \item{sex}{Whether data are for males "M" or females "F", no default}
+
+\item{dateformat}{Need to specify what format dates in data file are, see example}
 
 \item{outputfile}{Name of file to save ranks to}
 }
@@ -20,6 +22,7 @@ Conducts optimized elo rating analyses as per Foerster, Franz et al
 and saves raw, normalized, cardinal, and  categorical ranks in output file.
 }
 \examples{
-eloratingopt(agofile="males_ago.csv", presencefile="male_presence.csv", sex="M") 
-}
+#setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
 
+#eloratingopt(agofile="males_ago.csv", presencefile="male_presence.csv", dateformat="\%Y-\%m-\%d", sex="M", outputfile="rank_data_females.csv")
+}
