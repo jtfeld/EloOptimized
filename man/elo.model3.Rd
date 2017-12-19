@@ -9,4 +9,3 @@ elo.model3(par, IA_data, all_ids, return_likelihood = T)
 \description{
 Function to optimize k parameter and entry Elo scores
 }
-

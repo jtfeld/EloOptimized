@@ -10,4 +10,3 @@ elo.model1(par, burn_in = 100, init_elo = 1000, IA_data, all_ids,
 \description{
 Function to optimize k parameter in Elo Rating Method
 }
-
