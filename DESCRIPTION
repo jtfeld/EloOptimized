@@ -1,0 +1,12 @@
+Package: EloRatingOptimized
+Title: Optimized Elo Rating method for obtaining dominance ranks
+Version: 0.0.0.1
+Authors@R: person("Steffen", "Foerster", email = "sf2041@gmail.com", role = c("aut", "cre"))
+Description: This package implements the maximum likelihood methods for deriving
+    Elo scores as published in Foerster, Franz et al. (2016).
+Depends:
+    R (>= 3.3.1)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1
