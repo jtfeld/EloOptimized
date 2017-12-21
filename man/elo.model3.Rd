@@ -2,10 +2,24 @@
 % Please edit documentation in R/elo.model3.R
 \name{elo.model3}
 \alias{elo.model3}
-\title{Function to optimize k parameter and entry Elo scores}
+\title{optimize k parameter and entry Elo scores}
 \usage{
 elo.model3(par, IA_data, all_ids, return_likelihood = T)
 }
+\arguments{
+\item{par}{???}
+
+\item{IA_data}{???}
+
+\item{all_ids}{???}
+
+\item{return_likelihood}{???}
+}
 \description{
 Function to optimize k parameter and entry Elo scores
+}
+\examples{
+#setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
+
+#fill in later
 }

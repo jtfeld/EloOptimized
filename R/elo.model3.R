@@ -1,4 +1,17 @@
-#' Function to optimize k parameter and entry Elo scores
+#' @title optimize k parameter and entry Elo scores
+#' @description Function to optimize k parameter and entry Elo scores
+#' @usage elo.model3(par, IA_data, all_ids, return_likelihood = T)
+#' @param par ???
+#' @param IA_data ???
+#' @param all_ids ???
+#' @param return_likelihood ???
+#' @examples
+#' #setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
+#'
+#' #fill in later
+#' @export
+
+
 elo.model3 <- function(par, IA_data, all_ids, return_likelihood = T)
 { 
   k <- par[1]

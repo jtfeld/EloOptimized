@@ -1,4 +1,17 @@
-#' Function to optimize k parameter in Elo Rating Method
+#' @title Optimize k paramter in Elo rating method
+#' @description Function to optimize k parameter in Elo Rating Method
+#' @usage elo.model1(par, burn_in=100, init_elo = 1000, IA_data, all_ids, return_likelihood = T)
+#' @param par ???
+#' @param burn_in ???
+#' @param init_elo ???
+#' @param IA_data ???
+#' @param all_ids ???
+#' @param return_likelihood ???
+#' @examples
+#' #setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
+#'
+#' #fill in later
+#' @export
 elo.model1 <- function(par, burn_in=100, init_elo = 1000, IA_data, all_ids, return_likelihood = T)
 { 
   k <- par

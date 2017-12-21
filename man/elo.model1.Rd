@@ -2,11 +2,28 @@
 % Please edit documentation in R/elo.model1.R
 \name{elo.model1}
 \alias{elo.model1}
-\title{Function to optimize k parameter in Elo Rating Method}
+\title{Optimize k paramter in Elo rating method}
 \usage{
-elo.model1(par, burn_in = 100, init_elo = 1000, IA_data, all_ids,
-  return_likelihood = T)
+elo.model1(par, burn_in=100, init_elo = 1000, IA_data, all_ids, return_likelihood = T)
+}
+\arguments{
+\item{par}{???}
+
+\item{burn_in}{???}
+
+\item{init_elo}{???}
+
+\item{IA_data}{???}
+
+\item{all_ids}{???}
+
+\item{return_likelihood}{???}
 }
 \description{
 Function to optimize k parameter in Elo Rating Method
+}
+\examples{
+#setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
+
+#fill in later
 }
