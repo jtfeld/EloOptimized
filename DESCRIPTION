@@ -15,4 +15,6 @@ Imports: dplyr,
     BAMMtools,
     tcltk,
     rlist,
-    plyr
+    plyr,
+    magrittr,
+    lubridate

@@ -8,7 +8,8 @@
 #' \code{\link{eloratingopt}},
 #' \code{\link{elo.model1}},
 #' \code{\link{elo.model3}},
-#' \code{\link{eloratingoptR}}
+#' \code{\link{eloratingoptR}},
+#' \code{\link{eloratingopt_simple}}
 #'
 #' @docType package
 #' @name EloOptimized

@@ -896,11 +896,10 @@ eloratingoptR <- function(agofile, presencefile, sex, dateformat, outputfile){
 #' @title Create daily elo ranks and multiple derivatives
 #' @description Conducts optimized elo rating analyses as per Foerster, Franz et al
 #' and saves raw, normalized, cardinal, and  categorical ranks in output file.
-#' @usage eloratingopt_simple(agofile, presencefile, sex, dateformat, outputfile = NULL, returnR = TRUE)
-#' @param agofile Input csv file with dominance interactions, should only contain Date, Winner, Loser
-#' @param presencefile Input csv file with date in rows, individuals in columns, and 0/1 for absent/present
+#' @usage eloratingopt_simple(agon_data, pres_data, sex, outputfile = NULL, returnR = TRUE)
+#' @param agon_data Input csv file with dominance interactions, should only contain Date, Winner, Loser
+#' @param pres_data Input csv file with date in rows, individuals in columns, and 0/1 for absent/present
 #' @param sex Whether data are for males "M" or females "F", no default
-#' @param dateformat Need to specify what format dates in data file are, see example
 #' @param outputfile Name of file to save ranks to.  Default is NULL, in which case 
 #'   the function will only return a table in R.  If you supply an output file name
 #'   the function will save the results as a csv file
@@ -908,7 +907,7 @@ eloratingoptR <- function(agofile, presencefile, sex, dateformat, outputfile){
 #' @examples
 #' #setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
 #'
-#' #eloratingoptR(agofile="males_ago.csv", presencefile="male_presence.csv", dateformat="%Y-%m-%d", sex="M", outputfile="rank_data_females.csv")
+#' #eloratingoptR(agon_data="males_ago.csv", pres_data="male_presence.csv", dateformat="%Y-%m-%d", sex="M", outputfile="rank_data_females.csv")
 #' @export
 #' @importFrom stats approx ave optim reshape
 #' @importFrom utils head read.csv setWinProgressBar tail winProgressBar write.csv
@@ -1105,7 +1104,7 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
     # df2$Individual <- as.numeric(df2$Individual)
     # Order by date and ID
     df2 <- df2[order(df2$Date, df2$Individual),]
-    df2$Date <- as.character(df2$Date)
+    # df2$Date <- as.character(df2$Date)
     # Use max achieved score per day
     # df2_daylast <- ddply(df2, .(Date, Individual), summarize, EloScoreAfterLAST=last(EloScoreAfter))
     # df2_daymax2 <- plyr::ddply(df2, plyr::.(Date, Individual), plyr::summarize, EloScoreAfterMax=max(EloScoreAfter))
@@ -1116,7 +1115,7 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
       as.data.frame()
     # df2_daymax$Date <- strptime(df2_daymax$Date, format="%Y-%m-%d")
     # Split dataset by male ID
-    elobyid <- split(df2_daymax, df2_daymax$Individual)
+    # elobyid <- split(df2_daymax, df2_daymax$Individual)
     # Filter list objects with only 1 elo score (no interpolation possible)
     # Note: for males this is not necessary as last score is carried forward to end of presence
     # elobyid_f <- list.filter(elobyid, length(which(EloScoreAfterMax!="NA"))>1)
