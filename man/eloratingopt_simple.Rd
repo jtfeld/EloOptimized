@@ -7,9 +7,10 @@
 eloratingopt_simple(agon_data, pres_data, sex, outputfile = NULL, returnR = TRUE)
 }
 \arguments{
-\item{agon_data}{Input csv file with dominance interactions, should only contain Date, Winner, Loser}
+\item{agon_data}{Input data frame with dominance interactions, should only contain Date, Winner, Loser}
 
-\item{pres_data}{Input csv file with date in rows, individuals in columns, and 0/1 for absent/present}
+\item{pres_data}{Input data frame with columns "id", "start_date" and "end_date".  Date
+columns should be formatted as MONTH/DAY/YEAR, or already as Date class}
 
 \item{sex}{Whether data are for males "M" or females "F", no default}
 

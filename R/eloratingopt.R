@@ -897,8 +897,9 @@ eloratingoptR <- function(agofile, presencefile, sex, dateformat, outputfile){
 #' @description Conducts optimized elo rating analyses as per Foerster, Franz et al
 #' and saves raw, normalized, cardinal, and  categorical ranks in output file.
 #' @usage eloratingopt_simple(agon_data, pres_data, sex, outputfile = NULL, returnR = TRUE)
-#' @param agon_data Input csv file with dominance interactions, should only contain Date, Winner, Loser
-#' @param pres_data Input csv file with date in rows, individuals in columns, and 0/1 for absent/present
+#' @param agon_data Input data frame with dominance interactions, should only contain Date, Winner, Loser
+#' @param pres_data Input data frame with columns "id", "start_date" and "end_date".  Date
+#'   columns should be formatted as MONTH/DAY/YEAR, or already as Date class
 #' @param sex Whether data are for males "M" or females "F", no default
 #' @param outputfile Name of file to save ranks to.  Default is NULL, in which case 
 #'   the function will only return a table in R.  If you supply an output file name
@@ -1191,7 +1192,7 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
 # --------------------- Step 3: Find natural breaks in list of elo scores by day --------------------
   
   jenksify = function(x){
-    breaks = getJenksBreaks(x, 4)
+    breaks = BAMMtools::getJenksBreaks(x, 4)
     # cats = c()
     cats = ifelse(x <= breaks[[2]], "low",
                   ifelse(x > breaks[[3]], "high", "mid"))
@@ -1234,7 +1235,10 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
   
   colnames(elo_long) <- c("Date", "Individual", "Elo", "EloOrdinal", "EloScaled", "ExpNumBeaten", "EloCardinal", "JenksEloCardinal")
   
-  head(elo_long)
+  # head(elo_long)
+  
+  cat(paste0("k = ", round(exp(model$par[1]), 3)))
+  cat(paste0("prediction accuracy = ", round(pred_accuracy, 3)))
   
   if(length(outputfile) > 0){
     write.csv(elo_long, outputfile, row.names = F)

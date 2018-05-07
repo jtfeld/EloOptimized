@@ -18,3 +18,12 @@ Chimpanzee females queue but males compete for social status. Scientific Reports
 \code{\link{eloratingopt_simple}}
 }
 
+\section{Ideas for future development}{
+
+\itemize{
+  \item option to include additional rank scores or not (ie leave out ordinal, scaled, etc...)
+  \item rather than returning a data frame, we could return a fit object with $daily_elo, 
+    $optimized_k, $prediction_accuracy, $log_likelihood, $aic, $aicc, etc...
+}
+}
+
