@@ -7,17 +7,18 @@
 elo.model1(par, burn_in=100, init_elo = 1000, IA_data, all_ids, return_likelihood = T)
 }
 \arguments{
-\item{par}{???}
+\item{par}{initial value of log(k)}
 
-\item{burn_in}{???}
+\item{burn_in}{burn in period for establishing initial elo scores. Defaults to 100}
 
-\item{init_elo}{???}
+\item{init_elo}{Initial Elo score for all individuals.  Defaults to 1000}
 
-\item{IA_data}{???}
+\item{IA_data}{Data frame with Date, Winner, and Loser}
 
-\item{all_ids}{???}
+\item{all_ids}{list of all IDs in sample}
 
-\item{return_likelihood}{???}
+\item{return_likelihood}{Logical; if TRUE, returns log likelihood based on given par, if FALSE
+returns agonistic interactions table with elo scores based on given value of par}
 }
 \description{
 Function to optimize k parameter in Elo Rating Method

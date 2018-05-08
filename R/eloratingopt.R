@@ -1039,8 +1039,7 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
   all_inds <- sort(indsagg3)
   
 # ---------------   Fit models  --------------------------------
-  # For testing only
-  # Assign existing log table for males to model_log
+
   
   if(sex=="M"){
     # Model 1 (for males)
@@ -1051,10 +1050,10 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
     pred_accuracy <- mean(model_log$elo_w_before[101:nrow(model_log)] > model_log$elo_l_before[101:nrow(model_log)])
   } else if(sex=="F") {
     # Model 3 (for females)
-    # model <- optim(par=c(5, rep(0, length(all_inds))), elo.model3, all_ids = all_inds, IA_data = ago, return_likelihood=T, method='BFGS', control = list(maxit = 10000, reltol=1e-10))
-    # model_log <- elo.model3(par=model$par, all_ids = all_inds, IA_data = ago, return_likelihood=F)
-    model <- res_fem_model3
-    model_log <- res_fem_model3_log
+    model <- optim(par=c(5, rep(0, length(all_inds))), elo.model3, all_ids = all_inds, IA_data = ago, return_likelihood=T, method='BFGS', control = list(maxit = 10000, reltol=1e-10))
+    model_log <- elo.model3(par=model$par, all_ids = all_inds, IA_data = ago, return_likelihood=F)
+    # model <- res_fem_model3
+    # model_log <- res_fem_model3_log
     pred_accuracy <- mean(model_log$elo_w_before > model_log$elo_l_before)
   }
   
@@ -1069,7 +1068,7 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
   if(sex=="F"){
     # Get elo from log object
     elo <- c(model$par[2: length(model$par)])
-    names(elo) <- inds
+    names(elo) <- inds #should this be "all_inds"?
     # Reassign the elo log table to norm to keep the original
     norm <- model_log
     # Create a matrix of elo scores repeated for each date across all individuals in presence data
@@ -1099,13 +1098,12 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
     # Reformat elo-after scores of winners and losers into long format
     df <- model_log[, c(1:3, 6:7)]
     seq_long <- reshape(df, varying=list(c(2:3), c(4:5)), v.names=c("Individual", "EloScoreAfter"), direction="long")
-    # Fomrat columns
+    # Format columns
     df2 <- seq_long[,c(1,3,4)]
-    # df2$Date <-strptime(df2$Date, format=dateformat)
-    # df2$Individual <- as.numeric(df2$Individual)
+
     # Order by date and ID
     df2 <- df2[order(df2$Date, df2$Individual),]
-    # df2$Date <- as.character(df2$Date)
+
     # Use max achieved score per day
     # df2_daylast <- ddply(df2, .(Date, Individual), summarize, EloScoreAfterLAST=last(EloScoreAfter))
     # df2_daymax2 <- plyr::ddply(df2, plyr::.(Date, Individual), plyr::summarize, EloScoreAfterMax=max(EloScoreAfter))
@@ -1114,14 +1112,8 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
       dplyr::group_by(Date, Individual) %>%
       dplyr::summarise(EloScoreAfterMax=max(EloScoreAfter)) %>%
       as.data.frame()
-    # df2_daymax$Date <- strptime(df2_daymax$Date, format="%Y-%m-%d")
-    # Split dataset by male ID
-    # elobyid <- split(df2_daymax, df2_daymax$Individual)
-    # Filter list objects with only 1 elo score (no interpolation possible)
-    # Note: for males this is not necessary as last score is carried forward to end of presence
-    # elobyid_f <- list.filter(elobyid, length(which(EloScoreAfterMax!="NA"))>1)
-    # Turn presence data into long form to match with interpolated elo scores below
-    # presence_long <- melt(presence, id.vars = "Date")
+    
+    
     temp = list()
     for(i in 1:nrow(presence)){
       temp[[i]] = cbind.data.frame(Individual = presence[i, "id"], 
@@ -1203,28 +1195,6 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
     elo_long %>%
     dplyr::group_by(Date) %>%
     dplyr::mutate(JenksEloCardinal = jenksify(elo_rel))
-  
-  
-  # Combine dates into one table again
-  # elobyday <- do.call("rbind", elobyday)
-  
-  # Uncomment following section to calculate jenks based on normalized elo
-  # # Split long format normalized elo scores data table by date
-  # elobyday2 <- split(elonorm_long, as.character(elonorm_long$Date))
-  # # Iterate through days and calculate breakpoints, then split into 3 categories
-  # for(i in seq_along(elobyday2)){
-  #   breaks <- getJenksBreaks(elobyday2[[i]]$value,4)
-  #   for(j in seq_along(elobyday2[[i]][[3]])){
-  #     if (elobyday2[[i]][[3]][[j]] <= breaks[[2]]) {
-  #       elobyday2[[i]]$cat3[[j]] <- "low"
-  #     } else if (elobyday2[[i]][[3]][[j]] > breaks[[3]]) {
-  #       elobyday2[[i]]$cat3[[j]] <- "high"
-  #     } else
-  #       elobyday2[[i]]$cat3[[j]] <- "mid"
-  #   }
-  # }
-  # # Combine dates into one table again
-  # elobyday2 <- do.call("rbind", elobyday2)
   
   
 # ------------------------ prettify -----------------------------------

@@ -1,12 +1,13 @@
 #' @title Optimize k paramter in Elo rating method
 #' @description Function to optimize k parameter in Elo Rating Method
 #' @usage elo.model1(par, burn_in=100, init_elo = 1000, IA_data, all_ids, return_likelihood = T)
-#' @param par ???
-#' @param burn_in ???
-#' @param init_elo ???
-#' @param IA_data ???
-#' @param all_ids ???
-#' @param return_likelihood ???
+#' @param par initial value of log(k)
+#' @param burn_in burn in period for establishing initial elo scores. Defaults to 100
+#' @param init_elo Initial Elo score for all individuals.  Defaults to 1000
+#' @param IA_data Data frame with Date, Winner, and Loser
+#' @param all_ids list of all IDs in sample
+#' @param return_likelihood Logical; if TRUE, returns log likelihood based on given par, if FALSE
+#'   returns agonistic interactions table with elo scores based on given value of par
 #' @examples
 #' #setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
 #'
