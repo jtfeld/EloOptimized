@@ -968,76 +968,30 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
   
 # ---------- Filter individuals who do not have at least one win and one loss ----------------
 
-  #maybe eventually turn this into a while loop and do it until the number of unique individuals remains constant???
+  presence$wl = 0 #add dummy column to count wins and losses
   
-  # Unique individuals in aggression and pantgrunt data
-  indsagg <- unique(c(ago$Winner, ago$Loser))
-  
-  # Iteration 1
-  # Count wins and losses
-  win_counts <- rep(0, length(indsagg))
-  loss_counts <- rep(0, length(indsagg))
-  for (i in 1:length(indsagg)) {
-    win_counts[i] <- sum(ago$Winner==indsagg[i])
-    loss_counts[i] <- sum(ago$Loser==indsagg[i])
+  # vectorized loop to remove individuals from presence and ago data with 0 wins or 0 losses
+  repeat{
+    
+    oldnum = nrow(presence)
+    
+    presence$wl = sapply(X = presence$id, function(x) sum(ago$Winner == x) * sum(ago$Loser == x))
+
+    presence = presence %>% dplyr::filter(wl != 0)
+    
+    ago = ago %>% 
+      dplyr::filter(Winner %in% presence$id & 
+                      Loser %in% presence$id)
+    
+    if(nrow(presence) == oldnum) break
+    
   }
-  indsagg <- indsagg[(win_counts>0)*(loss_counts>0)==1]  # keep everybody with at least one win and one loss
-  # Get subset of agonistic data that only contains selected individuals
-  select <- rep(F, nrow(ago))
-  for (i in 1:nrow(ago)) select[i] <- sum(ago$Winner[i]==indsagg)>0 & sum(ago$Loser[i]==indsagg)>0
-  # Filtered dataset
-  ago <- ago[select,]
   
-  # Iteration 2
-  # Calculate interaction counts
-  ago$CountWinner <- 0
-  ago$CountLoser <- 0
-  for (i in 1:nrow(ago))
-  {
-    ago$CountWinner[i] <- sum(ago$Winner[1:i] == ago$Winner[i]) + sum(ago$Loser[1:i] == ago$Winner[i])
-    ago$CountLoser[i] <- sum(ago$Winner[1:i] == ago$Loser[i]) + sum(ago$Loser[1:i] == ago$Loser[i])
-  }
-  # Re-check counts after filtering
-  win_counts <- rep(0, length(indsagg))
-  loss_counts <- rep(0, length(indsagg))
-  for(i in 1:length(indsagg)){
-    win_counts[i] <- sum(ago$Winner==indsagg[i])
-    loss_counts[i] <- sum(ago$Loser==indsagg[i])
-  }
-  indsagg2 <- indsagg[(win_counts>0)*(loss_counts>0)==1]
-  # Get subset of agonistic data that only contains selected individuals
-  select <- rep(F, nrow(ago))
-  for (i in 1:nrow(ago)) select[i] <- sum(ago$Winner[i]==indsagg2)>0 & sum(ago$Loser[i]==indsagg2)>0
-  # Filtered dataset
-  ago <- ago[select,]
+  presence = presence[,-4] # remove dummy variable
   
-  # Iteration 3
-  # Re-check counts after filtering
-  win_counts <- rep(0, length(indsagg2))
-  loss_counts <- rep(0, length(indsagg2))
-  for(i in 1:length(indsagg2)){
-    win_counts[i] <- sum(ago$Winner==indsagg2[i])
-    loss_counts[i] <- sum(ago$Loser==indsagg2[i])
-  }
-  indsagg3 <- indsagg2[(win_counts>0)*(loss_counts>0)==1]
-  inds <- indsagg3
+  all_inds = sort(presence$id)
   
-  # Check number of individuals included in each filtered set
-  length(indsagg)
-  length(indsagg2)
-  length(indsagg3)
-  
-  indsagg3
-  
-  # presence = presence[,colnames(presence) %in% c("Date", indsagg3)]
-  presence = presence[presence$id %in% indsagg3, ]
-  
-  row.names(presence) = NULL
-  row.names(ago) = NULL
-  
-  
-  all_inds <- sort(indsagg3)
-  
+
 # ---------------   Fit models  --------------------------------
 
   
@@ -1051,6 +1005,7 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
   } else if(sex=="F") {
     # Model 3 (for females)
     model <- optim(par=c(5, rep(0, length(all_inds))), elo.model3, all_ids = all_inds, IA_data = ago, return_likelihood=T, method='BFGS', control = list(maxit = 10000, reltol=1e-10))
+      ### USE SAVED "fem_mod_kk_2013.RData" TO SAVE TIME!
     model_log <- elo.model3(par=model$par, all_ids = all_inds, IA_data = ago, return_likelihood=F)
     # model <- res_fem_model3
     # model_log <- res_fem_model3_log
@@ -1068,7 +1023,7 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
   if(sex=="F"){
     # Get elo from log object
     elo <- c(model$par[2: length(model$par)])
-    names(elo) <- inds #should this be "all_inds"?
+    names(elo) <- all_inds #should this be "all_inds"? DOUBLE CHECK!!! (changed from "inds" to "all_inds")
     # Reassign the elo log table to norm to keep the original
     norm <- model_log
     # Create a matrix of elo scores repeated for each date across all individuals in presence data
