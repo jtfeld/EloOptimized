@@ -28,6 +28,8 @@ Chimpanzee females queue but males compete for social status. Scientific Reports
   \item maybe name the models by model type, rather than M or F?  That way we're not presupposing
     that males all have the same entry value, etc...
   \item option to go back and recalculate during burn-in period with optimized k for Model 1?
+  \item find data we can use in vignette
+  \item create vignette, other package doohickies
 }
 }
 

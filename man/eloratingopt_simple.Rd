@@ -10,7 +10,9 @@ eloratingopt_simple(agon_data, pres_data, sex, outputfile = NULL, returnR = TRUE
 \item{agon_data}{Input data frame with dominance interactions, should only contain Date, Winner, Loser}
 
 \item{pres_data}{Input data frame with columns "id", "start_date" and "end_date".  Date
-columns should be formatted as MONTH/DAY/YEAR, or already as Date class}
+columns should be formatted as MONTH/DAY/YEAR, or already as Date class.  If all IDs 
+are present the whole time, you ignore this and a pres_data table will be automatically
+generated.}
 
 \item{sex}{Whether data are for males "M" or females "F", no default}
 

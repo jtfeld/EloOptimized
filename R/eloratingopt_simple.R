@@ -4,7 +4,9 @@
 #' @usage eloratingopt_simple(agon_data, pres_data, sex, outputfile = NULL, returnR = TRUE)
 #' @param agon_data Input data frame with dominance interactions, should only contain Date, Winner, Loser
 #' @param pres_data Input data frame with columns "id", "start_date" and "end_date".  Date
-#'   columns should be formatted as MONTH/DAY/YEAR, or already as Date class
+#'   columns should be formatted as MONTH/DAY/YEAR, or already as Date class.  If all IDs 
+#'   are present the whole time, you ignore this and a pres_data table will be automatically
+#'   generated.
 #' @param sex Whether data are for males "M" or females "F", no default
 #' @param outputfile Name of csv file to save ranks to.  Default is NULL, in which case 
 #'   the function will only return a table in R.  If you supply an output file name
@@ -43,26 +45,33 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
   }
   
   
-  presence <- pres_data
-  names(presence) = tolower(names(presence))
-  if(!all(names(presence) %in% c("id", "start_date", "end_date"))){
-    stop("colnames in presence data should be 'id', 'start_date', 'end_date' (not case sensitive)")
+  if(missing(pres_data)){
+    
+    presence = data.frame(id = sort(unique(c(ago$Winner, ago$Loser))),
+                          start_date = min(ago$Date),
+                          end_date = max(ago$Date), 
+                          stringsAsFactors = F)
+    
+  } else {
+    
+    presence <- pres_data
+    names(presence) = tolower(names(presence))
+    if(!all(names(presence) %in% c("id", "start_date", "end_date"))){
+      stop("colnames in presence data should be 'id', 'start_date', 'end_date' (not case sensitive)")
+    }
+    if(class(pres_data$start_date) != "Date"){
+      pres_data$start_date = lubridate::mdy(pres_data$start_date)}
+    if(class(pres_data$end_date) != "Date"){
+      pres_data$end_date = lubridate::mdy(pres_data$end_date)}
+    
+    presence$id = as.character(presence$id)
+    
   }
-  if(class(pres_data$start_date) != "Date"){
-    pres_data$start_date = lubridate::mdy(pres_data$start_date)}
-  if(class(pres_data$end_date) != "Date"){
-    pres_data$end_date = lubridate::mdy(pres_data$end_date)}
-  
-  presence$id = as.character(presence$id)
   
   
   # ---------------  Make sure ago and presence have same start and end dates ----------------------
   # **** maybe we don't need to do this anymore??? 
   # or maybe move this after the filtering in case the ago file is altered much
-  
-  # min(presence$start_date) == min(ago$Date)
-  # min(presence$start_date)
-  # min(ago$Date)
   
   presence$start_date[presence$start_date < min(ago$Date)] = min(ago$Date)
   
