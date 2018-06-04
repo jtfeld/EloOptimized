@@ -14,6 +14,7 @@ Chimpanzee females queue but males compete for social status. Scientific Reports
 \code{\link{eloratingopt}},
 \code{\link{elo.model1}},
 \code{\link{elo.model3}},
+\code{\link{elo.m3_lik_vect}},
 \code{\link{eloratingoptR}},
 \code{\link{eloratingopt_simple}}
 }
@@ -26,7 +27,7 @@ Chimpanzee females queue but males compete for social status. Scientific Reports
     $optimized_k, $prediction_accuracy, $log_likelihood, $aic, $aicc, etc...
   \item maybe name the models by model type, rather than M or F?  That way we're not presupposing
     that males all have the same entry value, etc...
-  \item option to go back and recalculate during burn-in period with optimized k?
+  \item option to go back and recalculate during burn-in period with optimized k for Model 1?
 }
 }
 

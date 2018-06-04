@@ -19,10 +19,11 @@ eloratingoptR(agofile, presencefile, sex, dateformat, outputfile)
 }
 \description{
 Conducts optimized elo rating analyses as per Foerster, Franz et al
-and saves raw, normalized, cardinal, and  categorical ranks in output file.
+  and saves raw, normalized, cardinal, and  categorical ranks in output file.  OLD, DON'T USE!!!
 }
 \examples{
 #setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
 
-#eloratingoptR(agofile="males_ago.csv", presencefile="male_presence.csv", dateformat="\%Y-\%m-\%d", sex="M", outputfile="rank_data_females.csv")
+#eloratingoptR(agofile="males_ago.csv", presencefile="male_presence.csv", 
+# dateformat="\%Y-\%m-\%d", sex="M", outputfile="rank_data_females.csv")
 }

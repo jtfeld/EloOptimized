@@ -1,14 +1,16 @@
 #' @title optimize k parameter and entry Elo scores
 #' @description Function to optimize k parameter and entry Elo scores
 #' @usage elo.model3(par, IA_data, all_ids, return_likelihood = T)
-#' @param par ???
-#' @param IA_data ???
-#' @param all_ids ???
-#' @param return_likelihood ???
+#' @param par list of parameters, with par[1] being log(k), and par[2:length(par)] 
+#'   being the initial elo scores of individuals
+#' @param IA_data list of interaction data, with columns "Date", "Winner", and "Loser"
+#'   (in that order)
+#' @param all_ids list of all ids to rank
+#' @param return_likelihood If TRUE, returns the total likelihood based on all 
+#'   interactions given a particular set of parameters.  If FALSE, returns 
+#'   a table of Elo scores based on a given set of parameters. 
 #' @examples
-#' #setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
-#'
-#' #fill in later
+#' # for internal use, example will be supplied eventually
 #' @export
 
 
