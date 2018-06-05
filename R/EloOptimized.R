@@ -5,12 +5,13 @@
 #'
 #'
 #' @section Primary functions:
-#' \code{\link{eloratingopt}},
-#' \code{\link{elo.model1}},
-#' \code{\link{elo.model3}},
-#' \code{\link{elo.m3_lik_vect}},
-#' \code{\link{eloratingoptR}},
-#' \code{\link{eloratingopt_simple}}
+#' \itemize{
+#'   \item{\code{\link{eloratingopt_simple}}: main function}
+#'   \item{\code{\link{elo.model1}}: internal function for fitting model type 1}
+#'   \item{\code{\link{elo.model3}}: internal function for fitting model type 3}
+#'   \item{\code{\link{elo.m3_lik_vect}}: vectorized internal function 
+#'     for fitting mod type 3}
+#' }
 #' 
 #' @section Ideas for future development:
 #' \itemize{

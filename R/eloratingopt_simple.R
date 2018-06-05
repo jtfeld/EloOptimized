@@ -40,6 +40,14 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
   if(!all(names(ago) %in% c("Date", "Winner", "Loser"))){
     stop("colnames in agonistic data should be 'Date', 'Winner', 'Loser' (not case sensitive)")
   }
+  
+  ago$Winner = as.character(ago$Winner)
+  ago$Loser = as.character(ago$Loser)
+  
+  if(any(ago$Winner == ago$Loser)){
+    stop("can't have same ID win and lose in one interaction")
+  }
+  
   if(class(ago$Date) != "Date"){
     ago$Date = lubridate::mdy(ago$Date)
   }
@@ -47,10 +55,14 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
   
   if(missing(pres_data)){
     
-    presence = data.frame(id = sort(unique(c(ago$Winner, ago$Loser))),
-                          start_date = min(ago$Date),
+    startids = sort(unique(c(ago$Winner, ago$Loser)))
+    presence = data.frame(id = startids,
+                          start_date = lubridate::ymd(sapply(startids, function(x) 
+                            as.character(min(ago[ago$Winner == x | 
+                                                   ago$Loser == x, "Date"])))),                                                                               
                           end_date = max(ago$Date), 
-                          stringsAsFactors = F)
+                          stringsAsFactors = F) 
+    rm(startids)
     
   } else {
     
@@ -276,7 +288,7 @@ eloratingopt_simple <- function(agon_data, pres_data, sex, outputfile = NULL, re
   
   # head(elo_long)
   
-  cat(paste0("k = ", round(exp(model$par[1]), 3)))
+  cat(paste0("k = ", round(exp(model$par[1]), 3), "\n"))
   cat(paste0("prediction accuracy = ", round(pred_accuracy, 3)))
   
   if(length(outputfile) > 0){
