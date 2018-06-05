@@ -2,29 +2,36 @@
 % Please edit documentation in R/eloratingopt.R
 \name{eloratingopt}
 \alias{eloratingopt}
-\title{Create daily elo ranks and multiple derivatives}
+\title{Create daily elo ranks and multiple derivatives (simplified)}
 \usage{
-eloratingopt(agofile, presencefile, sex, dateformat, outputfile)
+eloratingopt(agon_data, pres_data, mod_type, outputfile = NULL, returnR = TRUE)
 }
 \arguments{
-\item{agofile}{Input csv file with dominance interactions, should only contain Date, Winner, Loser}
+\item{agon_data}{Input data frame with dominance interactions, should only contain Date, 
+Winner, Loser.  Date should be formatted as MONTH/DAY/YEAR, or already as Date class.}
 
-\item{presencefile}{Input csv file with date in rows, individuals in columns, and 0/1 for absent/present}
+\item{pres_data}{Input data frame with columns "id", "start_date" and "end_date".  Date
+columns should be formatted as MONTH/DAY/YEAR, or already as Date class.  If all IDs 
+are present the whole time, you ignore this and a pres_data table will be automatically
+generated.}
 
-\item{sex}{Whether data are for males "M" or females "F", no default}
+\item{mod_type}{1 to fit only K, 3 to fit K and starting Elo for each individual.
+MUCH slower for mod_type 3.}
 
-\item{dateformat}{Need to specify what format dates in data file are, see example}
+\item{outputfile}{Name of csv file to save ranks to.  Default is NULL, in which case 
+the function will only return a table in R.  If you supply an output file name
+the function will save the results as a csv file in your working directory.}
 
-\item{outputfile}{Name of file to save ranks to}
+\item{returnR}{whether to return an R object from the function call.  Default is TRUE}
 }
 \description{
 Conducts optimized elo rating analyses as per Foerster, Franz et al
-  and saves raw, normalized, cardinal, and  categorical ranks in output file.  OLD, DON'T
-  USE!!!
+  and saves raw, normalized, cardinal, and  categorical ranks in output file.
 }
 \examples{
-#setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
 
-#eloratingopt(agofile="males_ago.csv", presencefile="male_presence.csv", 
- #  dateformat="\%Y-\%m-\%d", sex="M", outputfile="rank_data_females.csv")
+nbadata = EloRatingOptimized::nba #nba wins and losses from the 1995-96 season
+nbaelo = eloratingopt(agon_data = nbadata, mod_type = 1)
+# generates optimized elo scores (optimizing only K) and saves them as "nbaelo" 
+
 }

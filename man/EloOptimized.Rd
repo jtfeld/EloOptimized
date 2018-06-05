@@ -12,7 +12,7 @@ Chimpanzee females queue but males compete for social status. Scientific Reports
 \section{Primary functions}{
 
 \itemize{
-  \item{\code{\link{eloratingopt_simple}}: main function}
+  \item{\code{\link{eloratingopt}}: main function}
   \item{\code{\link{elo.model1}}: internal function for fitting model type 1}
   \item{\code{\link{elo.model3}}: internal function for fitting model type 3}
   \item{\code{\link{elo.m3_lik_vect}}: vectorized internal function 
