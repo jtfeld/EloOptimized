@@ -1,5 +1,5 @@
 Package: EloOptimized
-Title: Optimized Elo Rating method for obtaining dominance ranks
+Title: Optimized Elo Rating Method for Obtaining Dominance Ranks
 Version: 0.0.1.0
 Date: 2018-06-04
 Authors@R: c(
@@ -20,4 +20,5 @@ Imports: dplyr,
     rlist,
     plyr,
     magrittr,
-    lubridate
+    lubridate,
+    rlang

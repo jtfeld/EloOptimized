@@ -27,7 +27,7 @@ Chimpanzee females queue but males compete for social status. Scientific Reports
   \item rather than returning a data frame, we could return a fit object with $daily_elo, 
     $optimized_k, $prediction_accuracy, $log_likelihood, $aic, $aicc, etc...
   \item maybe name the models by model type, rather than M or F?  That way we're not presupposing
-    that males all have the same entry value, etc...
+    that males all have the same entry value, etc... DONE
   \item option to go back and recalculate during burn-in period with optimized k for Model 1?
   \item find data we can use in vignette
   \item create vignette, other package doohickies

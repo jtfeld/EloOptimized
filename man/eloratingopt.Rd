@@ -30,7 +30,7 @@ Conducts optimized elo rating analyses as per Foerster, Franz et al
 }
 \examples{
 
-nbadata = EloRatingOptimized::nba #nba wins and losses from the 1995-96 season
+nbadata = EloOptimized::nba #nba wins and losses from the 1995-96 season
 nbaelo = eloratingopt(agon_data = nbadata, mod_type = 1)
 # generates optimized elo scores (optimizing only K) and saves them as "nbaelo" 
 

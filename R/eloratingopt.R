@@ -16,13 +16,14 @@
 #' @param returnR whether to return an R object from the function call.  Default is TRUE
 #' @examples
 #'
-#' nbadata = EloRatingOptimized::nba #nba wins and losses from the 1995-96 season
+#' nbadata = EloOptimized::nba #nba wins and losses from the 1995-96 season
 #' nbaelo = eloratingopt(agon_data = nbadata, mod_type = 1)
 #' # generates optimized elo scores (optimizing only K) and saves them as "nbaelo" 
 #' 
 #' @export
 #' @importFrom stats approx ave optim reshape
 #' @importFrom utils head read.csv setWinProgressBar tail winProgressBar write.csv
+#' @importFrom rlang .data
 #' @import reshape2
 #' @import BAMMtools
 #' @import tcltk
@@ -115,11 +116,11 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
     
     presence$wl = sapply(X = presence$id, function(x) sum(ago$Winner == x) * sum(ago$Loser == x))
     
-    presence = presence %>% dplyr::filter(wl != 0)
+    presence = presence %>% dplyr::filter(.data$wl != 0)
     
     ago = ago %>% 
-      dplyr::filter(Winner %in% presence$id & 
-                      Loser %in% presence$id)
+      dplyr::filter(.data$Winner %in% presence$id & 
+                      .data$Loser %in% presence$id)
     
     if(nrow(presence) == oldnum) break
     
@@ -167,7 +168,7 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
     # names(elo) <- all_inds #pretty sure this should be "all_inds", but DOUBLE CHECK!!! (
     # changed from "inds" to "all_inds")
     
-    df <- model_log[, c(1:3, 6:7)]
+    df <- model_log[, names(model_log) %in% c("Date", "Winner", "Loser", "elo_w_after", "elo_l_after")]
     seq_long <- reshape(df, varying=list(c(2:3), c(4:5)), v.names=c("Individual", "EloScoreAfter"), direction="long")
     # Format columns
     df2 <- seq_long[,c(1,3,4)]
@@ -177,7 +178,7 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
     
   } else if(mod_type == 1) {
     # Reformat elo-after scores of winners and losers into long format
-    df <- model_log[, c(1:3, 6:7)]
+    df <- model_log[, names(model_log) %in% c("Date", "Winner", "Loser", "elo_w_after", "elo_l_after")] #model_log[, c(1:3, 6:7)]
     seq_long <- reshape(df, varying=list(c(2:3), c(4:5)), v.names=c("Individual", "EloScoreAfter"), direction="long")
     # Format columns
     df2 <- seq_long[,c(1,3,4)]
@@ -194,8 +195,8 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
   # Use max achieved score per day
   df2_daymax <-
     df2 %>%
-    dplyr::group_by(Date, Individual) %>%
-    dplyr::summarise(EloScoreAfterMax=max(EloScoreAfter)) %>%
+    dplyr::group_by(.data$Date, .data$Individual) %>%
+    dplyr::summarise(EloScoreAfterMax = max(.data$EloScoreAfter)) %>%
     as.data.frame()
   
   #create list of all days each individual is present
@@ -207,7 +208,6 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
                                             by = 1))
   }
   presence_long <- do.call(rbind.data.frame, temp)
-  presence_long$Presence = 1
   presence_long$Individual = as.character(presence_long$Individual)
   
   
@@ -216,22 +216,23 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
   
   presence_long = 
     presence_long %>%
-    dplyr::group_by(Individual) %>%
-    dplyr::mutate(Elo_interpol = approx(Elo, xout = 1:length(Elo), 
+    dplyr::group_by(.data$Individual) %>%
+    dplyr::mutate(Elo_interpol = approx(.data$Elo, xout = 1:length(.data$Elo), 
                                         rule = 1:2, method = "constant")$y) %>%
     as.data.frame()
   
-  elo_data2 = dplyr::filter(presence_long, !is.na(Elo_interpol)) %>% 
-    dplyr::select(-Elo, -Presence) %>% 
-    dplyr::rename(EloScore = Elo_interpol) %>%
+  elo_data2 = dplyr::filter(presence_long, !is.na(.data$Elo_interpol)) %>% 
+    dplyr::select(-.data$Elo) %>% 
+    dplyr::rename(EloScore = .data$Elo_interpol) %>%
     as.data.frame()
   
   elo_long =
     elo_data2 %>%
-    dplyr::group_by(Date) %>%
-    dplyr::mutate(EloNorm = (EloScore - min(EloScore, na.rm = T))/
-                    (max(EloScore, na.rm = T)-min(EloScore, na.rm = T))) %>%
-    dplyr::arrange(Date, Individual)
+    dplyr::group_by(.data$Date) %>%
+    dplyr::mutate(EloNorm = (.data$EloScore - min(.data$EloScore, na.rm = T))/
+                    (max(.data$EloScore, na.rm = T) - min(.data$EloScore, na.rm = T))) %>%
+    dplyr::arrange(.data$Date, .data$Individual) %>%
+    as.data.frame()
   
   
   
@@ -261,9 +262,10 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
   
   elo_long =
     elo_long %>%
-    dplyr::group_by(Date) %>%
-    dplyr::mutate(pct_beaten = cardinalize(EloScore),
-                  elo_rel = relativize(pct_beaten))
+    dplyr::group_by(.data$Date) %>%
+    dplyr::mutate(pct_beaten = cardinalize(.data$EloScore),
+                  elo_rel = relativize(.data$pct_beaten)) %>%
+    as.data.frame()
   
   
   # --------------------- Step 4: Find natural breaks in list of elo scores by day --------------------
@@ -278,14 +280,16 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
   
   elo_long =
     elo_long %>%
-    dplyr::group_by(Date) %>%
-    dplyr::mutate(JenksEloCardinal = jenksify(elo_rel))
+    dplyr::group_by(.data$Date) %>%
+    dplyr::mutate(JenksEloCardinal = jenksify(.data$elo_rel)) %>%
+    as.data.frame()
   
   
   # ------------------------ Step 5: prettify -----------------------------------
   elo_long =
     elo_long %>%
-    dplyr::select(Date, Individual, EloScore, rank_ord, EloNorm, pct_beaten, elo_rel, JenksEloCardinal) %>%
+    dplyr::select(.data$Date, .data$Individual, .data$EloScore, .data$rank_ord, .data$EloNorm, 
+                  .data$pct_beaten, .data$elo_rel, .data$JenksEloCardinal) %>%
     as.data.frame()
   
   colnames(elo_long) <- c("Date", "Individual", "Elo", "EloOrdinal", "EloScaled", "ExpNumBeaten", "EloCardinal", "JenksEloCardinal")
