@@ -22,7 +22,7 @@
 #' 
 #' @export
 #' @importFrom stats approx ave optim reshape
-#' @importFrom utils head read.csv setWinProgressBar tail winProgressBar write.csv
+#' @importFrom utils read.csv write.csv
 #' @importFrom rlang .data
 #' @import reshape2
 #' @import BAMMtools
@@ -293,8 +293,6 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
     as.data.frame()
   
   colnames(elo_long) <- c("Date", "Individual", "Elo", "EloOrdinal", "EloScaled", "ExpNumBeaten", "EloCardinal", "JenksEloCardinal")
-  
-  # head(elo_long)
   
   cat(paste0("k = ", round(exp(model$par[1]), 3), "\n"))
   cat(paste0("prediction accuracy = ", round(pred_accuracy, 3)))
