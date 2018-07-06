@@ -176,6 +176,8 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
     
     df2 = rbind.data.frame(initelo, df2) #combine starting elo scores with elo scores after interactions
     
+    row.names(df2) = NULL
+    
   } else if(mod_type == 1) {
     # Reformat elo-after scores of winners and losers into long format
     df <- model_log[, names(model_log) %in% c("Date", "Winner", "Loser", "elo_w_after", "elo_l_after")] #model_log[, c(1:3, 6:7)]
@@ -294,15 +296,38 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
   
   colnames(elo_long) <- c("Date", "Individual", "Elo", "EloOrdinal", "EloScaled", "ExpNumBeaten", "EloCardinal", "JenksEloCardinal")
   
+  # k = exp(model$par[1])
+  # pred_accuracy
+  # AIC = 2*as.numeric(model$value) + 2*length(model$par)
+  
   cat(paste0("k = ", round(exp(model$par[1]), 3), "\n"))
-  cat(paste0("prediction accuracy = ", round(pred_accuracy, 3)))
+  cat(paste0("prediction accuracy = ", round(pred_accuracy, 3), "\n"))
   
   if(length(outputfile) > 0){
     write.csv(elo_long, outputfile, row.names = F)
   } 
   
   if(returnR == TRUE){
-    return(elo_long)
+    
+    res = list()
+    res$elo = elo_long
+    res$k = exp(model$par[1])
+    res$pred_accuracy = pred_accuracy
+    res$logL = -model$value
+    res$AIC = 2*as.numeric(model$value) + 2*length(model$par)
+    
+    if(mod_type == 3){
+      
+      temp = elo_long[!duplicated(elo_long$Individual),]
+      row.names(temp) = NULL
+      
+      res$init_elo = temp
+      
+      rm(temp)
+      
+    }
+    
+    return(res)
   }
   
 }
