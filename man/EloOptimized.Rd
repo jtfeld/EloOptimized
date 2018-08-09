@@ -13,6 +13,7 @@ Chimpanzee females queue but males compete for social status. Scientific Reports
 
 \itemize{
   \item{\code{\link{eloratingopt}}: main function}
+  \item{\code{\link{eloratingtrad}}: traditional Elo scores function}
   \item{\code{\link{elo.model1}}: internal function for fitting model type 1}
   \item{\code{\link{elo.model3}}: internal function for fitting model type 3}
   \item{\code{\link{elo.m3_lik_vect}}: vectorized internal function 
@@ -24,13 +25,10 @@ Chimpanzee females queue but males compete for social status. Scientific Reports
 
 \itemize{
   \item option to include additional rank scores or not (ie leave out ordinal, scaled, etc...)
-  \item rather than returning a data frame, we could return a fit object with $daily_elo, 
-    $optimized_k, $prediction_accuracy, $log_likelihood, $aic, $aicc, etc...
-  \item maybe name the models by model type, rather than M or F?  That way we're not presupposing
-    that males all have the same entry value, etc... DONE
   \item option to go back and recalculate during burn-in period with optimized k for Model 1?
   \item find data we can use in vignette
   \item create vignette, other package doohickies
+  \item add fit_k and fit_init_elo options to eloratingopt function
 }
 }
 

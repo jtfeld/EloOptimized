@@ -1,16 +1,16 @@
-#' @title Create daily ML fitted Elo ranks and multiple derivatives
-#' @description Conducts *optimized* elo rating analyses as per Foerster, Franz et al
-#'   and outputs raw, normalized, cardinal, and  categorical ranks in a list object in 
-#'   R or in an output file.
-#' @usage eloratingopt(agon_data, pres_data, mod_type, outputfile = NULL, returnR = TRUE)
+#' @title Create daily traditional elo ranks and multiple derivatives
+#' @description Conducts traditional elo rating analyses using specified K value
+#'   and saves raw, normalized, cardinal, and  categorical ranks in output file.
+#' @usage eloratingtrad(agon_data, pres_data, k = 100, init_elo = 1000, outputfile = NULL, 
+#'   returnR = TRUE)
 #' @param agon_data Input data frame with dominance interactions, should only contain Date, 
 #'   Winner, Loser.  Date should be formatted as MONTH/DAY/YEAR, or already as Date class.
 #' @param pres_data Input data frame with columns "id", "start_date" and "end_date".  Date
 #'   columns should be formatted as MONTH/DAY/YEAR, or already as Date class.  If all IDs 
-#'   are present the whole time, you can ignore this and a pres_data table will be 
-#'   automatically generated.
-#' @param mod_type 1 to fit only K, 3 to fit K and starting Elo for each individual.
-#'   MUCH slower for mod_type 3.
+#'   are present the whole time, you ignore this and a pres_data table will be automatically
+#'   generated.
+#' @param k Specified value of the k parameter, default is 100
+#' @param init_elo The starting Elo value for all individuals, default is 1000
 #' @param outputfile Name of csv file to save ranks to.  Default is NULL, in which case 
 #'   the function will only return a table in R.  If you supply an output file name
 #'   the function will save the results as a csv file in your working directory.
@@ -18,8 +18,9 @@
 #' @examples
 #'
 #' nbadata = EloOptimized::nba #nba wins and losses from the 1995-96 season
-#' nbaelo = eloratingopt(agon_data = nbadata, mod_type = 1)
-#' # generates optimized elo scores (optimizing only K) and saves them as "nbaelo" 
+#' nbaelo = eloratingtrad(agon_data = nbadata)
+#' # generates traditional Elo scores (with init_elo = 1000 & k = 100) and saves 
+#' #   them as "nbaelo" 
 #' 
 #' @export
 #' @importFrom stats approx ave optim reshape
@@ -34,7 +35,8 @@
 
 
 
-eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, returnR = TRUE){
+eloratingtrad <- function(agon_data, pres_data, k = 100, init_elo = 1000, 
+                          outputfile = NULL, returnR = TRUE){
   # Get data
   
   if(length(outputfile) == 0 & returnR == FALSE){
@@ -106,28 +108,29 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
   }
   
   
-  # ---------- Filter individuals who do not have at least one win and one loss ----------------
+  # ---------- Filter individuals who do not have at least one win or one loss ----------------
   
   presence$wl = 0 #add dummy column to count wins and losses
   
-  # vectorized loop to remove individuals from presence and ago data with 0 wins or 0 losses
-  repeat{
+  # vectorized loop to remove individuals from presence and ago data with 0 wins AND 0 losses
+  # this should work fine but 
+  # repeat{
+  #   
+  #   oldnum = nrow(presence)
     
-    oldnum = nrow(presence)
+    presence$wl = sapply(X = presence$id, function(x) sum(ago$Winner == x) + sum(ago$Loser == x))
     
-    presence$wl = sapply(X = presence$id, function(x) sum(ago$Winner == x) * sum(ago$Loser == x))
+    presence = presence %>% dplyr::filter(.data$wl != 0) %>% dplyr::select(-.data$wl)
     
-    presence = presence %>% dplyr::filter(.data$wl != 0)
-    
-    ago = ago %>% 
-      dplyr::filter(.data$Winner %in% presence$id & 
-                      .data$Loser %in% presence$id)
-    
-    if(nrow(presence) == oldnum) break
-    
-  }
+  #   ago = ago %>% 
+  #     dplyr::filter(.data$Winner %in% presence$id & 
+  #                     .data$Loser %in% presence$id)
+  #   
+  #   if(nrow(presence) == oldnum) break
+  #   
+  # }
   
-  presence = presence[,-4] # remove dummy variable
+  # presence = presence[,-4] # remove dummy variable
   
   all_inds = sort(presence$id)
   
@@ -135,51 +138,54 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
   # ---------------   Fit models  --------------------------------
   
   
-  if(mod_type == 1){
-    # Model 1 (for males)
-    model <- optim(par=5, burn_in=100, elo.model1, all_ids = all_inds, IA_data = ago, return_likelihood=T, method='Brent', lower=-10, upper=10)
-    model_log <- elo.model1(par=model$par, burn_in=100, all_ids = all_inds, IA_data = ago, return_likelihood=F)
-    # model <<- res_m_model1
-    # model_log <<- res_m_model1_log
-    pred_accuracy <- mean(model_log$elo_w_before[101:nrow(model_log)] > model_log$elo_l_before[101:nrow(model_log)])
-  } else if(mod_type == 3) {
-    # Model 3 (for females)
-    # model <- optim(par=c(5, rep(0, length(all_inds))), elo.model3, all_ids = all_inds, IA_data = ago, return_likelihood=T, method='BFGS', control = list(maxit = 10000, reltol=1e-10))
-    model <- optim(par=c(5, rep(0, length(all_inds))), elo.m3_lik_vect, all_ids = all_inds, IA_data = ago, method='BFGS', control = list(maxit = 10000, reltol=1e-10))
-    ### USE SAVED "../data prep code/fem_mod_kk_2013.RData" TO SAVE TIME!
-    model_log <- elo.model3(par=model$par, all_ids = all_inds, IA_data = ago, return_likelihood=F)
-    # model <- res_fem_model3
-    # model_log <- res_fem_model3_log
-    pred_accuracy <- mean(model_log$elo_w_before > model_log$elo_l_before)
-  }
+  # if(mod_type == 1){
+  #   # Model 1 (for males)
+  #   model <- optim(par=5, burn_in=100, elo.model1, all_ids = all_inds, IA_data = ago, return_likelihood=T, method='Brent', lower=-10, upper=10)
+  #   model_log <- elo.model1(par=model$par, burn_in=100, all_ids = all_inds, IA_data = ago, return_likelihood=F)
+  #   # model <<- res_m_model1
+  #   # model_log <<- res_m_model1_log
+  #   pred_accuracy <- mean(model_log$elo_w_before[101:nrow(model_log)] > model_log$elo_l_before[101:nrow(model_log)])
+  # } else if(mod_type == 3) {
+  #   # Model 3 (for females)
+  #   # model <- optim(par=c(5, rep(0, length(all_inds))), elo.model3, all_ids = all_inds, IA_data = ago, return_likelihood=T, method='BFGS', control = list(maxit = 10000, reltol=1e-10))
+  #   model <- optim(par=c(5, rep(0, length(all_inds))), elo.m3_lik_vect, all_ids = all_inds, IA_data = ago, method='BFGS', control = list(maxit = 10000, reltol=1e-10))
+  #   ### USE SAVED "../data prep code/fem_mod_kk_2013.RData" TO SAVE TIME!
+  #   model_log <- elo.model3(par=model$par, all_ids = all_inds, IA_data = ago, return_likelihood=F)
+  #   # model <- res_fem_model3
+  #   # model_log <- res_fem_model3_log
+  #   pred_accuracy <- mean(model_log$elo_w_before > model_log$elo_l_before)
+  # }
   
+  # model = elo.model1(par = log(k), burn_in = 0, init_elo = init_elo, IA_data = ago, all_ids = all_inds, return_likelihood = T)
+  model_log = elo.model1(par = log(k), burn_in = 0, init_elo = init_elo, IA_data = ago, all_ids = all_inds, return_likelihood = F)
+  pred_accuracy <- mean(model_log$elo_w_before > model_log$elo_l_before)
   
   # ================ Post-processing of elo scores =================================
   
   # ---------------- Step 1:  Normalize elo scores by date -------------------------
   
   # For females, start here
-  if(mod_type == 3){
-    
-    # Get elo from log object
-    initelo <- data.frame(Date = presence[order(presence$id), "start_date"],
-                          Individual = all_inds,
-                          EloScoreAfter = model$par[2: length(model$par)], 
-                          stringsAsFactors = F)
-    # names(elo) <- all_inds #pretty sure this should be "all_inds", but DOUBLE CHECK!!! (
-    # changed from "inds" to "all_inds")
-    
-    df <- model_log[, names(model_log) %in% c("Date", "Winner", "Loser", "elo_w_after", "elo_l_after")]
-    seq_long <- reshape(df, varying=list(c(2:3), c(4:5)), v.names=c("Individual", "EloScoreAfter"), direction="long")
-    # Format columns
-    df2 <- seq_long[,c(1,3,4)]
-    row.names(df2) = NULL
-    
-    df2 = rbind.data.frame(initelo, df2) #combine starting elo scores with elo scores after interactions
-    
-    row.names(df2) = NULL
-    
-  } else if(mod_type == 1) {
+  # if(mod_type == 3){
+  #   
+  #   # Get elo from log object
+  #   initelo <- data.frame(Date = presence[order(presence$id), "start_date"],
+  #                         Individual = all_inds,
+  #                         EloScoreAfter = model$par[2: length(model$par)], 
+  #                         stringsAsFactors = F)
+  #   # names(elo) <- all_inds #pretty sure this should be "all_inds", but DOUBLE CHECK!!! (
+  #   # changed from "inds" to "all_inds")
+  #   
+  #   df <- model_log[, names(model_log) %in% c("Date", "Winner", "Loser", "elo_w_after", "elo_l_after")]
+  #   seq_long <- reshape(df, varying=list(c(2:3), c(4:5)), v.names=c("Individual", "EloScoreAfter"), direction="long")
+  #   # Format columns
+  #   df2 <- seq_long[,c(1,3,4)]
+  #   row.names(df2) = NULL
+  #   
+  #   df2 = rbind.data.frame(initelo, df2) #combine starting elo scores with elo scores after interactions
+  #   
+  #   row.names(df2) = NULL
+  #   
+  # } else if(mod_type == 1) {
     # Reformat elo-after scores of winners and losers into long format
     df <- model_log[, names(model_log) %in% c("Date", "Winner", "Loser", "elo_w_after", "elo_l_after")] #model_log[, c(1:3, 6:7)]
     seq_long <- reshape(df, varying=list(c(2:3), c(4:5)), v.names=c("Individual", "EloScoreAfter"), direction="long")
@@ -190,7 +196,7 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
     # individuals start being ranked after their first interaction, whereas
     # in female models individuals start being ranked immediately upon entry.
     
-  }
+  # }
   
   # Order by date and ID
   df2 <- df2[order(df2$Date, df2$Individual),]  
@@ -297,11 +303,7 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
   
   colnames(elo_long) <- c("Date", "Individual", "Elo", "EloOrdinal", "EloScaled", "ExpNumBeaten", "EloCardinal", "JenksEloCardinal")
   
-  # k = exp(model$par[1])
-  # pred_accuracy
-  # AIC = 2*as.numeric(model$value) + 2*length(model$par)
-  
-  cat(paste0("k = ", round(exp(model$par[1]), 3), "\n"))
+  cat(paste0("k = ", k, "\n"))
   cat(paste0("prediction accuracy = ", round(pred_accuracy, 3), "\n"))
   
   if(length(outputfile) > 0){
@@ -312,21 +314,11 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
     
     res = list()
     res$elo = elo_long
-    res$k = exp(model$par[1])
+    res$k = k
+    res$init_elo = init_elo
     res$pred_accuracy = pred_accuracy
-    res$logL = -model$value
-    res$AIC = 2*as.numeric(model$value) + 2*length(model$par)
-    
-    if(mod_type == 3){
-      
-      temp = elo_long[!duplicated(elo_long$Individual),]
-      row.names(temp) = NULL
-      
-      res$init_elo = temp
-      
-      rm(temp)
-      
-    }
+    # res$logL = -as.numeric(model)
+    # res$AIC = 2*as.numeric(model) + 2*length(model$par)
     
     return(res)
   }
