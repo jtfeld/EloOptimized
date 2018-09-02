@@ -3,7 +3,7 @@
 EloOptimized
 ============
 
-EloOptimized provides tools to implement the maximum likelihood methods for deriving Elo scores as published in [Foerster, Franz et al. (2016). Chimpanzee females queue but males compete for social status.](https://www.nature.com/articles/srep35404). In addition, it provides functionality to efficiently generate Elo scores using a simplified procedure that doesn't require the use of cumbersome presence matrices. Finally, it quickly generates a number of additional Elo-based indices of potential use to researchers, as outlined in the linked manuscript.
+EloOptimized provides tools to implement the maximum likelihood methods for deriving Elo scores as published in [Foerster, Franz et al. (2016). Chimpanzee females queue but males compete for social status](https://www.nature.com/articles/srep35404). In addition, it provides functionality to efficiently generate traditional Elo scores using a simplified procedure that doesn't require the use of cumbersome presence matrices. Finally, it quickly generates a number of additional Elo-based indices (ordinal, normalized, cardinal, and categorical ranks and rank scores) of potential use to researchers, as outlined in the linked manuscript.
 
 Installation
 ------------
