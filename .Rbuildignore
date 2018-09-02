@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^eloratingopt_old\.R$
 ^\./R/eloratingopt_old\.R$
+^README\.Rmd$
+^README-.*\.png$

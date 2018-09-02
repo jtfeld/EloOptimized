@@ -1,0 +1,42 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+```{r,echo = FALSE}
+library(EloOptimized)
+```
+
+# EloOptimized
+
+EloOptimized provides tools to implement the maximum likelihood methods for deriving Elo scores as published in [Foerster, Franz et al. (2016).  Chimpanzee females queue but males compete for social status.](https://www.nature.com/articles/srep35404).  In addition, it provides functionality to efficiently generate Elo scores using a simplified procedure that doesn't require the use of cumbersome presence matrices.  Finally, it quickly generates a number of additional Elo-based indices of potential use to researchers, as outlined in the linked manuscript.
+
+## Installation
+
+You can install EloOptimized from github with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("steffenfoerster/elorating")
+```
+
+## Example
+
+There are two functions of interest.  Use eloratingopt() to calculate Elo scores using optimized Elo parameter values, or eloratingfixed() to calculate Elo scores using user-defined parameter values.
+
+```{r example, eval = FALSE}
+# to generate Elo socres using default initial Elo scores and a fitted value for the K parameter:
+nbaelo = eloratingopt(agon_data = nba, fit_init_elo = FALSE)
+
+# to generate Elo scores using default initial Elo scores and default K:
+nbaelo = eloratingfixed(agon_data = nbadata)
+```
