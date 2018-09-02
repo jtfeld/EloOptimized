@@ -7,20 +7,23 @@
 #' @section Primary functions:
 #' \itemize{
 #'   \item{\code{\link{eloratingopt}}: main function}
-#'   \item{\code{\link{eloratingtrad}}: traditional Elo scores function}
+#'   \item{\code{\link{eloratingfixed}}: traditional Elo scores function}
 #'   \item{\code{\link{elo.model1}}: internal function for fitting model type 1}
 #'   \item{\code{\link{elo.model3}}: internal function for fitting model type 3}
 #'   \item{\code{\link{elo.m3_lik_vect}}: vectorized internal function 
 #'     for fitting mod type 3}
 #' }
 #' 
-#' @section Ideas for future development:
+#' @section Plans for future development:
 #' \itemize{
-#'   \item option to include additional rank scores or not (ie leave out ordinal, scaled, etc...)
-#'   \item option to go back and recalculate during burn-in period with optimized k for Model 1?
-#'   \item find data we can use in vignette
-#'   \item create vignette, other package doohickies
-#'   \item add fit_k and fit_init_elo options to eloratingopt function
+#'   \item Make package more modular, with a more flexible wrapper function.
+#'   \item Option to specify K during burn-in period when fitting only K
+#'   \item Add additional example data
+#'   \item Create vignette, other package doohickies
+#'   \item Add additional user control of the optimization procedure, allowing 
+#'     for specification of the burn in period, optimization algorithm, and 
+#'     initial values for optimization.
+#'   \item Add functionality to plot Elo trajectories from within package.
 #' }
 #'
 #' @docType package

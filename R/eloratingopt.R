@@ -1,24 +1,68 @@
 #' @title Create daily ML fitted Elo ranks and multiple derivatives
-#' @description Conducts *optimized* elo rating analyses as per Foerster, Franz et al
-#'   and outputs raw, normalized, cardinal, and  categorical ranks in a list object in 
-#'   R or in an output file.
-#' @usage eloratingopt(agon_data, pres_data, mod_type, outputfile = NULL, returnR = TRUE)
+#' @description Conducts \strong{optimized} elo rating analyses as per Foerster, Franz et al
+#'   and outputs raw, normalized, cardinal, and  categorical ranks as a list object in 
+#'   R or in an output file. For non-optimized Elo score calculation, use 
+#'   \code{\link{eloratingfixed}}.
+#' @usage eloratingopt(agon_data, pres_data, fit_init_elo = FALSE, outputfile = NULL, 
+#'   returnR = TRUE)
 #' @param agon_data Input data frame with dominance interactions, should only contain Date, 
 #'   Winner, Loser.  Date should be formatted as MONTH/DAY/YEAR, or already as Date class.
 #' @param pres_data Input data frame with columns "id", "start_date" and "end_date".  Date
 #'   columns should be formatted as MONTH/DAY/YEAR, or already as Date class.  If all IDs 
 #'   are present the whole time, you can ignore this and a pres_data table will be 
 #'   automatically generated.
-#' @param mod_type 1 to fit only K, 3 to fit K and starting Elo for each individual.
-#'   MUCH slower for mod_type 3.
+#' @param fit_init_elo If FALSE (the default), fits only the K parameter, with a default 
+#'   starting Elo score of 1000 for each individual.  If TRUE, fits K and starting Elo for 
+#'   each individual.  The latter option is \emph{much} slower.
 #' @param outputfile Name of csv file to save ranks to.  Default is NULL, in which case 
 #'   the function will only return a table in R.  If you supply an output file name
 #'   the function will save the results as a csv file in your working directory.
 #' @param returnR whether to return an R object from the function call.  Default is TRUE
+#' 
+#' @details This function accepts a data frame of date-stamped dominance interactions and 
+#'   (optionally) a data frame of start and end dates for each individual to be ranked, 
+#'   and ouputs daily Elo scores with K parameter, and optionally initial elo scores, fitted using 
+#'   a maximum likelihood approach.  The optimization procedure uses the \code{optim()} function, 
+#'   with a burn in period of 100 interactions.  We use the "Brent" method when fitting only the K 
+#'   parameter, and the "BFGS" method for fitting both K and initial Elo scores.  See 
+#'   \code{\link[stats]{optim}} for more details.  Future package development will add additional 
+#'   user control of the optimization procedure, allowing for specification of the burn in period, 
+#'   optimization algorithm, and initial values for optimization.  A detailed description of the 
+#'   function output is below.
+#'   
+#' 
+#' @return Returns a list with five or six elements (depending on input): 
+#' \itemize{
+#'  \item{\strong{elo}}{ Data frame with all IDs and dates they were present, with the following columns:}
+#'    \itemize{
+#'      \item{Date}{: Dates of study period}
+#'      \item{Individual}{: the names of each ranked individual, for each date they were present}
+#'      \item{Elo}{: fitted Elo scores for each individual on each day}
+#'      \item{EloOrdinal}{: Daily ordinal rank based on Elo scores}
+#'      \item{EloScaled}{: Daily Elo scores rescaled between 0 and 1 according to 
+#'        \code{([individual Elo] - min([daily Elo scores])/(max([daily Elo scores]) - min([daily Elo scores]))}}
+#'      \item{ExpNumBeaten}{: expected number of individuals in the group beaten, which is the sum of 
+#'        winning probabilities based on relative Elo scores of an individual and all others, following 
+#'        equation (4) in Foerster, Franz et al. 2016}
+#'      \item{EloCardinal}{: ExpNumBeaten values rescaled as a percentage of the total number of ranked 
+#'        individuals present in the group on the day of ranking. We encourage the use of this measure.}
+#'      \item{JenksEloCardinal}{: Categorical rank (high, mid, or low) using the Jenks natural breaks 
+#'        classification method implemented in the R package BAMMtools. 
+#'        See \code{\link[BAMMtools]{getJenksBreaks}}}
+#'      }
+#'  \item{\strong{k}}{ The maximum-likelihood fitted k parameter value}
+#'  \item{\strong{pred_accuracy}}{ Proportion of correctly predicted interactions}
+#'  \item{\strong{logL}}{ The overall log-likelihood of the observed data given the fitted parameter values 
+#'    based on winning probabilities (as calculated in equation (1) of Foerster, Franz et al 2016) for all 
+#'    interactions}
+#'  \item{\strong{AIC}}{ Akaike's Information Criterion value as a measure of model fit}
+#'  \item{\strong{init_elo}}{ (\emph{Only returned if you fit initial Elo scores}) initial Elo for each individual}
+#'  } 
+#' 
 #' @examples
 #'
 #' nbadata = EloOptimized::nba #nba wins and losses from the 1995-96 season
-#' nbaelo = eloratingopt(agon_data = nbadata, mod_type = 1)
+#' nbaelo = eloratingopt(agon_data = nbadata, fit_init_elo = FALSE)
 #' # generates optimized elo scores (optimizing only K) and saves them as "nbaelo" 
 #' 
 #' @export
@@ -34,7 +78,7 @@
 
 
 
-eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, returnR = TRUE){
+eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile = NULL, returnR = TRUE){
   # Get data
   
   if(length(outputfile) == 0 & returnR == FALSE){
@@ -85,6 +129,8 @@ eloratingopt <- function(agon_data, pres_data, mod_type, outputfile = NULL, retu
     presence$id = as.character(presence$id)
     
   }
+  
+  if(fit_init_elo == FALSE){mod_type = 1} else {mod_type = 3}
   
   
   # ---------------  Make sure ago and presence have same start and end dates ----------------------

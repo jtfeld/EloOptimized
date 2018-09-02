@@ -4,7 +4,8 @@
 \alias{elo.model1}
 \title{Optimize k paramter in Elo rating method}
 \usage{
-elo.model1(par, burn_in=100, init_elo = 1000, IA_data, all_ids, return_likelihood = T)
+elo.model1(par, burn_in=100, init_elo = 1000, IA_data, all_ids, p_function = "sigmoid", 
+  return_likelihood = T)
 }
 \arguments{
 \item{par}{initial value of log(k)}
@@ -16,6 +17,10 @@ elo.model1(par, burn_in=100, init_elo = 1000, IA_data, all_ids, return_likelihoo
 \item{IA_data}{Data frame with Date, Winner, and Loser}
 
 \item{all_ids}{list of all IDs in sample}
+
+\item{p_function}{function used to calculate probability of winning.  Defaults to sinusoidal 
+function, but use "trad" if you want to use the normal-distribution-based function from 
+Elo 1978.}
 
 \item{return_likelihood}{Logical; if TRUE, returns log likelihood based on given par, if FALSE
 returns agonistic interactions table with elo scores based on given value of par}

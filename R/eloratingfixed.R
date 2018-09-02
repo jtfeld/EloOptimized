@@ -1,8 +1,9 @@
-#' @title Create daily traditional elo ranks and multiple derivatives
+#' @title Create daily elo ranks and multiple derivatives with user-defined parameter values
 #' @description Conducts traditional elo rating analyses using specified K value
-#'   and saves raw, normalized, cardinal, and  categorical ranks in output file.
-#' @usage eloratingtrad(agon_data, pres_data, k = 100, init_elo = 1000, outputfile = NULL, 
-#'   returnR = TRUE)
+#'   and outputs raw, normalized, cardinal, and  categorical ranks as a list object in 
+#'   R or in an output file.  For optimized Elo parameters, use \code{\link{eloratingopt}}.
+#' @usage eloratingfixed(agon_data, pres_data, k = 100, init_elo = 1000, outputfile = NULL, 
+#'   returnR = TRUE, p_function = "sigmoid")
 #' @param agon_data Input data frame with dominance interactions, should only contain Date, 
 #'   Winner, Loser.  Date should be formatted as MONTH/DAY/YEAR, or already as Date class.
 #' @param pres_data Input data frame with columns "id", "start_date" and "end_date".  Date
@@ -15,10 +16,53 @@
 #'   the function will only return a table in R.  If you supply an output file name
 #'   the function will save the results as a csv file in your working directory.
 #' @param returnR whether to return an R object from the function call.  Default is TRUE
+#' @param p_function function defining probability of winning.  Default "sigmoid" is 
+#'   equation (1) from Foerster, Franz et al 2016.  Use "pnorm" to use the 
+#'   \code{\link[stats:Normal]{pnorm}}-based method implemented in the EloRating package. 
+#'   
+#' @details This function accepts a data frame of date-stamped dominance interactions and 
+#'   (optionally) a data frame of start and end dates for each individual to be ranked, 
+#'   and ouputs daily Elo scores with parameters specified by the user.  The default function 
+#'   used to determine probability of winning is equation (1) from Foerster, Franz et al. 2016, 
+#'   but for ease of comparison with the EloRating package, we also added the option to use
+#'   the \code{\link[stats:Normal]{pnorm}}-based method implemented in the EloRating package, and future 
+#'   development will add the option to use the original function from Elo 1978 (as implemented in 
+#'   the elo package).  This function does not require large presence matrices, and efficiently 
+#'   calculates a series of additional indices (described below).  A detailed description of the 
+#'   function output is below.
+#'   
+#' @return Returns a list with six elements: 
+#' \itemize{
+#'  \item{\strong{elo}}{ Data frame with all IDs and dates they were present, with the following columns:}
+#'    \itemize{
+#'      \item{Date}{: Dates of study period}
+#'      \item{Individual}{: the names of each ranked individual, for each date they were present}
+#'      \item{Elo}{: fitted Elo scores for each individual on each day}
+#'      \item{EloOrdinal}{: Daily ordinal rank based on Elo scores}
+#'      \item{EloScaled}{: Daily Elo scores rescaled between 0 and 1 according to 
+#'        \code{([individual Elo] - min([daily Elo scores])/(max([daily Elo scores]) - min([daily Elo scores]))}}
+#'      \item{ExpNumBeaten}{: expected number of individuals in the group beaten, which is the sum of 
+#'        winning probabilities based on relative Elo scores of an individual and all others, following 
+#'        equation (4) in Foerster, Franz et al. 2016}
+#'      \item{EloCardinal}{: ExpNumBeaten values rescaled as a percentage of the total number of ranked 
+#'        individuals present in the group on the day of ranking. We encourage the use of this measure.}
+#'      \item{JenksEloCardinal}{: Categorical rank (high, mid, or low) using the Jenks natural breaks 
+#'        classification method implemented in the R package BAMMtools. 
+#'        See \code{\link[BAMMtools]{getJenksBreaks}}}
+#'      }
+#'  \item{\strong{k}}{ User-defined value of the k parameter}
+#'  \item{\strong{init_elo}}{ User-defined initial Elo score when individuals enter the hierarchy}
+#'  \item{\strong{pred_accuracy}}{ Proportion of correctly predicted interactions}
+#'  \item{\strong{logL}}{ The overall log-likelihood of the observed data given the user-supplied parameter 
+#'    values based on winning probabilities (as calculated in equation (1) of Foerster, Franz et al 2016) 
+#'    for all interactions}
+#'  \item{\strong{AIC}}{ Akaike's Information Criterion value as a measure of model fit}
+#'  } 
+#'   
 #' @examples
 #'
 #' nbadata = EloOptimized::nba #nba wins and losses from the 1995-96 season
-#' nbaelo = eloratingtrad(agon_data = nbadata)
+#' nbaelo = eloratingfixed(agon_data = nbadata)
 #' # generates traditional Elo scores (with init_elo = 1000 & k = 100) and saves 
 #' #   them as "nbaelo" 
 #' 
@@ -35,8 +79,8 @@
 
 
 
-eloratingtrad <- function(agon_data, pres_data, k = 100, init_elo = 1000, 
-                          outputfile = NULL, returnR = TRUE){
+eloratingfixed <- function(agon_data, pres_data, k = 100, init_elo = 1000, 
+                          outputfile = NULL, returnR = TRUE, p_function = "sigmoid"){
   # Get data
   
   if(length(outputfile) == 0 & returnR == FALSE){
@@ -156,8 +200,10 @@ eloratingtrad <- function(agon_data, pres_data, k = 100, init_elo = 1000,
   #   pred_accuracy <- mean(model_log$elo_w_before > model_log$elo_l_before)
   # }
   
-  # model = elo.model1(par = log(k), burn_in = 0, init_elo = init_elo, IA_data = ago, all_ids = all_inds, return_likelihood = T)
-  model_log = elo.model1(par = log(k), burn_in = 0, init_elo = init_elo, IA_data = ago, all_ids = all_inds, return_likelihood = F)
+  model = elo.model1(par = log(k), burn_in = 0, init_elo = init_elo, IA_data = ago, all_ids = all_inds, 
+                     return_likelihood = T, p_function = p_function)
+  model_log = elo.model1(par = log(k), burn_in = 0, init_elo = init_elo, IA_data = ago, all_ids = all_inds, 
+                         return_likelihood = F, p_function = p_function)
   pred_accuracy <- mean(model_log$elo_w_before > model_log$elo_l_before)
   
   # ================ Post-processing of elo scores =================================
@@ -317,8 +363,8 @@ eloratingtrad <- function(agon_data, pres_data, k = 100, init_elo = 1000,
     res$k = k
     res$init_elo = init_elo
     res$pred_accuracy = pred_accuracy
-    # res$logL = -as.numeric(model)
-    # res$AIC = 2*as.numeric(model) + 2*length(model$par)
+    res$logL = -as.numeric(model)
+    res$AIC = 2*as.numeric(model) + 0 # becausee no fitted parameters, so not sure if AIC is appropriate...
     
     return(res)
   }
