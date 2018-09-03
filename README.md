@@ -12,7 +12,7 @@ You can install EloOptimized from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("steffenfoerster/elorating")
+devtools::install_github("steffenfoerster/elorating/tree/jtf_devbranch")
 ```
 
 Example
@@ -21,9 +21,9 @@ Example
 There are two functions of interest. Use eloratingopt() to calculate Elo scores using optimized Elo parameter values, or eloratingfixed() to calculate Elo scores using user-defined parameter values.
 
 ``` r
-# to generate Elo socres using default initial Elo scores and a fitted value for the K parameter:
+# to generate Elo scores using fixed initial Elo scores (1000) and a ML-fitted value for the K parameter:
 nbaelo = eloratingopt(agon_data = nba, fit_init_elo = FALSE)
 
-# to generate Elo scores using default initial Elo scores and default K:
-nbaelo = eloratingfixed(agon_data = nbadata)
+# to generate Elo scores using fixed default initial Elo scores and default K:
+nbaelo = eloratingfixed(agon_data = nbadata, k = 100, init_elo = 1000)
 ```

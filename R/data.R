@@ -1,6 +1,6 @@
 #' NBA games 1995-96
 #'
-#' Outcome of NBA games during the 1995-1996 season, adapted from a dataset 
+#' Outcome of NBA games during the 1995-1996 regular season, adapted from a dataset 
 #'   from fivethirtyeight
 #'
 #' @format A data frame with 1189 rows and 3 variables:
