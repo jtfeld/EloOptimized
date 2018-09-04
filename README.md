@@ -27,3 +27,21 @@ nbaelo = eloratingopt(agon_data = nba, fit_init_elo = FALSE)
 # to generate Elo scores using fixed default initial Elo scores and default K:
 nbaelo = eloratingfixed(agon_data = nbadata, k = 100, init_elo = 1000)
 ```
+
+To recreate the results from the 2016 manuscript, use the following code:
+
+``` r
+# Males, model type 1:
+melo1 = eloratingopt(agon_data = chimpagg_m, pres_data = chimppres_m, fit_init_elo = F)
+
+# Males, model type 3:
+melo3 = eloratingopt(agon_data = chimpagg_m[101:nrow(chimpagg_m),], 
+                     pres_data = chimppres_m, fit_init_elo = T)
+
+# Females, model type 1: 
+felo1 = eloratingopt(agon_data = chimpagg_f, pres_data = chimppres_f, fit_init_elo = F)
+
+# Females, model type 3:
+felo3 = eloratingopt(agon_data = chimpagg_f[101:nrow(chimpagg_f),], 
+                     pres_data = chimppres_f, fit_init_elo = T)
+```
