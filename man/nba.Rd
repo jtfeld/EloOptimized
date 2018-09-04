@@ -17,7 +17,7 @@
 nba
 }
 \description{
-Outcome of NBA games during the 1995-1996 season, adapted from a dataset 
+Outcome of NBA games during the 1995-1996 regular season, adapted from a dataset 
   from fivethirtyeight
 }
 \keyword{datasets}
