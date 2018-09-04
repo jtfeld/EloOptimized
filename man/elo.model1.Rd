@@ -29,7 +29,6 @@ returns agonistic interactions table with elo scores based on given value of par
 Function to optimize k parameter in Elo Rating Method
 }
 \examples{
-#setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
+#for internal use
 
-#fill in later
 }

@@ -8,7 +8,7 @@
 #' @param all_ids list of all ids to rank
 #' @examples
 #' 
-#' # for internal use, so example here not a high priority
+#' # for internal use
 #' @export
 
 

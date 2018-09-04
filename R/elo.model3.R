@@ -10,7 +10,7 @@
 #'   interactions given a particular set of parameters.  If FALSE, returns 
 #'   a table of Elo scores based on a given set of parameters. 
 #' @examples
-#' # for internal use, example will be supplied eventually
+#' # for internal use
 #' @export
 
 

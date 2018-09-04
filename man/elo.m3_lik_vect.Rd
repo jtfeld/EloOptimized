@@ -20,5 +20,5 @@ Function to optimize k parameter and entry Elo scores
 }
 \examples{
 
-# for internal use, so example here not a high priority
+# for internal use
 }

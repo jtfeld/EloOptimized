@@ -23,5 +23,5 @@ a table of Elo scores based on a given set of parameters.}
 Function to optimize k parameter and entry Elo scores
 }
 \examples{
-# for internal use, example will be supplied eventually
+# for internal use
 }

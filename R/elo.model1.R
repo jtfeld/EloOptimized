@@ -13,9 +13,8 @@
 #' @param return_likelihood Logical; if TRUE, returns log likelihood based on given par, if FALSE
 #'   returns agonistic interactions table with elo scores based on given value of par
 #' @examples
-#' #setwd(choose.dir()) # Interactivevly choose a directory where your input files are located
-#'
-#' #fill in later
+#' #for internal use
+#' 
 #' @export
 #' @importFrom stats pnorm
 
