@@ -360,7 +360,7 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
     res$elo = elo_long
     res$k = exp(model$par[1])
     res$pred_accuracy = pred_accuracy
-    res$logL = -model$value
+    res$logL = unname(-model$value)
     res$AIC = 2*as.numeric(model$value) + 2*length(model$par)
     
     if(mod_type == 3){
