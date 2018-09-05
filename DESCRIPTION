@@ -22,3 +22,5 @@ Imports: dplyr,
     magrittr,
     lubridate,
     rlang
+URL: https://github.com/jtfeld/EloOptimized
+BugReports: https://github.com/jtfeld/EloOptimized/issues

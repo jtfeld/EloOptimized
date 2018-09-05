@@ -12,7 +12,7 @@ You can install EloOptimized from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("steffenfoerster/elorating/tree/jtf_devbranch")
+devtools::install_github("jtfeld/EloOptimized")
 ```
 
 Example
