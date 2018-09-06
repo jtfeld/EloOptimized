@@ -56,7 +56,6 @@ Returns a list with six elements:
  \item{\strong{logL}}{ The overall log-likelihood of the observed data given the user-supplied parameter 
    values based on winning probabilities (as calculated in equation (1) of Foerster, Franz et al 2016) 
    for all interactions}
- \item{\strong{AIC}}{ Akaike's Information Criterion value as a measure of model fit}
  }
 }
 \description{

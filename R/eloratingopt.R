@@ -27,8 +27,14 @@
 #'   parameter, and the "BFGS" method for fitting both K and initial Elo scores.  See 
 #'   \code{\link[stats]{optim}} for more details.  Future package development will add additional 
 #'   user control of the optimization procedure, allowing for specification of the burn in period, 
-#'   optimization algorithm, and initial values for optimization.  A detailed description of the 
-#'   function output is below.
+#'   optimization algorithm, and initial values for optimization.  
+#'   
+#'   Note also that the fitting procedure requires each individual to have at least one win and 
+#'   one loss, so any individual that doesn't meet those criteria is automatically removed.  
+#'   Additionally, any instance of an individual winning against itself is cleaned from the data,
+#'   and several other checks of the data are performed before the optimization procedure is run.
+#'   
+#'   A detailed description of the function output is below:
 #'   
 #' 
 #' @return Returns a list with five or six elements (depending on input): 
@@ -52,7 +58,7 @@
 #'      }
 #'  \item{\strong{k}}{ The maximum-likelihood fitted k parameter value}
 #'  \item{\strong{pred_accuracy}}{ Proportion of correctly predicted interactions}
-#'  \item{\strong{logL}}{ The overall log-likelihood of the observed data given the fitted parameter values 
+#'  \item{\strong{maxLogL}}{ The overall log-likelihood of the observed data given the fitted parameter values 
 #'    based on winning probabilities (as calculated in equation (1) of Foerster, Franz et al 2016) for all 
 #'    interactions}
 #'  \item{\strong{AIC}}{ Akaike's Information Criterion value as a measure of model fit}
@@ -360,7 +366,7 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
     res$elo = elo_long
     res$k = exp(model$par[1])
     res$pred_accuracy = pred_accuracy
-    res$logL = unname(-model$value)
+    res$maxLogL = unname(-model$value)
     res$AIC = 2*as.numeric(model$value) + 2*length(model$par)
     
     if(mod_type == 3){

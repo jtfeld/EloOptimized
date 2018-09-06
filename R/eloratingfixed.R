@@ -56,7 +56,6 @@
 #'  \item{\strong{logL}}{ The overall log-likelihood of the observed data given the user-supplied parameter 
 #'    values based on winning probabilities (as calculated in equation (1) of Foerster, Franz et al 2016) 
 #'    for all interactions}
-#'  \item{\strong{AIC}}{ Akaike's Information Criterion value as a measure of model fit}
 #'  } 
 #'   
 #' @examples
@@ -364,7 +363,7 @@ eloratingfixed <- function(agon_data, pres_data, k = 100, init_elo = 1000,
     res$init_elo = init_elo
     res$pred_accuracy = pred_accuracy
     res$logL = -as.numeric(model)
-    res$AIC = 2*as.numeric(model) + 0 # becausee no fitted parameters, so not sure if AIC is appropriate...
+    # res$AIC = 2*as.numeric(model) + 0 # becausee no fitted parameters, AIC not appropriate...
     
     return(res)
   }
