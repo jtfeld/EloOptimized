@@ -77,7 +77,8 @@ This function accepts a data frame of date-stamped dominance interactions and
   Additionally, any instance of an individual winning against itself is cleaned from the data,
   and several other checks of the data are performed before the optimization procedure is run.
   
-  A detailed description of the function output is below:
+  A detailed description of the function output is given in the \strong{Value} section of 
+  this help file:
 }
 \examples{
 

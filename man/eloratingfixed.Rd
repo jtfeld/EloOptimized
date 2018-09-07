@@ -72,8 +72,13 @@ This function accepts a data frame of date-stamped dominance interactions and
   the \code{\link[stats:Normal]{pnorm}}-based method implemented in the EloRating package, and future 
   development will add the option to use the original function from Elo 1978 (as implemented in 
   the elo package).  This function does not require large presence matrices, and efficiently 
-  calculates a series of additional indices (described below).  A detailed description of the 
-  function output is below.
+  calculates a series of additional indices (described below).  
+  
+  As opposed to the \code{\link{eloratingopt}} function, this procedure only requires that 
+  included individuals have at least one win \emph{or} one loss. 
+  
+  A detailed description of the function output is given in the \strong{Value} section of 
+  this help file:
 }
 \examples{
 

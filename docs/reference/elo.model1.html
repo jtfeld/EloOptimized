@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">EloOptimized</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
       </span>
     </div>
 
@@ -140,8 +140,8 @@
     <tr>
       <th>p_function</th>
       <td><p>function used to calculate probability of winning.  Defaults to sinusoidal 
-function, but use "trad" if you want to use the normal-distribution-based function from 
-Elo 1978.</p></td>
+function, but use "pnorm" to use the <code><a href='http://www.rdocumentation.org/packages/stats/topics/Normal'>pnorm</a></code>-based method 
+implemented in the EloRating package.</p></td>
     </tr>
     <tr>
       <th>return_likelihood</th>

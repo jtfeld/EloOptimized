@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">EloOptimized</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
       </span>
     </div>
 
@@ -174,7 +174,7 @@ the function will save the results as a csv file in your working directory.</p><
 </ul></li>
 <li><p><strong>k</strong> The maximum-likelihood fitted k parameter value</p></li>
 <li><p><strong>pred_accuracy</strong> Proportion of correctly predicted interactions</p></li>
-<li><p><strong>logL</strong> The overall log-likelihood of the observed data given the fitted parameter values 
+<li><p><strong>maxLogL</strong> The overall log-likelihood of the observed data given the fitted parameter values 
    based on winning probabilities (as calculated in equation (1) of Foerster, Franz et al 2016) for all 
    interactions</p></li>
 <li><p><strong>AIC</strong> Akaike's Information Criterion value as a measure of model fit</p></li>
@@ -192,8 +192,13 @@ the function will save the results as a csv file in your working directory.</p><
   parameter, and the "BFGS" method for fitting both K and initial Elo scores.  See 
   <code><a href='http://www.rdocumentation.org/packages/stats/topics/optim'>optim</a></code> for more details.  Future package development will add additional 
   user control of the optimization procedure, allowing for specification of the burn in period, 
-  optimization algorithm, and initial values for optimization.  A detailed description of the 
-  function output is below.</p>
+  optimization algorithm, and initial values for optimization.</p>  
+<p>Note also that the fitting procedure requires each individual to have at least one win and 
+  one loss, so any individual that doesn't meet those criteria is automatically removed.  
+  Additionally, any instance of an individual winning against itself is cleaned from the data,
+  and several other checks of the data are performed before the optimization procedure is run.</p>  
+<p>A detailed description of the function output is given in the <strong>Value</strong> section of 
+  this help file:</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

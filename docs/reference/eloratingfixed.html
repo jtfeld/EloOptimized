@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">EloOptimized</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
       </span>
     </div>
 
@@ -184,7 +184,6 @@ equation (1) from Foerster, Franz et al 2016.  Use "pnorm" to use the
 <li><p><strong>logL</strong> The overall log-likelihood of the observed data given the user-supplied parameter 
    values based on winning probabilities (as calculated in equation (1) of Foerster, Franz et al 2016) 
    for all interactions</p></li>
-<li><p><strong>AIC</strong> Akaike's Information Criterion value as a measure of model fit</p></li>
 </ul>
 
     
@@ -198,8 +197,11 @@ equation (1) from Foerster, Franz et al 2016.  Use "pnorm" to use the
   the <code><a href='http://www.rdocumentation.org/packages/stats/topics/Normal'>pnorm</a></code>-based method implemented in the EloRating package, and future 
   development will add the option to use the original function from Elo 1978 (as implemented in 
   the elo package).  This function does not require large presence matrices, and efficiently 
-  calculates a series of additional indices (described below).  A detailed description of the 
-  function output is below.</p>
+  calculates a series of additional indices (described below).</p>  
+<p>As opposed to the <code><a href='eloratingopt.html'>eloratingopt</a></code> function, this procedure only requires that 
+  included individuals have at least one win <em>or</em> one loss.</p>  
+<p>A detailed description of the function output is given in the <strong>Value</strong> section of 
+  this help file:</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
