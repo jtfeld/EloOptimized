@@ -1,3 +1,7 @@
+# EloOptimized 0.3.0
+
+* Added Travis-ci integration in preparation for submission to CRAN
+
 # EloOptimized 0.2.1
 
 * Updated documentation and parameter names
