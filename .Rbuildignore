@@ -3,4 +3,6 @@
 ^README\.Rmd$
 ^README-.*\.png$
 ^docs$
+^revdep$
 ^\.travis\.yml$
+^cran-comments\.md$
