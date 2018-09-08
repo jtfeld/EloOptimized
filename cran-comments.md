@@ -29,7 +29,7 @@ This is a new release, so there are no reverse dependencies.
 ---
 
 * I have run R CMD check on the 7 downstream dependencies.
-  (Summary at https://github.com/jtfeld/EloOptimized/tree/master/revdep/README.md). 
+  (Summary at https://github.com/jtfeld/EloOptimized/blob/master/revdep/README.md). 
   
 * FAILURE SUMMARY
 
