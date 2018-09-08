@@ -66,7 +66,7 @@ Conducts traditional elo rating analyses using specified K value
 \details{
 This function accepts a data frame of date-stamped dominance interactions and 
   (optionally) a data frame of start and end dates for each individual to be ranked, 
-  and ouputs daily Elo scores with parameters specified by the user.  The default function 
+  and outputs daily Elo scores with parameters specified by the user.  The default function 
   used to determine probability of winning is equation (1) from Foerster, Franz et al. 2016, 
   but for ease of comparison with the EloRating package, we also added the option to use
   the \code{\link[stats:Normal]{pnorm}}-based method implemented in the EloRating package, and future 

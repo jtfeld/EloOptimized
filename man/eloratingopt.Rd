@@ -64,7 +64,7 @@ Conducts \strong{optimized} elo rating analyses as per Foerster, Franz et al
 \details{
 This function accepts a data frame of date-stamped dominance interactions and 
   (optionally) a data frame of start and end dates for each individual to be ranked, 
-  and ouputs daily Elo scores with K parameter, and optionally initial elo scores, fitted using 
+  and outputs daily Elo scores with K parameter, and optionally initial elo scores, fitted using 
   a maximum likelihood approach.  The optimization procedure uses the \code{optim()} function, 
   with a burn in period of 100 interactions.  We use the "Brent" method when fitting only the K 
   parameter, and the "BFGS" method for fitting both K and initial Elo scores.  See 

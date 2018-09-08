@@ -1,4 +1,4 @@
-#' @title Optimize k paramter in Elo rating method
+#' @title Optimize k parameter in Elo rating method
 #' @description Function to optimize k parameter in Elo Rating Method
 #' @usage elo.model1(par, burn_in=100, init_elo = 1000, IA_data, all_ids, p_function = "sigmoid", 
 #'   return_likelihood = T)
