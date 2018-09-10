@@ -21,6 +21,12 @@ Possibly mis-spelled words in DESCRIPTION:
   et (10:48)
   
   These words are spelled correctly
+  
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Changed the Description field so that it does not start with 
+  'This package'.
 
 ## Reverse dependencies
 
