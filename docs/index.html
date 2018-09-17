@@ -10,7 +10,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Optimized Elo Rating Method for Obtaining Dominance Ranks">
-<meta property="og:description" content="This package implements the maximum likelihood methods for deriving
+<meta property="og:description" content="Provides an implementation of the maximum likelihood methods for deriving
     Elo scores as published in Foerster, Franz et al. (2016) &lt;DOI:10.1038/srep35404&gt;.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -82,32 +82,32 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install EloOptimized from github with:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"jtfeld/EloOptimized"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"jtfeld/EloOptimized"</span>)</a></code></pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>There are two functions of interest. Use eloratingopt() to calculate Elo scores using optimized Elo parameter values, or eloratingfixed() to calculate Elo scores using user-defined parameter values.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># to generate Elo scores using fixed initial Elo scores (1000) and a ML-fitted value for the K parameter:</span>
-nbaelo =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="dt">agon_data =</span> nba, <span class="dt">fit_init_elo =</span> <span class="ot">FALSE</span>)
-
-<span class="co"># to generate Elo scores using fixed default initial Elo scores and default K:</span>
-nbaelo =<span class="st"> </span><span class="kw"><a href="reference/eloratingfixed.html">eloratingfixed</a></span>(<span class="dt">agon_data =</span> nbadata, <span class="dt">k =</span> <span class="dv">100</span>, <span class="dt">init_elo =</span> <span class="dv">1000</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># to generate Elo scores using fixed initial Elo scores (1000) and a ML-fitted value for the K parameter:</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">nbaelo =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="dt">agon_data =</span> nba, <span class="dt">fit_init_elo =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># to generate Elo scores using fixed default initial Elo scores and default K:</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">nbaelo =<span class="st"> </span><span class="kw"><a href="reference/eloratingfixed.html">eloratingfixed</a></span>(<span class="dt">agon_data =</span> nbadata, <span class="dt">k =</span> <span class="dv">100</span>, <span class="dt">init_elo =</span> <span class="dv">1000</span>)</a></code></pre></div>
 <p>To recreate the results from the 2016 manuscript, use the following code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Males, model type 1:</span>
-melo1 =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="dt">agon_data =</span> chimpagg_m, <span class="dt">pres_data =</span> chimppres_m, <span class="dt">fit_init_elo =</span> F)
-
-<span class="co"># Males, model type 3:</span>
-melo3 =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="dt">agon_data =</span> chimpagg_m[<span class="dv">101</span><span class="op">:</span><span class="kw">nrow</span>(chimpagg_m),], 
-                     <span class="dt">pres_data =</span> chimppres_m, <span class="dt">fit_init_elo =</span> T)
-
-<span class="co"># Females, model type 1: </span>
-felo1 =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="dt">agon_data =</span> chimpagg_f, <span class="dt">pres_data =</span> chimppres_f, <span class="dt">fit_init_elo =</span> F)
-
-<span class="co"># Females, model type 3:</span>
-felo3 =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="dt">agon_data =</span> chimpagg_f[<span class="dv">101</span><span class="op">:</span><span class="kw">nrow</span>(chimpagg_f),], 
-                     <span class="dt">pres_data =</span> chimppres_f, <span class="dt">fit_init_elo =</span> T)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Males, model type 1:</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">melo1 =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="dt">agon_data =</span> chimpagg_m, <span class="dt">pres_data =</span> chimppres_m, <span class="dt">fit_init_elo =</span> F)</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co"># Males, model type 3:</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">melo3 =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="dt">agon_data =</span> chimpagg_m[<span class="dv">101</span><span class="op">:</span><span class="kw">nrow</span>(chimpagg_m),], </a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">                     <span class="dt">pres_data =</span> chimppres_m, <span class="dt">fit_init_elo =</span> T)</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co"># Females, model type 1: </span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">felo1 =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="dt">agon_data =</span> chimpagg_f, <span class="dt">pres_data =</span> chimppres_f, <span class="dt">fit_init_elo =</span> F)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co"># Females, model type 3:</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12">felo3 =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="dt">agon_data =</span> chimpagg_f[<span class="dv">101</span><span class="op">:</span><span class="kw">nrow</span>(chimpagg_f),], </a>
+<a class="sourceLine" id="cb3-13" data-line-number="13">                     <span class="dt">pres_data =</span> chimppres_f, <span class="dt">fit_init_elo =</span> T)</a></code></pre></div>
 </div>
 </div>
   </div>
@@ -116,6 +116,8 @@ felo3 =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=EloOptimized">https://​cloud.r-project.org/​package=EloOptimized</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/jtfeld/EloOptimized">https://​github.com/​jtfeld/​EloOptimized</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/jtfeld/EloOptimized/issues">https://​github.com/​jtfeld/​EloOptimized/​issues</a>
@@ -141,6 +143,7 @@ felo3 =<span class="st"> </span><span class="kw"><a href="reference/eloratingopt
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/jtfeld/EloOptimized"><img src="https://travis-ci.org/jtfeld/EloOptimized.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://cran.r-project.org/package=EloOptimized"><img src="http://www.r-pkg.org/badges/version/EloOptimized" alt="CRAN_Status_Badge"></a></li>
 </ul>
 </div>
 </div>
