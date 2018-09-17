@@ -27,11 +27,14 @@ EloOptimized provides tools to implement the maximum likelihood methods for deri
 
 ## Installation
 
-You can install EloOptimized from github with:
-
 ```{r gh-installation, eval = FALSE}
+# Current version on Github:
 # install.packages("devtools")
 devtools::install_github("jtfeld/EloOptimized")
+
+# CRAN-approved version on CRAN:
+install.packages("EloOptimized")
+
 ```
 
 ## Example

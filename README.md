@@ -22,11 +22,13 @@ linked manuscript.
 
 ## Installation
 
-You can install EloOptimized from github with:
-
 ``` r
+# Current version on Github:
 # install.packages("devtools")
 devtools::install_github("jtfeld/EloOptimized")
+
+# CRAN-approved version on CRAN:
+install.packages("EloOptimized")
 ```
 
 ## Example
