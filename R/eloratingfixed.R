@@ -76,8 +76,6 @@
 #' @importFrom rlang .data
 #' @import reshape2
 #' @import BAMMtools
-#' @import tcltk
-#' @import rlist
 #' @importFrom magrittr "%>%"
 
 
