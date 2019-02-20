@@ -244,7 +244,7 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
   }
   
   # Order by date and ID
-  df2 <- df2[order(df2$Date, df2$Individual),]  
+  df2 <- df2[order(df2$Date, df2$Individual),]  # maybe can remove this, appears default behavior is to reorder...
   
   # Use max achieved score per day
   df2_daymax <-
@@ -264,17 +264,21 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
   presence_long <- do.call(rbind.data.frame, temp)
   presence_long$Individual = as.character(presence_long$Individual)
   
+  # 
+  # presence_long$Elo = df2_daymax$EloScoreAfterMax[match(paste0(presence_long$Individual, presence_long$Date),
+  #                                                       paste0(df2_daymax$Individual, df2_daymax$Date))]
   
-  presence_long$Elo = df2_daymax$EloScoreAfterMax[match(paste0(presence_long$Individual, presence_long$Date),
-                                                        paste0(df2_daymax$Individual, df2_daymax$Date))]
-  # consider doing a left_join instead...
+  # add elo scores to presence data and interpolate:
   
-  presence_long = 
-    presence_long %>%
+  presence_long = dplyr::left_join(x = presence_long, y = df2_daymax, 
+                                    by = c("Individual" = "Individual", "Date" = "Date")) %>% 
+    dplyr::rename(Elo = .data$EloScoreAfterMax) %>%
     dplyr::group_by(.data$Individual) %>%
     dplyr::mutate(Elo_interpol = approx(.data$Elo, xout = 1:length(.data$Elo), 
                                         rule = 1:2, method = "constant")$y) %>%
     as.data.frame()
+  
+  # post-processing:
   
   elo_long = 
     dplyr::filter(presence_long, !is.na(.data$Elo_interpol)) %>% 
