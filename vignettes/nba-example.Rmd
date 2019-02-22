@@ -16,11 +16,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-A familiar example may be useful for understanding the different fitting options available in the EloOptimized package.  We included in the package a set of game results from the 1995-1996 NBA regular season.  We used NBA data because games can't end in a tie, teams play all other teams over the course of the season, and there are a manageable set of teams for visualization purposes.  During the 1995-1996 season, the Chicago Bulls went 72-10 (until recently the best record in NBA history), had a winning record against all but one team, and went on to win the championship.  Therefore we would expect a reasonable ranking method to assign them the highest rank score by the end of the season.  First we'll use a traditional Elo ranking approach to assign Elo scores using `eloratingfixed()`, and then we'll show how maximum likelihood fitting improves things.
+A familiar example may be useful for understanding the different fitting options available in the EloOptimized package.  We included in the package a data frame with game results from the 1995-1996 NBA regular season.  We used NBA data because games can't end in a tie, teams play all other teams over the course of the season, and there's a manageable set of teams for visualization purposes.  During the 1995-1996 season, the Chicago Bulls went 72-10 (until recently the best record in NBA history), had a winning record against all but one team (the Pacers, against whom they went 2-2), and went on to win the championship.  Therefore we would expect a reasonable ranking method to assign them the highest rank score by the end of the season.  First we'll use a traditional Elo ranking approach to assign Elo scores using `eloratingfixed()`, and then we'll show how maximum likelihood fitting improves things.
 
 ## Traditional Elo scores with default parameter values
 
-First, we'll load the packages we'll need (we're using a couple tidyverse packages for post-fitting data manipulation and visualization):
+First, let's load the packages we'll need (we're using a couple tidyverse packages for post-fitting data manipulation and visualization):
 
 ```{r, warning = FALSE, message = FALSE}
 library(EloOptimized)
@@ -38,7 +38,7 @@ When using the default K value of 100, we find that the prediction accuracy, the
 
 We can access the data frame of Elo scores using `res$elo`, and use ggplot2 to quickly visualize each team's trajectory.
 
-```{r, fig.width = 8, fig.height = 6}
+```{r, fig.width = 9, fig.height = 6}
 head(res$elo)
 
 res$elo %>%
@@ -65,7 +65,7 @@ res2 = eloratingopt(agon_data = nba)
 
 This takes longer than calculating traditional Elo scores because we're optimizing the K parameter before generating Elo scores.  Note that we're not optimizing K by trying to maximize the prediction accuracy, we're instead maximizing the likelihood of each contest result according to the sigmoid probability function defined in [Foerster, Franz et al., 2016](https://www.nature.com/articles/srep35404) [^1].  It turns out that the optimized value of K is closer to 20, and this value improves our prediction accuracy to 0.663.  Let's take a look at our results:
 
-```{r, fig.width = 8, fig.height = 6}
+```{r, fig.width = 9, fig.height = 6}
 res2$elo %>%
   rename(Team = Individual) %>%
   ggplot(aes(x = Date, y = Elo, color = Team)) + 
@@ -90,7 +90,7 @@ res3 = eloratingopt(agon_data = nba, fit_init_elo = TRUE)
 
 This takes quite a bit longer, because we're going from optimizing one parameter (K) to optimizing 30 parameters (K plus the 29 initial Elo scores). Surprisingly, the optimized value of K is 0 once you've fit initial Elo scores, meaning that Elo scores don't change at all in response to wins and losses.  We might take this to mean that, on average, teams' competitive ability doesn't change over the course of the season.  Note that fitting initial Elo scores with the included male chimpanzee data results in considerably different patterns, so K = 0 is not an inevitable result of fitting initial Elo scores.  Note that this time around the prediction accuracy rises to 0.7.  Let's take a look at our results: 
 
-```{r, fig.width = 8, fig.height = 6}
+```{r, fig.width = 9, fig.height = 6}
 res3$elo %>%
   rename(Team = Individual) %>%
   ggplot(aes(x = Date, y = Elo, color = Team)) + 
@@ -103,6 +103,6 @@ Now Chicago's dominance is more strongly reflected in their final Elo score rela
 tail(res3$elo, 29) %>% arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
 ```
 
-Because each team plays the same number of games, and schedules are fairly balanced, the Elo scores now just follow each team's overall record.  These scores are not useful as dynamic records of team performance, but would be useful for calculating winning probabilities according to the sigmoid equation from [Foerster, Franz et al., 2016](https://www.nature.com/articles/srep35404).  And in an animal system where individuals enter and leave the hierarchy through maturation and death, respectively, and where individuals tend to enter towards the bottom of the hierarchy, such a result would reflect a queuing system, as argued in the linked article.  
+Because each team plays the same number of games, and schedules are fairly balanced, the Elo scores now reflect each team's overall record.  These scores are not useful as dynamic records of team performance, but would be useful for calculating winning probabilities according to the sigmoid equation from [Foerster, Franz et al., 2016](https://www.nature.com/articles/srep35404).  And in an animal system where individuals enter and leave the hierarchy through maturation and death, respectively, and where individuals tend to enter towards the bottom of the hierarchy, such a result would reflect a queuing system, as argued in the linked article.  
 
-[^1]: Currently the only option available in the eloratingopt() function is to use the sigmoid function from the linked paper, but you can use the the pnorm-based method from the EloRating package in the eloratingfixed() function (to make comparison with that package easier).
+[^1]: Currently the only option available in the `eloratingopt()` function is to use the sigmoid function from the linked paper, but you can use the the pnorm-based method from the EloRating package in the `eloratingfixed()` function (to make comparison with that package easier).
