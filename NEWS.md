@@ -6,6 +6,8 @@
 
 * EloOrdinal column in output now stored as an integer object for small space saving.
 
+* Added a vignette to demonstrate usage of the package.
+
 # EloOptimized 0.3.0
 
 * Added Travis-ci integration in preparation for submission to CRAN

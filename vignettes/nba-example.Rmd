@@ -50,7 +50,7 @@ res$elo %>%
 There's a lot of noise in that plot, but if you look closely you'll notice that Chicago doesn't end the season with the highest Elo score.  There were 29 teams in the NBA in the 95-96 season, so we can check final Elo scores directly by sorting the the last 29 rows of the Elo scores data frame (we're removing a couple columns to make the output easier to look at):
 
 ```{r}
-tail(res$elo, 29) %>% dplyr::arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
+tail(res$elo, 29) %>% arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
 ```
 
 In fact, Indiana ends up with the highest Elo score on the final day.  It turns out that they finished the season 8-1 and beat the Bulls in the second to last game of the season.  This suggests that the default K parameter of 100 (which determines the degree to which Elo scores change after each contest) might be too high.  However, it's not obvious what the K parameter should be set to.  Luckily, the EloOptimized package implements a maximum likelihood approach for fitting the K parameter, so you don't have to make an arbitrary decision.
@@ -75,7 +75,7 @@ res2$elo %>%
 There's an initial period of sorting, followed by more stable Elo scores over the course of the season.  It looks like Chicago's on top this time, but let's double check:
 
 ```{r}
-tail(res2$elo, 29) %>% dplyr::arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
+tail(res2$elo, 29) %>% arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
 ```
 
 With K optimized, Chicago ends the season with the highest Elo score.  The final Elo scores also end up corresponding more closely to the final standings, although they don't match exactly.  For example, the Utah Jazz finished the season with the fifth best record but the eighth best Elo score, which makes sense given their 5-7 record over their last 12 games.  But what about that initial period of uncertainty when Elo scores are so unstable?  Can we do better?  The EloOptimized package also allows you to fit individual initial Elo scores.  Let's see what happens when we do that with the NBA data.
@@ -100,7 +100,7 @@ res3$elo %>%
 Now Chicago's dominance is more strongly reflected in their final Elo score relative to others.  It's easier to see this in the EloCardinal scores, which essentially represents the cumulative probability of winning against all other individuals (i.e. teams) scaled by the total number of other individuals/teams.
 
 ```{r}
-tail(res3$elo, 29) %>% dplyr::arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
+tail(res3$elo, 29) %>% arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
 ```
 
 Because each team plays the same number of games, and schedules are fairly balanced, the Elo scores now just follow each team's overall record.  These scores are not useful as dynamic records of team performance, but would be useful for calculating winning probabilities according to the sigmoid equation from [Foerster, Franz et al., 2016](https://www.nature.com/articles/srep35404).  And in an animal system where individuals enter and leave the hierarchy through maturation and death, respectively, and where individuals tend to enter towards the bottom of the hierarchy, such a result would reflect a queuing system, as argued in the linked article.  
