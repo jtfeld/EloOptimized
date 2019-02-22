@@ -34,7 +34,7 @@ Next, using the `nba` dataset that's included with the `EloOptimized` package, l
 res = eloratingfixed(agon_data = nba)
 ```
 
-When using the default k value of 100, we find that the prediction accuracy, the proportion of correctly predicted contests, is 0.636.  
+When using the default K value of 100, we find that the prediction accuracy, the proportion of correctly predicted contests, is 0.636.  
 
 We can access the data frame of Elo scores using `res$elo`, and use ggplot2 to quickly visualize each team's trajectory.
 
@@ -53,7 +53,7 @@ There's a lot of noise in that plot, but if you look closely you'll notice that 
 tail(res$elo, 29) %>% dplyr::arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
 ```
 
-In fact, Indiana ends up with the highest Elo score on the final day.  It turns out that they finished the season 8-1 and beat the Bulls in the second to last game of the season.  This suggests that the default K parameter of 100 (which determines the degree to which Elo scores change after each contest) might be too high.  However, it's not obvious what the K parameter should be set to.  Luckily, the EloOptimized package implements a maximum likelihood approach for fitting the k parameter, so you don't have to make an arbitrary decision.
+In fact, Indiana ends up with the highest Elo score on the final day.  It turns out that they finished the season 8-1 and beat the Bulls in the second to last game of the season.  This suggests that the default K parameter of 100 (which determines the degree to which Elo scores change after each contest) might be too high.  However, it's not obvious what the K parameter should be set to.  Luckily, the EloOptimized package implements a maximum likelihood approach for fitting the K parameter, so you don't have to make an arbitrary decision.
 
 ## ML optimized K value
 
@@ -63,7 +63,7 @@ To fit the K parameter, we use `eloratingopt()`:
 res2 = eloratingopt(agon_data = nba)
 ```
 
-This takes longer than calculating traditional Elo scores because we're optimizing the k parameter before generating Elo scores.  It turns out that the optimized value of K is closer to 20, and this value improves our prediction accuracy to 0.663.  Let's take a look at our results:
+This takes longer than calculating traditional Elo scores because we're optimizing the K parameter before generating Elo scores.  Note that we're not optimizing K by trying to maximize the prediction accuracy, we're instead maximizing the likelihood of each contest result according to the sigmoid probability function defined in [Foerster, Franz et al., 2016](https://www.nature.com/articles/srep35404) [^1].  It turns out that the optimized value of K is closer to 20, and this value improves our prediction accuracy to 0.663.  Let's take a look at our results:
 
 ```{r, fig.width = 8, fig.height = 6}
 res2$elo %>%
@@ -78,7 +78,7 @@ There's an initial period of sorting, followed by more stable Elo scores over th
 tail(res2$elo, 29) %>% dplyr::arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
 ```
 
-This time, Chicago ends the season with the highest Elo score.  The final Elo scores also end up corresponding more closely to the final standings, although they don't match exactly.  For example, the Utah Jazz finished the season with the fifth best record but the eighth best Elo score, which makes sense given their 5-7 record over their last 12 games.  But what about that initial period of uncertainty when Elo scores are so unstable?  Can we do better?  The EloOptimized package also allows you to fit individual initial Elo scores.  Let's see what happens when we do that with the NBA data.
+With K optimized, Chicago ends the season with the highest Elo score.  The final Elo scores also end up corresponding more closely to the final standings, although they don't match exactly.  For example, the Utah Jazz finished the season with the fifth best record but the eighth best Elo score, which makes sense given their 5-7 record over their last 12 games.  But what about that initial period of uncertainty when Elo scores are so unstable?  Can we do better?  The EloOptimized package also allows you to fit individual initial Elo scores.  Let's see what happens when we do that with the NBA data.
 
 ## ML optimized K and initial Elo scores
 
@@ -103,4 +103,6 @@ Now Chicago's dominance is more strongly reflected in their final Elo score rela
 tail(res3$elo, 29) %>% dplyr::arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
 ```
 
-Because each team plays the same number of games, and schedules are fairly balanced, the Elo scores are now just follow each team's overall record.  These scores are not useful as dynamic records of team performance, but would be useful for calculating winning probabilities according to the sinusoidal equation from [Foerster, Franz et al., 2016](https://www.nature.com/articles/srep35404).  And in an animal system where individuals enter and leave the hierarchy through maturation and death, respectively, and where individuals tend to enter towards the bottom of the hierarchy, such a result would reflect a queuing system, as argued in the linked article.  
+Because each team plays the same number of games, and schedules are fairly balanced, the Elo scores now just follow each team's overall record.  These scores are not useful as dynamic records of team performance, but would be useful for calculating winning probabilities according to the sigmoid equation from [Foerster, Franz et al., 2016](https://www.nature.com/articles/srep35404).  And in an animal system where individuals enter and leave the hierarchy through maturation and death, respectively, and where individuals tend to enter towards the bottom of the hierarchy, such a result would reflect a queuing system, as argued in the linked article.  
+
+[^1]: Currently the only option available in the eloratingopt() function is to use the sigmoid function from the linked paper, but you can use the the pnorm-based method from the EloRating package in the eloratingfixed() function (to make comparison with that package easier).
