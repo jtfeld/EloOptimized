@@ -36,7 +36,7 @@ Returns a list with five or six elements (depending on input):
      \item{Elo}{: fitted Elo scores for each individual on each day}
      \item{EloOrdinal}{: Daily ordinal rank based on Elo scores}
      \item{EloScaled}{: Daily Elo scores rescaled between 0 and 1 according to 
-       \code{([individual Elo] - min([daily Elo scores])/(max([daily Elo scores]) - min([daily Elo scores]))}}
+       \deqn{([individual Elo] - min([daily Elo scores])/(max([daily Elo scores]) - min([daily Elo scores]))}}
      \item{ExpNumBeaten}{: expected number of individuals in the group beaten, which is the sum of 
        winning probabilities based on relative Elo scores of an individual and all others, following 
        equation (4) in Foerster, Franz et al. 2016}
