@@ -8,6 +8,8 @@
 
 * Added a vignette to demonstrate usage of the package.
 
+* Added cleaning to handle tibbles imported with readr::read_csv()
+
 # EloOptimized 0.3.0
 
 * Added Travis-ci integration in preparation for submission to CRAN

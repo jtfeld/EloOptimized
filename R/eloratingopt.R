@@ -96,6 +96,10 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
     stop("colnames in agonistic data should be 'Date', 'Winner', 'Loser' (not case sensitive)")
   }
   
+  # to clean up data from readr::read_csv()
+  attr(ago, "spec") = NULL
+  ago = as.data.frame(ago)
+  
   ago$Winner = as.character(ago$Winner)
   ago$Loser = as.character(ago$Loser)
   
@@ -122,6 +126,9 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
   } else {
     
     presence <- pres_data
+    # clean up data from readr::read_csv()
+    attr(presence, "spec") = NULL
+    presence = as.data.frame(presence)
     names(presence) = tolower(names(presence))
     if(!all(names(presence) %in% c("id", "start_date", "end_date"))){
       stop("colnames in presence data should be 'id', 'start_date', 'end_date' (not case sensitive)")
