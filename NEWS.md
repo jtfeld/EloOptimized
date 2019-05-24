@@ -10,6 +10,8 @@
 
 * Added cleaning to handle tibbles imported with readr::read_csv()
 
+* Added additional informative errors if input data are problematic
+
 # EloOptimized 0.3.0
 
 * Added Travis-ci integration in preparation for submission to CRAN

@@ -190,6 +190,11 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
   all_inds = sort(presence$id)
   
   
+  if(mod_type == 1 & nrow(ago) <= 100){
+    stop("Currently you can't fit only K with less than 100 interactions (after filtering) due to burn in")
+    }
+  
+  
   # ---------------   Fit models  --------------------------------
   
   
