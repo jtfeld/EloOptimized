@@ -8,9 +8,11 @@
 
 * Added a vignette to demonstrate usage of the package.
 
-* Added cleaning to handle tibbles imported with readr::read_csv()
+* Added cleaning step to handle tibbles imported with readr::read_csv()
 
 * Added additional informative errors if input data are problematic
+
+* Fixed small bug related to converting character dates to Date class
 
 # EloOptimized 0.3.0
 

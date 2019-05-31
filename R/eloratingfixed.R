@@ -132,10 +132,10 @@ eloratingfixed <- function(agon_data, pres_data, k = 100, init_elo = 1000,
     if(!all(names(presence) %in% c("id", "start_date", "end_date"))){
       stop("colnames in presence data should be 'id', 'start_date', 'end_date' (not case sensitive)")
     }
-    if(class(pres_data$start_date) != "Date"){
-      pres_data$start_date = lubridate::mdy(pres_data$start_date)}
-    if(class(pres_data$end_date) != "Date"){
-      pres_data$end_date = lubridate::mdy(pres_data$end_date)}
+    if(class(presence$start_date) != "Date"){
+      presence$start_date = lubridate::mdy(presence$start_date)}
+    if(class(presence$end_date) != "Date"){
+      presence$end_date = lubridate::mdy(presence$end_date)}
     
     presence$id = as.character(presence$id)
     
@@ -164,27 +164,28 @@ eloratingfixed <- function(agon_data, pres_data, k = 100, init_elo = 1000,
   # ---------- Filter individuals who do not have at least one win or one loss ----------------
   
   presence$wl = 0 #add dummy column to count wins and losses
-  
-  # vectorized loop to remove individuals from presence and ago data with 0 wins AND 0 losses
-  # this should work fine but 
-  # repeat{
-  #   
-  #   oldnum = nrow(presence)
     
     presence$wl = sapply(X = presence$id, function(x) sum(ago$Winner == x) + sum(ago$Loser == x))
     
     presence = presence %>% dplyr::filter(.data$wl != 0) %>% dplyr::select(-.data$wl)
     
-  #   ago = ago %>% 
-  #     dplyr::filter(.data$Winner %in% presence$id & 
-  #                     .data$Loser %in% presence$id)
-  #   
-  #   if(nrow(presence) == oldnum) break
-  #   
-  # }
-  
-  # presence = presence[,-4] # remove dummy variable
-  
+    # error in case all interactions fall outside presence window:
+    if(any(apply(presence, MARGIN = 1, function(x){
+      
+      sum(ago$Date >= x[2] & ago$Date <= x[3] & (ago$Winner == x[1] | ago$Loser == x[1]))
+      
+    }) == 0)){
+      
+      bad = sum((apply(presence, MARGIN = 1, function(x){
+        
+        sum(ago$Date >= x[2] & ago$Date <= x[3] & (ago$Winner == x[1] | ago$Loser == x[1]))
+        
+      })) == 0)
+      
+      stop(paste(bad, "individual(s) have no interactions within their presence window after filtering"))
+      
+    }
+
   all_inds = sort(presence$id)
   
   

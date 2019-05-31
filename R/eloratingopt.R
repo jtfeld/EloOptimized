@@ -133,10 +133,10 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
     if(!all(names(presence) %in% c("id", "start_date", "end_date"))){
       stop("colnames in presence data should be 'id', 'start_date', 'end_date' (not case sensitive)")
     }
-    if(class(pres_data$start_date) != "Date"){
-      pres_data$start_date = lubridate::mdy(pres_data$start_date)}
-    if(class(pres_data$end_date) != "Date"){
-      pres_data$end_date = lubridate::mdy(pres_data$end_date)}
+    if(class(presence$start_date) != "Date"){
+      presence$start_date = lubridate::mdy(presence$start_date)}
+    if(class(presence$end_date) != "Date"){
+      presence$end_date = lubridate::mdy(presence$end_date)}
     
     presence$id = as.character(presence$id)
     
@@ -192,7 +192,24 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
   
   if(mod_type == 1 & nrow(ago) <= 100){
     stop("Currently you can't fit only K with less than 100 interactions (after filtering) due to burn in")
-    }
+  }
+  
+  # error in case all interactions fall outside presence window:
+  if(any(apply(presence, MARGIN = 1, function(x){
+      
+      sum(ago$Date >= x[2] & ago$Date <= x[3] & (ago$Winner == x[1] | ago$Loser == x[1]))
+      
+    }) == 0)){
+    
+    bad = sum((apply(presence, MARGIN = 1, function(x){
+      
+      sum(ago$Date >= x[2] & ago$Date <= x[3] & (ago$Winner == x[1] | ago$Loser == x[1]))
+      
+    })) == 0)
+    
+    stop(paste(bad, "individual(s) have no interactions within their presence window after filtering"))
+    
+  }
   
   
   # ---------------   Fit models  --------------------------------
