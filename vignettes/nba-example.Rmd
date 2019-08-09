@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-A familiar example may be useful for understanding the different fitting options available in the EloOptimized package.  We included in the package a data frame with game results from the 1995-1996 NBA regular season.  We used NBA data because games can't end in a tie, teams play all other teams over the course of the season, and there's a manageable set of teams for visualization purposes.  During the 1995-1996 season, the Chicago Bulls went 72-10 (until recently the best record in NBA history), had a winning record against all but one team (the Pacers, against whom they went 2-2), and went on to win the championship.  Therefore we would expect a reasonable ranking method to assign them the highest rank score by the end of the season.  First we'll use a traditional Elo ranking approach to assign Elo scores using `eloratingfixed()`, and then we'll show how maximum likelihood fitting improves things.
+A familiar example may be useful for understanding the different fitting options available in the EloOptimized package.  We included in the package a data frame with game results from the 1995-1996 NBA regular season.  We used NBA data because games can't end in a tie, teams play all other teams over the course of the season, and there's a manageable set of teams for visualization purposes.  During the 1995-1996 season, the Chicago Bulls went 72-10 (until recently the best record in NBA history), had a winning record against all but one team (the Pacers, against whom they went 2-2), and went on to win the championship.  Therefore we would expect a reasonable ranking method to assign them the highest rank score by the end of the season.  First we'll use a traditional Elo ranking approach to assign Elo scores using `eloratingfixed()`, and then we'll show how maximum likelihood fitting changes ranking.
 
 ## Traditional Elo scores with default parameter values
 
@@ -34,7 +34,7 @@ Next, using the `nba` dataset that's included with the `EloOptimized` package, l
 res = eloratingfixed(agon_data = nba)
 ```
 
-When using the default K value of 100, we find that the prediction accuracy, the proportion of correctly predicted contests, is 0.636.  
+Because we did not specify a k value, the function used the default value of k =100. We find that the prediction accuracy, the proportion of correctly predicted contests, is 0.636.  
 
 We can access the data frame of Elo scores using `res$elo`, and use ggplot2 to quickly visualize each team's trajectory.
 
@@ -53,7 +53,7 @@ There's a lot of noise in that plot, but if you look closely you'll notice that 
 tail(res$elo, 29) %>% arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
 ```
 
-In fact, Indiana ends up with the highest Elo score on the final day.  It turns out that they finished the season 8-1 and beat the Bulls in the second to last game of the season.  This suggests that the default K parameter of 100 (which determines the degree to which Elo scores change after each contest) might be too high.  However, it's not obvious what the K parameter should be set to.  Luckily, the EloOptimized package implements a maximum likelihood approach for fitting the K parameter, so you don't have to make an arbitrary decision.
+In fact, Indiana ends up with the highest Elo score on the final day.  It turns out that they finished the season 8-1 and beat the Bulls in the second to last game of the season.  This suggests that the default K parameter of 100 (which determines the degree to which Elo scores change after each contest) is not the best choice.  However, it's not obvious what the K parameter should be set to.  Luckily, the EloOptimized package implements a maximum likelihood approach for fitting the K parameter, so you don't have to make an arbitrary decision.
 
 ## ML optimized K value
 
@@ -72,13 +72,13 @@ res2$elo %>%
   geom_line()
 ```
 
-There's an initial period of sorting, followed by more stable Elo scores over the course of the season.  It looks like Chicago's on top this time, but let's double check:
+Because `eloratingopt()` implements a burn-in period of 100 interactions, during which K is fixed at 100, Elo ratings at the start of the season remain volatile, followed by more stable Elo scores over the course of the season.  It looks like Chicago's on top this time, but let's double check:
 
 ```{r}
 tail(res2$elo, 29) %>% arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
 ```
 
-With K optimized, Chicago ends the season with the highest Elo score.  The final Elo scores also end up corresponding more closely to the final standings, although they don't match exactly.  For example, the Utah Jazz finished the season with the fifth best record but the eighth best Elo score, which makes sense given their 5-7 record over their last 12 games.  But what about that initial period of uncertainty when Elo scores are so unstable?  Can we do better?  The EloOptimized package also allows you to fit individual initial Elo scores.  Let's see what happens when we do that with the NBA data.
+With K optimized, Chicago ends the season with the highest Elo score.  The final Elo scores also end up corresponding more closely to the final standings, although they don't match exactly.  For example, the Utah Jazz finished the season with the fifth best record but the eighth best Elo score, which makes sense given their 5-7 record over their last 12 games.  But what about that initial period of volatility corresponding to the burn-in period?  Can we do better?  The EloOptimized package also allows you to fit individual initial Elo scores (in which case no burn-in period is implemented).  Let's see what happens when we do that with the NBA data.
 
 ## ML optimized K and initial Elo scores
 

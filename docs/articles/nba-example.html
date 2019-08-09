@@ -83,7 +83,7 @@
       <h1>NBA Example</h1>
                         <h4 class="author">Joseph T. Feldblum</h4>
             
-            <h4 class="date">2019-05-31</h4>
+            <h4 class="date">2019-08-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jtfeld/EloOptimized/blob/master/vignettes/nba-example.Rmd"><code>vignettes/nba-example.Rmd</code></a></small>
       <div class="hidden name"><code>nba-example.Rmd</code></div>
@@ -92,7 +92,7 @@
 
     
     
-<p>A familiar example may be useful for understanding the different fitting options available in the EloOptimized package. We included in the package a data frame with game results from the 1995-1996 NBA regular season. We used NBA data because games can’t end in a tie, teams play all other teams over the course of the season, and there’s a manageable set of teams for visualization purposes. During the 1995-1996 season, the Chicago Bulls went 72-10 (until recently the best record in NBA history), had a winning record against all but one team (the Pacers, against whom they went 2-2), and went on to win the championship. Therefore we would expect a reasonable ranking method to assign them the highest rank score by the end of the season. First we’ll use a traditional Elo ranking approach to assign Elo scores using <code><a href="../reference/eloratingfixed.html">eloratingfixed()</a></code>, and then we’ll show how maximum likelihood fitting improves things.</p>
+<p>A familiar example may be useful for understanding the different fitting options available in the EloOptimized package. We included in the package a data frame with game results from the 1995-1996 NBA regular season. We used NBA data because games can’t end in a tie, teams play all other teams over the course of the season, and there’s a manageable set of teams for visualization purposes. During the 1995-1996 season, the Chicago Bulls went 72-10 (until recently the best record in NBA history), had a winning record against all but one team (the Pacers, against whom they went 2-2), and went on to win the championship. Therefore we would expect a reasonable ranking method to assign them the highest rank score by the end of the season. First we’ll use a traditional Elo ranking approach to assign Elo scores using <code><a href="../reference/eloratingfixed.html">eloratingfixed()</a></code>, and then we’ll show how maximum likelihood fitting changes ranking.</p>
 <div id="traditional-elo-scores-with-default-parameter-values" class="section level2">
 <h2 class="hasAnchor">
 <a href="#traditional-elo-scores-with-default-parameter-values" class="anchor"></a>Traditional Elo scores with default parameter values</h2>
@@ -104,7 +104,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">res =<span class="st"> </span><span class="kw"><a href="../reference/eloratingfixed.html">eloratingfixed</a></span>(<span class="dt">agon_data =</span> nba)</a>
 <a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; k = 100</span></a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="co">#&gt; prediction accuracy = 0.636</span></a></code></pre></div>
-<p>When using the default K value of 100, we find that the prediction accuracy, the proportion of correctly predicted contests, is 0.636.</p>
+<p>Because we did not specify a k value, the function used the default value of k =100. We find that the prediction accuracy, the proportion of correctly predicted contests, is 0.636.</p>
 <p>We can access the data frame of Elo scores using <code>res$elo</code>, and use ggplot2 to quickly visualize each team’s trajectory.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(res<span class="op">$</span>elo)</a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt;         Date Individual  Elo EloOrdinal EloScaled ExpNumBeaten EloCardinal</span></a>
@@ -159,7 +159,7 @@
 <a class="sourceLine" id="cb4-29" title="29"><span class="co">#&gt; 27 1996-04-21        MIN  806.9891         27 0.09772467   0.1675101</span></a>
 <a class="sourceLine" id="cb4-30" title="30"><span class="co">#&gt; 28 1996-04-21        NJN  800.9557         28 0.08531886   0.1600331</span></a>
 <a class="sourceLine" id="cb4-31" title="31"><span class="co">#&gt; 29 1996-04-21        LAC  759.4621         29 0.00000000   0.1142200</span></a></code></pre></div>
-<p>In fact, Indiana ends up with the highest Elo score on the final day. It turns out that they finished the season 8-1 and beat the Bulls in the second to last game of the season. This suggests that the default K parameter of 100 (which determines the degree to which Elo scores change after each contest) might be too high. However, it’s not obvious what the K parameter should be set to. Luckily, the EloOptimized package implements a maximum likelihood approach for fitting the K parameter, so you don’t have to make an arbitrary decision.</p>
+<p>In fact, Indiana ends up with the highest Elo score on the final day. It turns out that they finished the season 8-1 and beat the Bulls in the second to last game of the season. This suggests that the default K parameter of 100 (which determines the degree to which Elo scores change after each contest) is not the best choice. However, it’s not obvious what the K parameter should be set to. Luckily, the EloOptimized package implements a maximum likelihood approach for fitting the K parameter, so you don’t have to make an arbitrary decision.</p>
 </div>
 <div id="ml-optimized-k-value" class="section level2">
 <h2 class="hasAnchor">
@@ -174,7 +174,7 @@
 <a class="sourceLine" id="cb6-3" title="3"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Date, <span class="dt">y =</span> Elo, <span class="dt">color =</span> Team)) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb6-4" title="4"><span class="st">  </span><span class="kw">geom_line</span>()</a></code></pre></div>
 <p><img src="nba-example_files/figure-html/unnamed-chunk-6-1.png" width="864"></p>
-<p>There’s an initial period of sorting, followed by more stable Elo scores over the course of the season. It looks like Chicago’s on top this time, but let’s double check:</p>
+<p>Because <code><a href="../reference/eloratingopt.html">eloratingopt()</a></code> implements a burn-in period of 100 interactions, during which K is fixed at 100, Elo ratings at the start of the season remain volatile, followed by more stable Elo scores over the course of the season. It looks like Chicago’s on top this time, but let’s double check:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">tail</a></span>(res2<span class="op">$</span>elo, <span class="dv">29</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">arrange</span>(<span class="op">-</span>Elo) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="op">-</span>ExpNumBeaten, <span class="op">-</span>JenksEloCardinal)</a>
 <a class="sourceLine" id="cb7-2" title="2"><span class="co">#&gt;          Date Individual       Elo EloOrdinal  EloScaled EloCardinal</span></a>
 <a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; 1  1996-04-21        CHI 1177.8359          1 1.00000000   0.8386881</span></a>
@@ -206,7 +206,7 @@
 <a class="sourceLine" id="cb7-29" title="29"><span class="co">#&gt; 27 1996-04-21        MIL  892.9171         27 0.13685241   0.2754407</span></a>
 <a class="sourceLine" id="cb7-30" title="30"><span class="co">#&gt; 28 1996-04-21        TOR  869.2546         28 0.06516794   0.2333204</span></a>
 <a class="sourceLine" id="cb7-31" title="31"><span class="co">#&gt; 29 1996-04-21        VAN  847.7431         29 0.00000000   0.1984100</span></a></code></pre></div>
-<p>With K optimized, Chicago ends the season with the highest Elo score. The final Elo scores also end up corresponding more closely to the final standings, although they don’t match exactly. For example, the Utah Jazz finished the season with the fifth best record but the eighth best Elo score, which makes sense given their 5-7 record over their last 12 games. But what about that initial period of uncertainty when Elo scores are so unstable? Can we do better? The EloOptimized package also allows you to fit individual initial Elo scores. Let’s see what happens when we do that with the NBA data.</p>
+<p>With K optimized, Chicago ends the season with the highest Elo score. The final Elo scores also end up corresponding more closely to the final standings, although they don’t match exactly. For example, the Utah Jazz finished the season with the fifth best record but the eighth best Elo score, which makes sense given their 5-7 record over their last 12 games. But what about that initial period of volatility corresponding to the burn-in period? Can we do better? The EloOptimized package also allows you to fit individual initial Elo scores (in which case no burn-in period is implemented). Let’s see what happens when we do that with the NBA data.</p>
 </div>
 <div id="ml-optimized-k-and-initial-elo-scores" class="section level2">
 <h2 class="hasAnchor">
