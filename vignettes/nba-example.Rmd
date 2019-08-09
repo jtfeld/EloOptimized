@@ -47,7 +47,7 @@ res$elo %>%
   geom_line()
 ```
 
-There's a lot of noise in that plot, but if you look closely you'll notice that Chicago doesn't end the season with the highest Elo score.  There were 29 teams in the NBA in the 95-96 season, so we can check final Elo scores directly by sorting the the last 29 rows of the Elo scores data frame (we're removing a couple columns to make the output easier to look at):
+There's a lot of noise in that plot, but if you look closely you'll notice that Chicago doesn't end the season with the highest Elo score.  There were 29 teams in the NBA in the 95-96 season, so we can check final Elo scores directly by sorting the the last 29 rows of the Elo scores data frame (we're removing a couple columns to make the output easier to read.  See `eloratingfixed()` documentation for descriptions of each column):
 
 ```{r}
 tail(res$elo, 29) %>% arrange(-Elo) %>% select(-ExpNumBeaten, -JenksEloCardinal)
