@@ -1,4 +1,6 @@
-# EloOptimized 0.3.0.9000
+# EloOptimized 0.3.1
+
+* Mostly a maintenance update
 
 * Removed tcltk, rlist dependencies (holdovers from older code)
 
@@ -6,9 +8,9 @@
 
 * EloOrdinal column in output now stored as an integer object for small space saving.
 
-* Added a vignette to demonstrate usage of the package.
+* Added a vignette to demonstrate usage of the package, see [here](https://jtfeld.github.io/EloOptimized/articles/nba-example.html).
 
-* Added cleaning step to handle tibbles imported with readr::read_csv()
+* Added cleaning step to avoid error when trying to use tibbles imported with readr::read_csv()
 
 * Added additional informative errors if input data are problematic
 
