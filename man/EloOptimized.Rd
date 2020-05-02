@@ -3,7 +3,6 @@
 \docType{package}
 \name{EloOptimized}
 \alias{EloOptimized}
-\alias{EloOptimized-package}
 \title{EloOptimized: ML fitting of Elo Scores}
 \description{
 This package implements the maximum likelihood methods for deriving Elo scores as published in Foerster, Franz et al. (2016).

@@ -4,12 +4,14 @@
 \name{nba}
 \alias{nba}
 \title{NBA games 1995-96}
-\format{A data frame with 1189 rows and 3 variables:
+\format{
+A data frame with 1189 rows and 3 variables:
 \describe{
   \item{Date}{date of game}
   \item{Winner}{winning team}
   \item{Loser}{losing team}
-}}
+}
+}
 \source{
 \url{https://github.com/fivethirtyeight/data/blob/master/nba-elo/nbaallelo.csv}
 }

@@ -4,12 +4,14 @@
 \name{chimpagg_m}
 \alias{chimpagg_m}
 \title{Anonymized male chimpanzee pant-grunt data from Gombe}
-\format{A data frame with 2741 rows and 3 variables:
+\format{
+A data frame with 2741 rows and 3 variables:
 \describe{
   \item{Date}{date of interaction}
   \item{Winner}{winning individual}
   \item{Loser}{losing individual}
-}}
+}
+}
 \source{
 Supplemental data published with Foerster, Franz et al. (2016).
   \url{https://datadryad.org/resource/doi:10.5061/dryad.r4g74}

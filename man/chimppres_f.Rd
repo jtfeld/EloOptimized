@@ -4,12 +4,14 @@
 \name{chimppres_f}
 \alias{chimppres_f}
 \title{Anonymized female chimpanzee presence data from Gombe}
-\format{A data frame with 44 rows and 3 variables:
+\format{
+A data frame with 44 rows and 3 variables:
 \describe{
   \item{id}{female code}
   \item{start_date}{start date}
   \item{end_date}{date of departure}
-}}
+}
+}
 \source{
 Supplemental data published with Foerster, Franz et al. (2016).
   \url{https://datadryad.org/resource/doi:10.5061/dryad.r4g74}

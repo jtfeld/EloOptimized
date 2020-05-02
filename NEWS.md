@@ -14,6 +14,8 @@
 
 * Fixed small bug related to converting character dates to Date class
 
+* Incorporated github actions for CI checks, pkgdown build
+
 # EloOptimized 0.3.0
 
 * Added Travis-ci integration in preparation for submission to CRAN

@@ -6,3 +6,4 @@
 ^revdep$
 ^\.travis\.yml$
 ^cran-comments\.md$
+^\.github$
