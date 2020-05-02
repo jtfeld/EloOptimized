@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">EloOptimized</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -126,16 +126,17 @@
       <small>Source: <a href='https://github.com/jtfeld/EloOptimized/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="elooptimized-0309000" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.0.9000">
-<a href="#elooptimized-0309000" class="anchor"></a>EloOptimized 0.3.0.9000<small> Unreleased </small>
+    <div id="elooptimized-031" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.1">
+<a href="#elooptimized-031" class="anchor"></a>EloOptimized 0.3.1<small> Unreleased </small>
 </h1>
 <ul>
+<li><p>Mostly a maintenance update</p></li>
 <li><p>Removed tcltk, rlist dependencies (holdovers from older code)</p></li>
 <li><p>Streamlined some things under the hood to make post-processing more efficient in eloratingopt &amp; eloratingfixed</p></li>
 <li><p>EloOrdinal column in output now stored as an integer object for small space saving.</p></li>
-<li><p>Added a vignette to demonstrate usage of the package.</p></li>
-<li><p>Added cleaning step to handle tibbles imported with readr::read_csv()</p></li>
+<li><p>Added a vignette to demonstrate usage of the package, see <a href="https://jtfeld.github.io/EloOptimized/articles/nba-example.html">here</a>.</p></li>
+<li><p>Added cleaning step to avoid error when trying to use tibbles imported with readr::read_csv()</p></li>
 <li><p>Added additional informative errors if input data are problematic</p></li>
 <li><p>Fixed small bug related to converting character dates to Date class</p></li>
 <li><p>Incorporated github actions for CI checks, pkgdown build</p></li>
