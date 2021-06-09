@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">EloOptimized</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +109,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/jtfeld/EloOptimized/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -138,8 +138,8 @@
   <code><a href='eloratingfixed.html'>eloratingfixed</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>eloratingopt</span>(<span class='no'>agon_data</span>, <span class='no'>pres_data</span>, <span class='kw'>fit_init_elo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>outputfile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>returnR</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>eloratingopt</span><span class='op'>(</span><span class='va'>agon_data</span>, <span class='va'>pres_data</span>, fit_init_elo <span class='op'>=</span> <span class='cn'>FALSE</span>, outputfile <span class='op'>=</span> <span class='cn'>NULL</span>, 
+  returnR <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,9 +222,10 @@ the function will save the results as a csv file in your working directory.</p><
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>nbadata</span> <span class='kw'>=</span> <span class='kw pkg'>EloOptimized</span><span class='kw ns'>::</span><span class='no'><a href='nba.html'>nba</a></span> <span class='co'>#nba wins and losses from the 1995-96 season</span>
-<span class='no'>nbaelo</span> <span class='kw'>=</span> <span class='fu'>eloratingopt</span>(<span class='kw'>agon_data</span> <span class='kw'>=</span> <span class='no'>nbadata</span>, <span class='kw'>fit_init_elo</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; k = 20.315
-#&gt; prediction accuracy = 0.663</div><div class='input'># generates optimized elo scores (optimizing only K) and saves them as "nbaelo" 
+<span class='va'>nbadata</span> <span class='op'>=</span> <span class='fu'>EloOptimized</span><span class='fu'>::</span><span class='va'><a href='nba.html'>nba</a></span> <span class='co'>#nba wins and losses from the 1995-96 season</span>
+<span class='va'>nbaelo</span> <span class='op'>=</span> <span class='fu'>eloratingopt</span><span class='op'>(</span>agon_data <span class='op'>=</span> <span class='va'>nbadata</span>, fit_init_elo <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; k = 20.315
+#&gt; prediction accuracy = 0.663</div><div class='input'><span class='co'># generates optimized elo scores (optimizing only K) and saves them as "nbaelo" </span>
 
 </div></pre>
   </div>
@@ -242,7 +243,7 @@ the function will save the results as a csv file in your working directory.</p><
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

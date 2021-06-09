@@ -1,6 +1,6 @@
 ## Test environments
 * local Windows 10 install, R 4.1.0
-* ubuntu 16.04 (on travis-ci), R-release.
+* ubuntu 16.04 (on travis-ci, github actions), R-release, R-oldbuild, R-devel.
 * macOS-latest (on github actions), R-release, R-4.0, R-devel.
 * r-hub
 * win-builder (devel)
@@ -32,7 +32,7 @@ This is a resubmission. In this version I have:
 
 ## Reverse dependencies
 
-This is a new release, so there are no reverse dependencies.
+There are no reverse dependencies.
 
 ---
 

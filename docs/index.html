@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">EloOptimized</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -40,7 +40,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -66,7 +66,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/jtfeld/EloOptimized/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -92,36 +92,39 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="co"># Current version on Github:</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Current version on Github:</span>
 <span class="co"># install.packages("devtools")</span>
-<span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"jtfeld/EloOptimized"</span>)
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"jtfeld/EloOptimized"</span><span class="op">)</span>
 
 <span class="co"># CRAN-approved version on CRAN:</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"EloOptimized"</span>)</pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"EloOptimized"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>There are two functions of interest. Use eloratingopt() to calculate Elo scores using optimized Elo parameter values, or eloratingfixed() to calculate Elo scores using user-defined parameter values.</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="co"># to generate Elo scores using fixed initial Elo scores (1000) and a ML-fitted value for the K parameter:</span>
-<span class="no">nbaelo</span> <span class="kw">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="kw">agon_data</span> <span class="kw">=</span> <span class="no">nba</span>, <span class="kw">fit_init_elo</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># to generate Elo scores using fixed initial Elo scores (1000) and a ML-fitted value for the K parameter:</span>
+<span class="va">nbaelo</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">nba</span>, fit_init_elo <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># to generate Elo scores using fixed default initial Elo scores and default K:</span>
-<span class="no">nbaelo</span> <span class="kw">=</span> <span class="fu"><a href="reference/eloratingfixed.html">eloratingfixed</a></span>(<span class="kw">agon_data</span> <span class="kw">=</span> <span class="no">nbadata</span>, <span class="kw">k</span> <span class="kw">=</span> <span class="fl">100</span>, <span class="kw">init_elo</span> <span class="kw">=</span> <span class="fl">1000</span>)</pre></div>
+<span class="va">nbaelo</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingfixed.html">eloratingfixed</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">nbadata</span>, k <span class="op">=</span> <span class="fl">100</span>, init_elo <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span></code></pre></div>
 <p>To recreate the results from the 2016 manuscript, use the following code:</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="co"># Males, model type 1:</span>
-<span class="no">melo1</span> <span class="kw">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="kw">agon_data</span> <span class="kw">=</span> <span class="no">chimpagg_m</span>, <span class="kw">pres_data</span> <span class="kw">=</span> <span class="no">chimppres_m</span>, <span class="kw">fit_init_elo</span> <span class="kw">=</span> <span class="no">F</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Males, model type 1:</span>
+<span class="va">melo1</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">chimpagg_m</span>, pres_data <span class="op">=</span> <span class="va">chimppres_m</span>, fit_init_elo <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
 
 <span class="co"># Males, model type 3:</span>
-<span class="no">melo3</span> <span class="kw">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="kw">agon_data</span> <span class="kw">=</span> <span class="no">chimpagg_m</span>[<span class="fl">101</span>:<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">chimpagg_m</span>),],
-                     <span class="kw">pres_data</span> <span class="kw">=</span> <span class="no">chimppres_m</span>, <span class="kw">fit_init_elo</span> <span class="kw">=</span> <span class="no">T</span>)
+<span class="va">melo3</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">chimpagg_m</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">chimpagg_m</span><span class="op">)</span>,<span class="op">]</span>, 
+                     pres_data <span class="op">=</span> <span class="va">chimppres_m</span>, fit_init_elo <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
 
 <span class="co"># Females, model type 1: </span>
-<span class="no">felo1</span> <span class="kw">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="kw">agon_data</span> <span class="kw">=</span> <span class="no">chimpagg_f</span>, <span class="kw">pres_data</span> <span class="kw">=</span> <span class="no">chimppres_f</span>, <span class="kw">fit_init_elo</span> <span class="kw">=</span> <span class="no">F</span>)
+<span class="va">felo1</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">chimpagg_f</span>, pres_data <span class="op">=</span> <span class="va">chimppres_f</span>, fit_init_elo <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
 
 <span class="co"># Females, model type 3:</span>
-<span class="no">felo3</span> <span class="kw">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span>(<span class="kw">agon_data</span> <span class="kw">=</span> <span class="no">chimpagg_f</span>[<span class="fl">101</span>:<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">chimpagg_f</span>),],
-                     <span class="kw">pres_data</span> <span class="kw">=</span> <span class="no">chimppres_f</span>, <span class="kw">fit_init_elo</span> <span class="kw">=</span> <span class="no">T</span>)</pre></div>
+<span class="va">felo3</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">chimpagg_f</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">chimpagg_f</span><span class="op">)</span>,<span class="op">]</span>, 
+                     pres_data <span class="op">=</span> <span class="va">chimppres_f</span>, fit_init_elo <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -171,7 +174,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
