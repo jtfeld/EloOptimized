@@ -1,6 +1,8 @@
 ## Test environments
-* local Windows 10 install, R 3.5.1
-* ubuntu 12.04 (on travis-ci), R 3.5.1, R-oldrel, R-devel.
+* local Windows 10 install, R 4.1.0
+* ubuntu 16.04 (on travis-ci), R-release.
+* macOS-latest (on github actions), R-release, R-4.0, R-devel.
+* r-hub
 * win-builder (devel)
 
 ## R CMD check results
