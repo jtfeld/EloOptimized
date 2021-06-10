@@ -14,7 +14,7 @@ A data frame with 44 rows and 3 variables:
 }
 \source{
 Supplemental data published with Foerster, Franz et al. (2016).
-  \url{https://datadryad.org/resource/doi:10.5061/dryad.r4g74}
+  \url{https://datadryad.org/stash/dataset/doi:10.5061/dryad.r4g74}
 }
 \usage{
 chimppres_f

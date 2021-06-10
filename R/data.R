@@ -25,7 +25,7 @@
 #'   \item{Loser}{losing individual}
 #' }
 #' @source Supplemental data published with Foerster, Franz et al. (2016).
-#'   \url{https://datadryad.org/resource/doi:10.5061/dryad.r4g74}
+#'   \url{https://datadryad.org/stash/dataset/doi:10.5061/dryad.r4g74}
 "chimpagg_m"
 
 
@@ -42,7 +42,7 @@
 #'   \item{end_date}{date of departure}
 #' }
 #' @source Supplemental data published with Foerster, Franz et al. (2016).
-#'   \url{https://datadryad.org/resource/doi:10.5061/dryad.r4g74}
+#'   \url{https://datadryad.org/stash/dataset/doi:10.5061/dryad.r4g74}
 "chimppres_m"
 
 
@@ -59,7 +59,7 @@
 #'   \item{Loser}{losing individual}
 #' }
 #' @source Supplemental data published with Foerster, Franz et al. (2016).
-#'   \url{https://datadryad.org/resource/doi:10.5061/dryad.r4g74}
+#'   \url{https://datadryad.org/stash/dataset/doi:10.5061/dryad.r4g74}
 "chimpagg_f"
 
 
@@ -76,5 +76,5 @@
 #'   \item{end_date}{date of departure}
 #' }
 #' @source Supplemental data published with Foerster, Franz et al. (2016).
-#'   \url{https://datadryad.org/resource/doi:10.5061/dryad.r4g74}
+#'   \url{https://datadryad.org/stash/dataset/doi:10.5061/dryad.r4g74}
 "chimppres_f"
