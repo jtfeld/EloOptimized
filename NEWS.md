@@ -1,3 +1,7 @@
+# EloOptimized 0.3.1.9000 (unreleased)
+
+* Added a step to check that agon_data are in chronological order, and throw an informative error if not.
+
 # EloOptimized 0.3.1
 
 * Mostly a maintenance update

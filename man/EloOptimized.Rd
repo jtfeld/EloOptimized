@@ -26,7 +26,6 @@ Chimpanzee females queue but males compete for social status. Scientific Reports
   \item Make package more modular, with a more flexible wrapper function.
   \item Option to specify K during burn-in period when fitting only K
   \item Add additional example data
-  \item Create vignette, other package doohickies
   \item Add additional user control of the optimization procedure, allowing 
     for specification of the burn in period, optimization algorithm, and 
     initial values for optimization.

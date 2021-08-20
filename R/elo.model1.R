@@ -53,13 +53,12 @@ elo.model1 <- function(par, burn_in=100, init_elo = 1000, IA_data, all_ids, p_fu
     }
     
     # Calculation of new ELO scores
-    if (i <= burn_in)   # during burn-in period all k values are fixed to 100
-    {
+    if (i <= burn_in){   # during burn-in period all k values are fixed to 100
+    
       currentELO[ind1] <- currentELO[ind1] + 100 * (1 - p_win)  # new Elo score of the Winner
       currentELO[ind2] <- currentELO[ind2] - 100 * (1 - p_win)  # new Elo score of the Loser
-    }
-    else  # after the burn-in period fitted k values are used
-    {  
+    } else {  # after the burn-in period fitted k values are used
+    
       currentELO[ind1] <- currentELO[ind1] + exp(k) * (1 - p_win)  # new Elo score of the Winner
       currentELO[ind2] <- currentELO[ind2] - exp(k) * (1 - p_win)  # new Elo score of the Loser
     }

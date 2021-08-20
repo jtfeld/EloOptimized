@@ -111,6 +111,14 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
     ago$Date = lubridate::mdy(ago$Date)
   }
   
+  if(any(ago$Date < dplyr::lag(x = ago$Date, 
+                               n = 1, 
+                               # to avoid NA in first value
+                               default = min(ago$Date) - 
+                                lubridate::years(1)))){
+    stop("agon_data dates should be in chronological order")
+  }
+  
   
   if(missing(pres_data)){
     
