@@ -115,7 +115,7 @@ eloratingfixed <- function(agon_data, pres_data, k = 100, init_elo = 1000,
                                # to avoid NA in first value
                                default = min(ago$Date) - 
                                lubridate::years(1)))){
-    stop("agon_data dates should be in chronological order")
+    warning("agon_data dates are not in chronological order!")
   }
   
   

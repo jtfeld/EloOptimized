@@ -116,7 +116,7 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
                                # to avoid NA in first value
                                default = min(ago$Date) - 
                                 lubridate::years(1)))){
-    stop("agon_data dates should be in chronological order")
+    warning("agon_data dates are not in chronological order!")
   }
   
   
