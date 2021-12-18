@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,18 +34,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">EloOptimized</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.1.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -65,7 +61,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/jtfeld/EloOptimized/">
+  <a href="https://github.com/jtfeld/EloOptimized/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -82,27 +78,27 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="elooptimized" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#elooptimized" class="anchor"></a>EloOptimized</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="elooptimized">EloOptimized<a class="anchor" aria-label="anchor" href="#elooptimized"></a>
+</h1></div>
 <!-- badges: start -->
 
-<p><a href="https://jtfeld.github.io/EloOptimized/">Package website</a></p>
-<p>EloOptimized provides tools to implement the maximum likelihood methods for deriving Elo scores as published in <a href="https://www.nature.com/articles/srep35404">Foerster, Franz et al. (2016). Chimpanzee females queue but males compete for social status</a>. In addition, it provides functionality to efficiently generate traditional Elo scores using a simplified procedure that doesn’t require the use of cumbersome presence matrices. Finally, it quickly generates a number of additional Elo-based indices (ordinal, normalized, cardinal, and categorical ranks and rank scores) of potential use to researchers, as outlined in the linked manuscript.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<p><a href="https://jtfeld.github.io/EloOptimized/" class="external-link">Package website</a></p>
+<p>EloOptimized provides tools to implement the maximum likelihood methods for deriving Elo scores as published in <a href="https://www.nature.com/articles/srep35404" class="external-link">Foerster, Franz et al. (2016). Chimpanzee females queue but males compete for social status</a>. In addition, it provides functionality to efficiently generate traditional Elo scores using a simplified procedure that doesn’t require the use of cumbersome presence matrices. Finally, it quickly generates a number of additional Elo-based indices (ordinal, normalized, cardinal, and categorical ranks and rank scores) of potential use to researchers, as outlined in the linked manuscript.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Current version on Github:</span>
 <span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"jtfeld/EloOptimized"</span><span class="op">)</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"jtfeld/EloOptimized"</span><span class="op">)</span>
 
 <span class="co"># CRAN-approved version on CRAN:</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"EloOptimized"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"EloOptimized"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
 <p>There are two functions of interest. Use eloratingopt() to calculate Elo scores using optimized Elo parameter values, or eloratingfixed() to calculate Elo scores using user-defined parameter values.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># to generate Elo scores using fixed initial Elo scores (1000) and a ML-fitted value for the K parameter:</span>
@@ -116,14 +112,14 @@
 <span class="va">melo1</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">chimpagg_m</span>, pres_data <span class="op">=</span> <span class="va">chimppres_m</span>, fit_init_elo <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
 
 <span class="co"># Males, model type 3:</span>
-<span class="va">melo3</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">chimpagg_m</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">chimpagg_m</span><span class="op">)</span>,<span class="op">]</span>, 
+<span class="va">melo3</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">chimpagg_m</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">chimpagg_m</span><span class="op">)</span>,<span class="op">]</span>, 
                      pres_data <span class="op">=</span> <span class="va">chimppres_m</span>, fit_init_elo <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
 
 <span class="co"># Females, model type 1: </span>
 <span class="va">felo1</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">chimpagg_f</span>, pres_data <span class="op">=</span> <span class="va">chimppres_f</span>, fit_init_elo <span class="op">=</span> <span class="cn">F</span><span class="op">)</span>
 
 <span class="co"># Females, model type 3:</span>
-<span class="va">felo3</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">chimpagg_f</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">chimpagg_f</span><span class="op">)</span>,<span class="op">]</span>, 
+<span class="va">felo3</span> <span class="op">=</span> <span class="fu"><a href="reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">chimpagg_f</span><span class="op">[</span><span class="fl">101</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">chimpagg_f</span><span class="op">)</span>,<span class="op">]</span>, 
                      pres_data <span class="op">=</span> <span class="va">chimppres_f</span>, fit_init_elo <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
@@ -131,24 +127,31 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=EloOptimized">https://​cloud.r-project.org/​package=EloOptimized</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/jtfeld/EloOptimized/">https://​github.com/​jtfeld/​EloOptimized/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/jtfeld/EloOptimized/issues">https://​github.com/​jtfeld/​EloOptimized/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=EloOptimized" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/jtfeld/EloOptimized/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/jtfeld/EloOptimized/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing EloOptimized</a></li>
+</ul>
+</div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Joseph Feldblum <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Steffen Foerster <br><small class="roles"> Author </small>  </li>
@@ -156,25 +159,28 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/jtfeld/EloOptimized"><img src="https://travis-ci.org/jtfeld/EloOptimized.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://github.com/jtfeld/EloOptimized/actions?workflow=R-CMD-check"><img src="https://github.com/jtfeld/EloOptimized/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://cran.r-project.org/package=EloOptimized"><img src="http://www.r-pkg.org/badges/version/EloOptimized" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://cran.r-project.org/package=EloOptimized"><img src="https://cranlogs.r-pkg.org/badges/grand-total/EloOptimized"></a></li>
+<li><a href="https://travis-ci.org/jtfeld/EloOptimized" class="external-link"><img src="https://travis-ci.org/jtfeld/EloOptimized.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://github.com/jtfeld/EloOptimized/actions?workflow=R-CMD-check" class="external-link"><img src="https://github.com/jtfeld/EloOptimized/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://cran.r-project.org/package=EloOptimized" class="external-link"><img src="http://www.r-pkg.org/badges/version/EloOptimized" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://cran.r-project.org/package=EloOptimized" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/EloOptimized"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Joseph Feldblum, Steffen Foerster, Mathias Franz.</p>
+  <p></p>
+<p>Developed by Joseph Feldblum, Steffen Foerster, Mathias Franz.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -182,6 +188,8 @@
 
   
 
+
+  
 
   </body>
 </html>

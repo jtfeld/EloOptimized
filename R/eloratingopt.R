@@ -193,6 +193,18 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
     
   }
   
+  if(!missing(pres_data)){
+    
+    if(nrow(presence) != nrow(pres_data)) {
+      
+      print(paste("NOTE:", 
+                  paste(setdiff(pres_data[,1], presence$id), collapse = ", "),
+                  "removed because they lacked at least one win and one loss"))
+      
+    } 
+    
+  }
+  
   presence = presence[,-4] # remove dummy variable
   
   all_inds = sort(presence$id)
@@ -207,15 +219,18 @@ eloratingopt <- function(agon_data, pres_data, fit_init_elo = FALSE, outputfile 
       
       sum(ago$Date >= x[2] & ago$Date <= x[3] & (ago$Winner == x[1] | ago$Loser == x[1]))
       
-    }) == 0)){
+    }) == 0)) {
     
-    bad = sum((apply(presence, MARGIN = 1, function(x){
+    badindex = which(apply(presence, MARGIN = 1, function(x){
       
       sum(ago$Date >= x[2] & ago$Date <= x[3] & (ago$Winner == x[1] | ago$Loser == x[1]))
       
-    })) == 0)
+    }) == 0)
     
-    stop(paste(bad, "individual(s) have no interactions within their presence window after filtering"))
+    # presence$id[badindex]
+    
+    stop(paste("the following individual(s) have interactions OUTSIDE, \n but not within, their presence window(s) after filtering:\n",
+               paste(presence$id[badindex], collapse = ", ")))
     
   }
   
