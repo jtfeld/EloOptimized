@@ -7,9 +7,8 @@
 
 [![Travis-CI Build
 Status](https://travis-ci.org/jtfeld/EloOptimized.svg?branch=master)](https://travis-ci.org/jtfeld/EloOptimized)
-[![R build
-status](https://github.com/jtfeld/EloOptimized/workflows/R-CMD-check/badge.svg)](https://github.com/jtfeld/EloOptimized/actions?workflow=R-CMD-check)
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/EloOptimized)](https://cran.r-project.org/package=EloOptimized)
+[![R-CMD-check](https://github.com/jtfeld/EloOptimized/workflows/R-CMD-check/badge.svg)](https://github.com/jtfeld/EloOptimized/actions)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/EloOptimized)](https://cran.r-project.org/package=EloOptimized)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/EloOptimized)](https://cran.r-project.org/package=EloOptimized)
 <!-- badges: end -->
 
