@@ -2,7 +2,7 @@
 
 * Added a step to check that agon_data are in chronological order, and throw a warning if not.
 
-* removed ubuntu checks (tried "- {os: ubuntu-latest, r: 'release'}" and "- {os: ubuntu-18.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}", and various other combinations, none of them worked, I'll have to figure out how to make this work again I guess before submitting next version to CRAN)
+* Fixed checks for ubuntu and Mac
 
 * Added new and improved informative errors to eloratingopt() that tell you which individuals are filtered out for not having >= 1 win and 1 loss, and which individuals have interactions outside of their presence window.
 

@@ -1,9 +1,9 @@
 Package: EloOptimized
 Title: Optimized Elo Rating Method for Obtaining Dominance Ranks
 Version: 0.3.1.9000
-Date: 2021-12-18
+Date: 2023-05-08
 Authors@R: c(
-    person("Joseph", "Feldblum", email = "feldblum@umich.edu", role = c("aut", "cre")),
+    person("Joseph", "Feldblum", email = "jtf9@duke.edu", role = c("aut", "cre")),
     person("Steffen", "Foerster", email = "sf2041@gmail.com", role = c("aut")),
     person("Mathias", "Franz", email = "m.franz@izw-berlin.de", role = c("aut")))
 Description: Provides an implementation of the maximum likelihood methods for deriving
@@ -13,7 +13,7 @@ Depends:
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Imports: dplyr,
     reshape2,
     BAMMtools,
