@@ -1,34 +1,16 @@
 ## Test environments
-* local Windows 10 install, R 4.1.0
-* ubuntu 16.04 (on travis-ci, github actions), R-release, R-oldbuild, R-devel.
-* macOS-latest (on github actions), R-release, R-4.0, R-devel.
-* r-hub
-* win-builder (devel)
+* local Windows 10 install, R 4.4.0
+* ubuntu latest (on github actions), R-release, R-oldrel-1, R-devel.
+* macOS-latest (on github actions), release.
 
 ## R CMD check results
 
-There were no ERRORs or WARNINGs. 
-
-There was 1 NOTE:
-
-* checking CRAN incoming feasibility ... NOTE
-Maintainer: 'Joseph Feldblum <feldblum@umich.edu>'
-
-New submission
-
-Possibly mis-spelled words in DESCRIPTION:
-  Elo (2:18, 10:5)
-  Foerster (10:32)
-  al (10:51)
-  et (10:48)
-  
-  These words are spelled correctly
+There were no ERRORs, WARNINGs, or NOTEs. 
   
 ## Resubmission
-This is a resubmission. In this version I have:
+This is a resubmission after package was removed from CRAN. In this version I have:
 
-* Changed the Description field so that it does not start with 
-  'This package'.
+* updated the maintainer email address
 
 ## Reverse dependencies
 
