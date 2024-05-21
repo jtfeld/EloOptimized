@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NBA Example • EloOptimized</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">EloOptimized</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.2</span>
       </span>
     </div>
 
@@ -43,7 +43,7 @@
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -79,9 +79,10 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>NBA Example</h1>
-                        <h4 data-toc-skip class="author">Joseph T. Feldblum</h4>
+                        <h4 data-toc-skip class="author">Joseph T.
+Feldblum</h4>
             
-            <h4 data-toc-skip class="date">2021-12-18</h4>
+            <h4 data-toc-skip class="date">2024-05-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jtfeld/EloOptimized/blob/HEAD/vignettes/nba-example.Rmd" class="external-link"><code>vignettes/nba-example.Rmd</code></a></small>
       <div class="hidden name"><code>nba-example.Rmd</code></div>
@@ -90,183 +91,268 @@
 
     
     
-<p>A familiar example may be useful for understanding the different fitting options available in the EloOptimized package. We included in the package a data frame with game results from the 1995-1996 NBA regular season. We used NBA data because games can’t end in a tie, teams play all other teams over the course of the season, and there’s a manageable set of teams for visualization purposes. During the 1995-1996 season, the Chicago Bulls went 72-10 (until recently the best record in NBA history), had a winning record against all but one team (the Pacers, against whom they went 2-2), and went on to win the championship. Therefore we would expect a reasonable ranking method to assign them the highest rank score by the end of the season. First we’ll use a traditional Elo ranking approach to assign Elo scores using <code><a href="../reference/eloratingfixed.html">eloratingfixed()</a></code>, and then we’ll show how maximum likelihood fitting changes ranking.</p>
+<p>A familiar example may be useful for understanding the different
+fitting options available in the EloOptimized package. We included in
+the package a data frame with game results from the 1995-1996 NBA
+regular season. We used NBA data because games can’t end in a tie, teams
+play all other teams over the course of the season, and there’s a
+manageable set of teams for visualization purposes. During the 1995-1996
+season, the Chicago Bulls went 72-10 (until recently the best record in
+NBA history), had a winning record against all but one team (the Pacers,
+against whom they went 2-2), and went on to win the championship.
+Therefore we would expect a reasonable ranking method to assign them the
+highest rank score by the end of the season. First we’ll use a
+traditional Elo ranking approach to assign Elo scores using
+<code><a href="../reference/eloratingfixed.html">eloratingfixed()</a></code>, and then we’ll show how maximum
+likelihood fitting changes ranking.</p>
 <div class="section level2">
 <h2 id="traditional-elo-scores-with-default-parameter-values">Traditional Elo scores with default parameter values<a class="anchor" aria-label="anchor" href="#traditional-elo-scores-with-default-parameter-values"></a>
 </h2>
-<p>First, let’s load the packages we’ll need (we’re using a couple tidyverse packages for post-fitting data manipulation and visualization):</p>
+<p>First, let’s load the packages we’ll need (we’re using a couple
+tidyverse packages for post-fitting data manipulation and
+visualization):</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jtfeld/EloOptimized" class="external-link">EloOptimized</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></code></pre></div>
-<p>Next, using the <code>nba</code> dataset that’s included with the <code>EloOptimized</code> package, let’s calculate traditional Elo scores for each team. Note that you don’t have to supply <code>pres_data</code> if all individuals (in this case teams) are present for the entire period of interest.</p>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jtfeld/EloOptimized" class="external-link">EloOptimized</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
+<p>Next, using the <code>nba</code> dataset that’s included with the
+<code>EloOptimized</code> package, let’s calculate traditional Elo
+scores for each team. Note that you don’t have to supply
+<code>pres_data</code> if all individuals (in this case teams) are
+present for the entire period of interest.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="../reference/eloratingfixed.html">eloratingfixed</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">nba</span><span class="op">)</span>
-<span class="co">#&gt; k = 100</span>
-<span class="co">#&gt; prediction accuracy = 0.636</span></code></pre></div>
-<p>Because we did not specify a k value, the function used the default value of k =100. We find that the prediction accuracy, the proportion of correctly predicted contests, is 0.636.</p>
-<p>We can access the data frame of Elo scores using <code>res$elo</code>, and use ggplot2 to quickly visualize each team’s trajectory.</p>
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="../reference/eloratingfixed.html">eloratingfixed</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">nba</span><span class="op">)</span></span>
+<span><span class="co">#&gt; k = 100</span></span>
+<span><span class="co">#&gt; prediction accuracy = 0.636</span></span></code></pre></div>
+<p>Because we did not specify a k value, the function used the default
+value of k =100. We find that the prediction accuracy, the proportion of
+correctly predicted contests, is 0.636.</p>
+<p>We can access the data frame of Elo scores using
+<code>res$elo</code>, and use ggplot2 to quickly visualize each team’s
+trajectory.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">elo</span><span class="op">)</span>
-<span class="co">#&gt;         Date Individual  Elo EloOrdinal EloScaled ExpNumBeaten EloCardinal</span>
-<span class="co">#&gt; 1 1995-11-03        ATL  950         15         0     10.26518   0.3801918</span>
-<span class="co">#&gt; 2 1995-11-03        BOS  950         16         0     10.26518   0.3801918</span>
-<span class="co">#&gt; 3 1995-11-03        CHH  950         17         0     10.26518   0.3801918</span>
-<span class="co">#&gt; 4 1995-11-03        CHI 1050          1         1     16.73482   0.6198082</span>
-<span class="co">#&gt; 5 1995-11-03        CLE  950         18         0     10.26518   0.3801918</span>
-<span class="co">#&gt; 6 1995-11-03        DAL 1050          2         1     16.73482   0.6198082</span>
-<span class="co">#&gt;   JenksEloCardinal</span>
-<span class="co">#&gt; 1              low</span>
-<span class="co">#&gt; 2              low</span>
-<span class="co">#&gt; 3              low</span>
-<span class="co">#&gt; 4              mid</span>
-<span class="co">#&gt; 5              low</span>
-<span class="co">#&gt; 6              mid</span>
-
-<span class="va">res</span><span class="op">$</span><span class="va">elo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>Team <span class="op">=</span> <span class="va">Individual</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Date</span>, y <span class="op">=</span> <span class="va">Elo</span>, color <span class="op">=</span> <span class="va">Team</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="nba-example_files/figure-html/unnamed-chunk-3-1.png" width="864"></p>
-<p>There’s a lot of noise in that plot, but if you look closely you’ll notice that Chicago doesn’t end the season with the highest Elo score. There were 29 teams in the NBA in the 95-96 season, so we can check final Elo scores directly by sorting the the last 29 rows of the Elo scores data frame (we’re removing a couple columns to make the output easier to read. See <code><a href="../reference/eloratingfixed.html">eloratingfixed()</a></code> documentation for descriptions of each column):</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">elo</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         Date Individual  Elo EloOrdinal EloScaled ExpNumBeaten EloCardinal</span></span>
+<span><span class="co">#&gt; 1 1995-11-03        ATL  950         15         0     10.26518   0.3801918</span></span>
+<span><span class="co">#&gt; 2 1995-11-03        BOS  950         16         0     10.26518   0.3801918</span></span>
+<span><span class="co">#&gt; 3 1995-11-03        CHH  950         17         0     10.26518   0.3801918</span></span>
+<span><span class="co">#&gt; 4 1995-11-03        CHI 1050          1         1     16.73482   0.6198082</span></span>
+<span><span class="co">#&gt; 5 1995-11-03        CLE  950         18         0     10.26518   0.3801918</span></span>
+<span><span class="co">#&gt; 6 1995-11-03        DAL 1050          2         1     16.73482   0.6198082</span></span>
+<span><span class="co">#&gt;   JenksEloCardinal</span></span>
+<span><span class="co">#&gt; 1              low</span></span>
+<span><span class="co">#&gt; 2              low</span></span>
+<span><span class="co">#&gt; 3              low</span></span>
+<span><span class="co">#&gt; 4              mid</span></span>
+<span><span class="co">#&gt; 5              low</span></span>
+<span><span class="co">#&gt; 6              mid</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">elo</span>, <span class="fl">29</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">Elo</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">ExpNumBeaten</span>, <span class="op">-</span><span class="va">JenksEloCardinal</span><span class="op">)</span>
-<span class="co">#&gt;          Date Individual       Elo EloOrdinal  EloScaled EloCardinal</span>
-<span class="co">#&gt; 1  1996-04-21        IND 1245.7977          1 1.00000000   0.8921359</span>
-<span class="co">#&gt; 2  1996-04-21        CHI 1189.4438          2 0.88412548   0.8285396</span>
-<span class="co">#&gt; 3  1996-04-21        LAL 1148.8256          3 0.80060665   0.7710995</span>
-<span class="co">#&gt; 4  1996-04-21        ORL 1143.9716          4 0.79062588   0.7636082</span>
-<span class="co">#&gt; 5  1996-04-21        SEA 1136.3944          5 0.77504571   0.7516593</span>
-<span class="co">#&gt; 6  1996-04-21        CLE 1126.2214          6 0.75412816   0.7351428</span>
-<span class="co">#&gt; 7  1996-04-21        POR 1103.2969          7 0.70699086   0.6960572</span>
-<span class="co">#&gt; 8  1996-04-21        DET 1085.9874          8 0.67139911   0.6650044</span>
-<span class="co">#&gt; 9  1996-04-21        SAS 1082.3680          9 0.66395701   0.6583624</span>
-<span class="co">#&gt; 10 1996-04-21        SAC 1039.5035         10 0.57581931   0.5766225</span>
-<span class="co">#&gt; 11 1996-04-21        UTA 1035.3141         11 0.56720509   0.5684016</span>
-<span class="co">#&gt; 12 1996-04-21        ATL 1030.2344         12 0.55676014   0.5583972</span>
-<span class="co">#&gt; 13 1996-04-21        NYK 1012.8371         13 0.52098795   0.5239154</span>
-<span class="co">#&gt; 14 1996-04-21        HOU 1005.7356         14 0.50638599   0.5097854</span>
-<span class="co">#&gt; 15 1996-04-21        MIA  995.8435         15 0.48604588   0.4900979</span>
-<span class="co">#&gt; 16 1996-04-21        CHH  993.8147         16 0.48187438   0.4860634</span>
-<span class="co">#&gt; 17 1996-04-21        BOS  992.4673         17 0.47910374   0.4833848</span>
-<span class="co">#&gt; 18 1996-04-21        PHI  980.9616         18 0.45544591   0.4605664</span>
-<span class="co">#&gt; 19 1996-04-21        DAL  971.1163         19 0.43520196   0.4411554</span>
-<span class="co">#&gt; 20 1996-04-21        WSB  941.8334         20 0.37499078   0.3845020</span>
-<span class="co">#&gt; 21 1996-04-21        PHO  938.9166         21 0.36899316   0.3789767</span>
-<span class="co">#&gt; 22 1996-04-21        GSW  932.6602         22 0.35612873   0.3672130</span>
-<span class="co">#&gt; 23 1996-04-21        MIL  906.6344         23 0.30261463   0.3197463</span>
-<span class="co">#&gt; 24 1996-04-21        VAN  876.8816         24 0.24143731   0.2689504</span>
-<span class="co">#&gt; 25 1996-04-21        DEN  875.6419         25 0.23888825   0.2669245</span>
-<span class="co">#&gt; 26 1996-04-21        TOR  839.8903         26 0.16537596   0.2119247</span>
-<span class="co">#&gt; 27 1996-04-21        MIN  806.9891         27 0.09772467   0.1675101</span>
-<span class="co">#&gt; 28 1996-04-21        NJN  800.9557         28 0.08531886   0.1600331</span>
-<span class="co">#&gt; 29 1996-04-21        LAC  759.4621         29 0.00000000   0.1142200</span></code></pre></div>
-<p>In fact, Indiana ends up with the highest Elo score on the final day. It turns out that they finished the season 8-1 and beat the Bulls in the second to last game of the season. This suggests that the default K parameter of 100 (which determines the degree to which Elo scores change after each contest) is not the best choice. However, it’s not obvious what the K parameter should be set to. Luckily, the EloOptimized package implements a maximum likelihood approach for fitting the K parameter, so you don’t have to make an arbitrary decision.</p>
+<code class="sourceCode R"><span></span>
+<span><span class="va">res</span><span class="op">$</span><span class="va">elo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>Team <span class="op">=</span> <span class="va">Individual</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Date</span>, y <span class="op">=</span> <span class="va">Elo</span>, color <span class="op">=</span> <span class="va">Team</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="nba-example_files/figure-html/unnamed-chunk-3-1.png" width="864"></p>
+<p>There’s a lot of noise in that plot, but if you look closely you’ll
+notice that Chicago doesn’t end the season with the highest Elo score.
+There were 29 teams in the NBA in the 95-96 season, so we can check
+final Elo scores directly by sorting the the last 29 rows of the Elo
+scores data frame (we’re removing a couple columns to make the output
+easier to read. See <code><a href="../reference/eloratingfixed.html">eloratingfixed()</a></code> documentation for
+descriptions of each column):</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">elo</span>, <span class="fl">29</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">Elo</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">ExpNumBeaten</span>, <span class="op">-</span><span class="va">JenksEloCardinal</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          Date Individual       Elo EloOrdinal  EloScaled EloCardinal</span></span>
+<span><span class="co">#&gt; 1  1996-04-21        IND 1245.7977          1 1.00000000   0.8921359</span></span>
+<span><span class="co">#&gt; 2  1996-04-21        CHI 1189.4438          2 0.88412548   0.8285396</span></span>
+<span><span class="co">#&gt; 3  1996-04-21        LAL 1148.8256          3 0.80060665   0.7710995</span></span>
+<span><span class="co">#&gt; 4  1996-04-21        ORL 1143.9716          4 0.79062588   0.7636082</span></span>
+<span><span class="co">#&gt; 5  1996-04-21        SEA 1136.3944          5 0.77504571   0.7516593</span></span>
+<span><span class="co">#&gt; 6  1996-04-21        CLE 1126.2214          6 0.75412816   0.7351428</span></span>
+<span><span class="co">#&gt; 7  1996-04-21        POR 1103.2969          7 0.70699086   0.6960572</span></span>
+<span><span class="co">#&gt; 8  1996-04-21        DET 1085.9874          8 0.67139911   0.6650044</span></span>
+<span><span class="co">#&gt; 9  1996-04-21        SAS 1082.3680          9 0.66395701   0.6583624</span></span>
+<span><span class="co">#&gt; 10 1996-04-21        SAC 1039.5035         10 0.57581931   0.5766225</span></span>
+<span><span class="co">#&gt; 11 1996-04-21        UTA 1035.3141         11 0.56720509   0.5684016</span></span>
+<span><span class="co">#&gt; 12 1996-04-21        ATL 1030.2344         12 0.55676014   0.5583972</span></span>
+<span><span class="co">#&gt; 13 1996-04-21        NYK 1012.8371         13 0.52098795   0.5239154</span></span>
+<span><span class="co">#&gt; 14 1996-04-21        HOU 1005.7356         14 0.50638599   0.5097854</span></span>
+<span><span class="co">#&gt; 15 1996-04-21        MIA  995.8435         15 0.48604588   0.4900979</span></span>
+<span><span class="co">#&gt; 16 1996-04-21        CHH  993.8147         16 0.48187438   0.4860634</span></span>
+<span><span class="co">#&gt; 17 1996-04-21        BOS  992.4673         17 0.47910374   0.4833848</span></span>
+<span><span class="co">#&gt; 18 1996-04-21        PHI  980.9616         18 0.45544591   0.4605664</span></span>
+<span><span class="co">#&gt; 19 1996-04-21        DAL  971.1163         19 0.43520196   0.4411554</span></span>
+<span><span class="co">#&gt; 20 1996-04-21        WSB  941.8334         20 0.37499078   0.3845020</span></span>
+<span><span class="co">#&gt; 21 1996-04-21        PHO  938.9166         21 0.36899316   0.3789767</span></span>
+<span><span class="co">#&gt; 22 1996-04-21        GSW  932.6602         22 0.35612873   0.3672130</span></span>
+<span><span class="co">#&gt; 23 1996-04-21        MIL  906.6344         23 0.30261463   0.3197463</span></span>
+<span><span class="co">#&gt; 24 1996-04-21        VAN  876.8816         24 0.24143731   0.2689504</span></span>
+<span><span class="co">#&gt; 25 1996-04-21        DEN  875.6419         25 0.23888825   0.2669245</span></span>
+<span><span class="co">#&gt; 26 1996-04-21        TOR  839.8903         26 0.16537596   0.2119247</span></span>
+<span><span class="co">#&gt; 27 1996-04-21        MIN  806.9891         27 0.09772467   0.1675101</span></span>
+<span><span class="co">#&gt; 28 1996-04-21        NJN  800.9557         28 0.08531886   0.1600331</span></span>
+<span><span class="co">#&gt; 29 1996-04-21        LAC  759.4621         29 0.00000000   0.1142200</span></span></code></pre></div>
+<p>In fact, Indiana ends up with the highest Elo score on the final day.
+It turns out that they finished the season 8-1 and beat the Bulls in the
+second to last game of the season. This suggests that the default K
+parameter of 100 (which determines the degree to which Elo scores change
+after each contest) is not the best choice. However, it’s not obvious
+what the K parameter should be set to. Luckily, the EloOptimized package
+implements a maximum likelihood approach for fitting the K parameter, so
+you don’t have to make an arbitrary decision.</p>
 </div>
 <div class="section level2">
 <h2 id="ml-optimized-k-value">ML optimized K value<a class="anchor" aria-label="anchor" href="#ml-optimized-k-value"></a>
 </h2>
 <p>To fit the K parameter, we use <code><a href="../reference/eloratingopt.html">eloratingopt()</a></code>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res2</span> <span class="op">=</span> <span class="fu"><a href="../reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">nba</span><span class="op">)</span>
-<span class="co">#&gt; k = 20.315</span>
-<span class="co">#&gt; prediction accuracy = 0.663</span></code></pre></div>
-<p>This takes longer than calculating traditional Elo scores because we’re optimizing the K parameter before generating Elo scores. Note that we’re not optimizing K by trying to maximize the prediction accuracy, we’re instead maximizing the likelihood of each contest result according to the sigmoid probability function defined in <a href="https://www.nature.com/articles/srep35404" class="external-link">Foerster, Franz et al., 2016</a> <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. It turns out that the optimized value of K is closer to 20, and this value improves our prediction accuracy to 0.663. Let’s take a look at our results:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res2</span><span class="op">$</span><span class="va">elo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>Team <span class="op">=</span> <span class="va">Individual</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Date</span>, y <span class="op">=</span> <span class="va">Elo</span>, color <span class="op">=</span> <span class="va">Team</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="nba-example_files/figure-html/unnamed-chunk-6-1.png" width="864"></p>
-<p>Because <code><a href="../reference/eloratingopt.html">eloratingopt()</a></code> implements a burn-in period of 100 interactions, during which K is fixed at 100, Elo ratings at the start of the season remain volatile, followed by more stable Elo scores over the course of the season. It looks like Chicago’s on top this time, but let’s double check:</p>
+<code class="sourceCode R"><span><span class="va">res2</span> <span class="op">=</span> <span class="fu"><a href="../reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">nba</span><span class="op">)</span></span>
+<span><span class="co">#&gt; k = 20.315</span></span>
+<span><span class="co">#&gt; prediction accuracy = 0.663</span></span></code></pre></div>
+<p>This takes longer than calculating traditional Elo scores because
+we’re optimizing the K parameter before generating Elo scores. Note that
+we’re not optimizing K by trying to maximize the prediction accuracy,
+we’re instead maximizing the likelihood of each contest result according
+to the sigmoid probability function defined in <a href="https://www.nature.com/articles/srep35404" class="external-link">Foerster, Franz et al.,
+2016</a> <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. It turns out that the optimized value of K
+is closer to 20, and this value improves our prediction accuracy to
+0.663. Let’s take a look at our results:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">res2</span><span class="op">$</span><span class="va">elo</span>, <span class="fl">29</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">Elo</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">ExpNumBeaten</span>, <span class="op">-</span><span class="va">JenksEloCardinal</span><span class="op">)</span>
-<span class="co">#&gt;          Date Individual       Elo EloOrdinal  EloScaled EloCardinal</span>
-<span class="co">#&gt; 1  1996-04-21        CHI 1177.8359          1 1.00000000   0.8386881</span>
-<span class="co">#&gt; 2  1996-04-21        SEA 1140.5106          2 0.88692465   0.7832719</span>
-<span class="co">#&gt; 3  1996-04-21        ORL 1113.0755          3 0.80381134   0.7361461</span>
-<span class="co">#&gt; 4  1996-04-21        SAS 1100.7260          4 0.76639921   0.7132868</span>
-<span class="co">#&gt; 5  1996-04-21        LAL 1093.7974          5 0.74540937   0.7000471</span>
-<span class="co">#&gt; 6  1996-04-21        IND 1086.4912          6 0.72327570   0.6857814</span>
-<span class="co">#&gt; 7  1996-04-21        POR 1056.9233          7 0.63370092   0.6252334</span>
-<span class="co">#&gt; 8  1996-04-21        UTA 1045.9352          8 0.60041328   0.6017757</span>
-<span class="co">#&gt; 9  1996-04-21        CLE 1042.7688          9 0.59082082   0.5949394</span>
-<span class="co">#&gt; 10 1996-04-21        DET 1038.1939         10 0.57696114   0.5850086</span>
-<span class="co">#&gt; 11 1996-04-21        ATL 1033.9673         11 0.56415707   0.5757830</span>
-<span class="co">#&gt; 12 1996-04-21        MIA 1022.6144         12 0.52976401   0.5508001</span>
-<span class="co">#&gt; 13 1996-04-21        NYK 1011.7685         13 0.49690671   0.5267319</span>
-<span class="co">#&gt; 14 1996-04-21        CHH 1008.7038         14 0.48762236   0.5199082</span>
-<span class="co">#&gt; 15 1996-04-21        WSB 1007.6354         15 0.48438576   0.5175279</span>
-<span class="co">#&gt; 16 1996-04-21        PHO 1004.2092         16 0.47400627   0.5098903</span>
-<span class="co">#&gt; 17 1996-04-21        HOU  994.7168         17 0.44524936   0.4887185</span>
-<span class="co">#&gt; 18 1996-04-21        SAC  986.0321         18 0.41893950   0.4693747</span>
-<span class="co">#&gt; 19 1996-04-21        BOS  978.3832         19 0.39576781   0.4523980</span>
-<span class="co">#&gt; 20 1996-04-21        GSW  967.9455         20 0.36414713   0.4293813</span>
-<span class="co">#&gt; 21 1996-04-21        DEN  949.3502         21 0.30781369   0.3890330</span>
-<span class="co">#&gt; 22 1996-04-21        DAL  916.3748         22 0.20791615   0.3206720</span>
-<span class="co">#&gt; 23 1996-04-21        MIN  906.6146         23 0.17834829   0.3014633</span>
-<span class="co">#&gt; 24 1996-04-21        LAC  906.1413         24 0.17691444   0.3005454</span>
-<span class="co">#&gt; 25 1996-04-21        NJN  903.9353         25 0.17023146   0.2962846</span>
-<span class="co">#&gt; 26 1996-04-21        PHI  895.4348         26 0.14447960   0.2801379</span>
-<span class="co">#&gt; 27 1996-04-21        MIL  892.9171         27 0.13685241   0.2754407</span>
-<span class="co">#&gt; 28 1996-04-21        TOR  869.2546         28 0.06516794   0.2333204</span>
-<span class="co">#&gt; 29 1996-04-21        VAN  847.7431         29 0.00000000   0.1984100</span></code></pre></div>
-<p>With K optimized, Chicago ends the season with the highest Elo score. The final Elo scores also end up corresponding more closely to the final standings, although they don’t match exactly. For example, the Utah Jazz finished the season with the fifth best record but the eighth best Elo score, which makes sense given their 5-7 record over their last 12 games. But what about that initial period of volatility corresponding to the burn-in period? Can we do better? The EloOptimized package also allows you to fit individual initial Elo scores (in which case no burn-in period is implemented). Let’s see what happens when we do that with the NBA data.</p>
+<code class="sourceCode R"><span><span class="va">res2</span><span class="op">$</span><span class="va">elo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>Team <span class="op">=</span> <span class="va">Individual</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Date</span>, y <span class="op">=</span> <span class="va">Elo</span>, color <span class="op">=</span> <span class="va">Team</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="nba-example_files/figure-html/unnamed-chunk-6-1.png" width="864"></p>
+<p>Because <code><a href="../reference/eloratingopt.html">eloratingopt()</a></code> implements a burn-in period of
+100 interactions, during which K is fixed at 100, Elo ratings at the
+start of the season remain volatile, followed by more stable Elo scores
+over the course of the season. It looks like Chicago’s on top this time,
+but let’s double check:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">res2</span><span class="op">$</span><span class="va">elo</span>, <span class="fl">29</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">Elo</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">ExpNumBeaten</span>, <span class="op">-</span><span class="va">JenksEloCardinal</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          Date Individual       Elo EloOrdinal  EloScaled EloCardinal</span></span>
+<span><span class="co">#&gt; 1  1996-04-21        CHI 1177.8359          1 1.00000000   0.8386881</span></span>
+<span><span class="co">#&gt; 2  1996-04-21        SEA 1140.5106          2 0.88692465   0.7832719</span></span>
+<span><span class="co">#&gt; 3  1996-04-21        ORL 1113.0755          3 0.80381134   0.7361461</span></span>
+<span><span class="co">#&gt; 4  1996-04-21        SAS 1100.7260          4 0.76639921   0.7132868</span></span>
+<span><span class="co">#&gt; 5  1996-04-21        LAL 1093.7974          5 0.74540937   0.7000471</span></span>
+<span><span class="co">#&gt; 6  1996-04-21        IND 1086.4912          6 0.72327570   0.6857814</span></span>
+<span><span class="co">#&gt; 7  1996-04-21        POR 1056.9233          7 0.63370092   0.6252334</span></span>
+<span><span class="co">#&gt; 8  1996-04-21        UTA 1045.9352          8 0.60041328   0.6017757</span></span>
+<span><span class="co">#&gt; 9  1996-04-21        CLE 1042.7688          9 0.59082082   0.5949394</span></span>
+<span><span class="co">#&gt; 10 1996-04-21        DET 1038.1939         10 0.57696114   0.5850086</span></span>
+<span><span class="co">#&gt; 11 1996-04-21        ATL 1033.9673         11 0.56415707   0.5757830</span></span>
+<span><span class="co">#&gt; 12 1996-04-21        MIA 1022.6144         12 0.52976401   0.5508001</span></span>
+<span><span class="co">#&gt; 13 1996-04-21        NYK 1011.7685         13 0.49690671   0.5267319</span></span>
+<span><span class="co">#&gt; 14 1996-04-21        CHH 1008.7038         14 0.48762236   0.5199082</span></span>
+<span><span class="co">#&gt; 15 1996-04-21        WSB 1007.6354         15 0.48438576   0.5175279</span></span>
+<span><span class="co">#&gt; 16 1996-04-21        PHO 1004.2092         16 0.47400627   0.5098903</span></span>
+<span><span class="co">#&gt; 17 1996-04-21        HOU  994.7168         17 0.44524936   0.4887185</span></span>
+<span><span class="co">#&gt; 18 1996-04-21        SAC  986.0321         18 0.41893950   0.4693747</span></span>
+<span><span class="co">#&gt; 19 1996-04-21        BOS  978.3832         19 0.39576781   0.4523980</span></span>
+<span><span class="co">#&gt; 20 1996-04-21        GSW  967.9455         20 0.36414713   0.4293813</span></span>
+<span><span class="co">#&gt; 21 1996-04-21        DEN  949.3502         21 0.30781369   0.3890330</span></span>
+<span><span class="co">#&gt; 22 1996-04-21        DAL  916.3748         22 0.20791615   0.3206720</span></span>
+<span><span class="co">#&gt; 23 1996-04-21        MIN  906.6146         23 0.17834829   0.3014633</span></span>
+<span><span class="co">#&gt; 24 1996-04-21        LAC  906.1413         24 0.17691444   0.3005454</span></span>
+<span><span class="co">#&gt; 25 1996-04-21        NJN  903.9353         25 0.17023146   0.2962846</span></span>
+<span><span class="co">#&gt; 26 1996-04-21        PHI  895.4348         26 0.14447960   0.2801379</span></span>
+<span><span class="co">#&gt; 27 1996-04-21        MIL  892.9171         27 0.13685241   0.2754407</span></span>
+<span><span class="co">#&gt; 28 1996-04-21        TOR  869.2546         28 0.06516794   0.2333204</span></span>
+<span><span class="co">#&gt; 29 1996-04-21        VAN  847.7431         29 0.00000000   0.1984100</span></span></code></pre></div>
+<p>With K optimized, Chicago ends the season with the highest Elo score.
+The final Elo scores also end up corresponding more closely to the final
+standings, although they don’t match exactly. For example, the Utah Jazz
+finished the season with the fifth best record but the eighth best Elo
+score, which makes sense given their 5-7 record over their last 12
+games. But what about that initial period of volatility corresponding to
+the burn-in period? Can we do better? The EloOptimized package also
+allows you to fit individual initial Elo scores (in which case no
+burn-in period is implemented). Let’s see what happens when we do that
+with the NBA data.</p>
 </div>
 <div class="section level2">
 <h2 id="ml-optimized-k-and-initial-elo-scores">ML optimized K and initial Elo scores<a class="anchor" aria-label="anchor" href="#ml-optimized-k-and-initial-elo-scores"></a>
 </h2>
-<p>To fit both the K parameter and initial Elo scores, we use <code><a href="../reference/eloratingopt.html">eloratingopt()</a></code> with <code>fit_init_elo = TRUE</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res3</span> <span class="op">=</span> <span class="fu"><a href="../reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">nba</span>, fit_init_elo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; k = 0</span>
-<span class="co">#&gt; prediction accuracy = 0.701</span></code></pre></div>
-<p>This takes quite a bit longer, because we’re going from optimizing one parameter (K) to optimizing 30 parameters (K plus the 29 initial Elo scores). Surprisingly, the optimized value of K is 0 once you’ve fit initial Elo scores, meaning that Elo scores don’t change at all in response to wins and losses. We might take this to mean that, on average, teams’ competitive ability doesn’t change over the course of the season. Note that fitting initial Elo scores with the included male chimpanzee data results in considerably different patterns, so K = 0 is not an inevitable result of fitting initial Elo scores. Note that this time around the prediction accuracy rises to 0.7. Let’s take a look at our results:</p>
+<p>To fit both the K parameter and initial Elo scores, we use
+<code><a href="../reference/eloratingopt.html">eloratingopt()</a></code> with <code>fit_init_elo = TRUE</code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">res3</span><span class="op">$</span><span class="va">elo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>Team <span class="op">=</span> <span class="va">Individual</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Date</span>, y <span class="op">=</span> <span class="va">Elo</span>, color <span class="op">=</span> <span class="va">Team</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="nba-example_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
-<p>Now Chicago’s dominance is more strongly reflected in their final Elo score relative to others. It’s easier to see this in the EloCardinal scores, which essentially represents the cumulative probability of winning against all other individuals (i.e. teams) scaled by the total number of other individuals/teams.</p>
+<code class="sourceCode R"><span><span class="va">res3</span> <span class="op">=</span> <span class="fu"><a href="../reference/eloratingopt.html">eloratingopt</a></span><span class="op">(</span>agon_data <span class="op">=</span> <span class="va">nba</span>, fit_init_elo <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; k = 0</span></span>
+<span><span class="co">#&gt; prediction accuracy = 0.701</span></span></code></pre></div>
+<p>This takes quite a bit longer, because we’re going from optimizing
+one parameter (K) to optimizing 30 parameters (K plus the 29 initial Elo
+scores). Surprisingly, the optimized value of K is 0 once you’ve fit
+initial Elo scores, meaning that Elo scores don’t change at all in
+response to wins and losses. We might take this to mean that, on
+average, teams’ competitive ability doesn’t change over the course of
+the season. Note that fitting initial Elo scores with the included male
+chimpanzee data results in considerably different patterns, so K = 0 is
+not an inevitable result of fitting initial Elo scores. Note that this
+time around the prediction accuracy rises to 0.7. Let’s take a look at
+our results:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">res3</span><span class="op">$</span><span class="va">elo</span>, <span class="fl">29</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">Elo</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">ExpNumBeaten</span>, <span class="op">-</span><span class="va">JenksEloCardinal</span><span class="op">)</span>
-<span class="co">#&gt;          Date Individual          Elo EloOrdinal  EloScaled EloCardinal</span>
-<span class="co">#&gt; 1  1996-04-21        CHI  207.7177658          1 1.00000000   0.8769118</span>
-<span class="co">#&gt; 2  1996-04-21        SEA  133.9553779          2 0.79899641   0.7749567</span>
-<span class="co">#&gt; 3  1996-04-21        ORL  109.5561794          3 0.73250823   0.7324324</span>
-<span class="co">#&gt; 4  1996-04-21        SAS  100.0777751          4 0.70667944   0.7148051</span>
-<span class="co">#&gt; 5  1996-04-21        UTA   75.6299080          5 0.64005864   0.6667434</span>
-<span class="co">#&gt; 6  1996-04-21        LAL   63.9886291          6 0.60833598   0.6426847</span>
-<span class="co">#&gt; 7  1996-04-21        IND   60.2850436          7 0.59824366   0.6348915</span>
-<span class="co">#&gt; 8  1996-04-21        HOU   36.0426311          8 0.53218273   0.5824942</span>
-<span class="co">#&gt; 9  1996-04-21        NYK   31.9198718          9 0.52094815   0.5733856</span>
-<span class="co">#&gt; 10 1996-04-21        CLE   31.6215718         10 0.52013528   0.5727247</span>
-<span class="co">#&gt; 11 1996-04-21        ATL   27.8710139         11 0.50991495   0.5643969</span>
-<span class="co">#&gt; 12 1996-04-21        DET   27.5978388         12 0.50917054   0.5637890</span>
-<span class="co">#&gt; 13 1996-04-21        POR   14.4577181         13 0.47336352   0.5343736</span>
-<span class="co">#&gt; 14 1996-04-21        MIA    6.1987047         14 0.45085759   0.5157586</span>
-<span class="co">#&gt; 15 1996-04-21        CHH    0.3442824         15 0.43490420   0.5025331</span>
-<span class="co">#&gt; 16 1996-04-21        PHO   -1.5218941         16 0.42981884   0.4983151</span>
-<span class="co">#&gt; 17 1996-04-21        WSB  -11.8944890         17 0.40155337   0.4748806</span>
-<span class="co">#&gt; 18 1996-04-21        SAC  -12.1603637         18 0.40082886   0.4742806</span>
-<span class="co">#&gt; 19 1996-04-21        GSW  -28.2099584         19 0.35709347   0.4382166</span>
-<span class="co">#&gt; 20 1996-04-21        DEN  -33.6069809         20 0.34238651   0.4261899</span>
-<span class="co">#&gt; 21 1996-04-21        BOS  -45.3500183         21 0.31038656   0.4002799</span>
-<span class="co">#&gt; 22 1996-04-21        NJN  -61.9690707         22 0.26509940   0.3644047</span>
-<span class="co">#&gt; 23 1996-04-21        LAC  -66.8878710         23 0.25169559   0.3540043</span>
-<span class="co">#&gt; 24 1996-04-21        MIN  -84.3953176         24 0.20398754   0.3179502</span>
-<span class="co">#&gt; 25 1996-04-21        DAL  -84.3953296         25 0.20398751   0.3179502</span>
-<span class="co">#&gt; 26 1996-04-21        MIL  -87.4706128         26 0.19560732   0.3117874</span>
-<span class="co">#&gt; 27 1996-04-21        TOR -115.7083976         27 0.11865894   0.2579219</span>
-<span class="co">#&gt; 28 1996-04-21        PHI -134.4412811         28 0.06761155   0.2251684</span>
-<span class="co">#&gt; 29 1996-04-21        VAN -159.2527265         29 0.00000000   0.1857691</span></code></pre></div>
-<p>Because each team plays the same number of games, and schedules are fairly balanced, the Elo scores now reflect each team’s overall record. These scores are not useful as dynamic records of team performance, but would be useful for calculating winning probabilities according to the sigmoid equation from <a href="https://www.nature.com/articles/srep35404" class="external-link">Foerster, Franz et al., 2016</a>. And in an animal system where individuals enter and leave the hierarchy through maturation and death, respectively, and where individuals tend to enter towards the bottom of the hierarchy, such a result would reflect a queuing system, as argued in the linked article.</p>
+<code class="sourceCode R"><span><span class="va">res3</span><span class="op">$</span><span class="va">elo</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>Team <span class="op">=</span> <span class="va">Individual</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Date</span>, y <span class="op">=</span> <span class="va">Elo</span>, color <span class="op">=</span> <span class="va">Team</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><img src="nba-example_files/figure-html/unnamed-chunk-9-1.png" width="864"></p>
+<p>Now Chicago’s dominance is more strongly reflected in their final Elo
+score relative to others. It’s easier to see this in the EloCardinal
+scores, which essentially represents the cumulative probability of
+winning against all other individuals (i.e. teams) scaled by the total
+number of other individuals/teams.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">res3</span><span class="op">$</span><span class="va">elo</span>, <span class="fl">29</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html" class="external-link">arrange</a></span><span class="op">(</span><span class="op">-</span><span class="va">Elo</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">ExpNumBeaten</span>, <span class="op">-</span><span class="va">JenksEloCardinal</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          Date Individual          Elo EloOrdinal  EloScaled EloCardinal</span></span>
+<span><span class="co">#&gt; 1  1996-04-21        CHI  207.7177658          1 1.00000000   0.8769118</span></span>
+<span><span class="co">#&gt; 2  1996-04-21        SEA  133.9553779          2 0.79899641   0.7749567</span></span>
+<span><span class="co">#&gt; 3  1996-04-21        ORL  109.5561794          3 0.73250823   0.7324324</span></span>
+<span><span class="co">#&gt; 4  1996-04-21        SAS  100.0777751          4 0.70667944   0.7148051</span></span>
+<span><span class="co">#&gt; 5  1996-04-21        UTA   75.6299080          5 0.64005864   0.6667434</span></span>
+<span><span class="co">#&gt; 6  1996-04-21        LAL   63.9886291          6 0.60833598   0.6426847</span></span>
+<span><span class="co">#&gt; 7  1996-04-21        IND   60.2850436          7 0.59824366   0.6348915</span></span>
+<span><span class="co">#&gt; 8  1996-04-21        HOU   36.0426311          8 0.53218273   0.5824942</span></span>
+<span><span class="co">#&gt; 9  1996-04-21        NYK   31.9198718          9 0.52094815   0.5733856</span></span>
+<span><span class="co">#&gt; 10 1996-04-21        CLE   31.6215718         10 0.52013528   0.5727247</span></span>
+<span><span class="co">#&gt; 11 1996-04-21        ATL   27.8710139         11 0.50991495   0.5643969</span></span>
+<span><span class="co">#&gt; 12 1996-04-21        DET   27.5978388         12 0.50917054   0.5637890</span></span>
+<span><span class="co">#&gt; 13 1996-04-21        POR   14.4577181         13 0.47336352   0.5343736</span></span>
+<span><span class="co">#&gt; 14 1996-04-21        MIA    6.1987047         14 0.45085759   0.5157586</span></span>
+<span><span class="co">#&gt; 15 1996-04-21        CHH    0.3442824         15 0.43490420   0.5025331</span></span>
+<span><span class="co">#&gt; 16 1996-04-21        PHO   -1.5218941         16 0.42981884   0.4983151</span></span>
+<span><span class="co">#&gt; 17 1996-04-21        WSB  -11.8944890         17 0.40155337   0.4748806</span></span>
+<span><span class="co">#&gt; 18 1996-04-21        SAC  -12.1603637         18 0.40082886   0.4742806</span></span>
+<span><span class="co">#&gt; 19 1996-04-21        GSW  -28.2099584         19 0.35709347   0.4382166</span></span>
+<span><span class="co">#&gt; 20 1996-04-21        DEN  -33.6069809         20 0.34238651   0.4261899</span></span>
+<span><span class="co">#&gt; 21 1996-04-21        BOS  -45.3500183         21 0.31038656   0.4002799</span></span>
+<span><span class="co">#&gt; 22 1996-04-21        NJN  -61.9690707         22 0.26509940   0.3644047</span></span>
+<span><span class="co">#&gt; 23 1996-04-21        LAC  -66.8878710         23 0.25169559   0.3540043</span></span>
+<span><span class="co">#&gt; 24 1996-04-21        MIN  -84.3953176         24 0.20398754   0.3179502</span></span>
+<span><span class="co">#&gt; 25 1996-04-21        DAL  -84.3953296         25 0.20398751   0.3179502</span></span>
+<span><span class="co">#&gt; 26 1996-04-21        MIL  -87.4706128         26 0.19560732   0.3117874</span></span>
+<span><span class="co">#&gt; 27 1996-04-21        TOR -115.7083976         27 0.11865894   0.2579219</span></span>
+<span><span class="co">#&gt; 28 1996-04-21        PHI -134.4412811         28 0.06761155   0.2251684</span></span>
+<span><span class="co">#&gt; 29 1996-04-21        VAN -159.2527265         29 0.00000000   0.1857691</span></span></code></pre></div>
+<p>Because each team plays the same number of games, and schedules are
+fairly balanced, the Elo scores now reflect each team’s overall record.
+These scores are not useful as dynamic records of team performance, but
+would be useful for calculating winning probabilities according to the
+sigmoid equation from <a href="https://www.nature.com/articles/srep35404" class="external-link">Foerster, Franz et al.,
+2016</a>. And in an animal system where individuals enter and leave the
+hierarchy through maturation and death, respectively, and where
+individuals tend to enter towards the bottom of the hierarchy, such a
+result would reflect a queuing system, as argued in the linked
+article.</p>
 </div>
-<div class="footnotes">
+<div class="footnotes footnotes-end-of-document">
 <hr>
 <ol>
-<li id="fn1"><p>Currently the only option available in the <code><a href="../reference/eloratingopt.html">eloratingopt()</a></code> function is to use the sigmoid function from the linked paper, but you can use the the pnorm-based method from the EloRating package in the <code><a href="../reference/eloratingfixed.html">eloratingfixed()</a></code> function (to make comparison with that package easier).<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>Currently the only option available in the
+<code><a href="../reference/eloratingopt.html">eloratingopt()</a></code> function is to use the sigmoid function from
+the linked paper, but you can use the the pnorm-based method from the
+EloRating package in the <code><a href="../reference/eloratingfixed.html">eloratingfixed()</a></code> function (to make
+comparison with that package easier).<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
   </div>
@@ -288,7 +374,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>
