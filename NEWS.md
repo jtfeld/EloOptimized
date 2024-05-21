@@ -1,4 +1,4 @@
-# EloOptimized 0.3.1.9999
+# EloOptimized 0.3.2
 
 * Mostly a maintenance release to resubmit package to CRAN
 

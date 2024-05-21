@@ -1,6 +1,6 @@
 Package: EloOptimized
 Title: Optimized Elo Rating Method for Obtaining Dominance Ranks
-Version: 0.3.1.9999
+Version: 0.3.2
 Date: 2024-05-21
 Authors@R: c(
     person("Joseph", "Feldblum", email = "jtf9@duke.edu", role = c("aut", "cre")),
