@@ -28,9 +28,9 @@ the function will save the results as a csv file in your working directory.}
 }
 \value{
 Returns a list with five or six elements (depending on input): 
-\itemize{
+\describe{
  \item{\strong{elo}}{ Data frame with all IDs and dates they were present, with the following columns:}
-   \itemize{
+   \describe{
      \item{Date}{: Dates of study period}
      \item{Individual}{: the names of each ranked individual, for each date they were present}
      \item{Elo}{: fitted Elo scores for each individual on each day}

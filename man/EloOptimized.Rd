@@ -2,6 +2,7 @@
 % Please edit documentation in R/EloOptimized.R
 \docType{package}
 \name{EloOptimized}
+\alias{EloOptimized-package}
 \alias{EloOptimized}
 \title{EloOptimized: ML fitting of Elo Scores}
 \description{
@@ -33,3 +34,21 @@ Chimpanzee females queue but males compete for social status. Scientific Reports
 }
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/jtfeld/EloOptimized}
+  \item Report bugs at \url{https://github.com/jtfeld/EloOptimized/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Joseph Feldblum \email{jtf9@duke.edu}
+
+Authors:
+\itemize{
+  \item Steffen Foerster \email{sf2041@gmail.com}
+  \item Mathias Franz \email{m.franz@izw-berlin.de}
+}
+
+}

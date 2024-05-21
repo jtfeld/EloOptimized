@@ -1,10 +1,14 @@
-# EloOptimized 0.3.1.9000 (unreleased)
+# EloOptimized 0.3.1.9999
+
+* Mostly a maintenance release to resubmit package to CRAN
 
 * Added a step to check that agon_data are in chronological order, and throw a warning if not.
 
 * Fixed checks for ubuntu and Mac
 
 * Added new and improved informative errors to eloratingopt() that tell you which individuals are filtered out for not having >= 1 win and 1 loss, and which individuals have interactions outside of their presence window.
+
+* Tweaked documentation formatting and code for converting date columns to comply with R CMD check
 
 # EloOptimized 0.3.1
 

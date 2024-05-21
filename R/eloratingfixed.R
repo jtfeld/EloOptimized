@@ -37,9 +37,9 @@
 #'   this help file:
 #'   
 #' @return Returns a list with six elements: 
-#' \itemize{
+#' \describe{
 #'  \item{\strong{elo}}{ Data frame with all IDs and dates they were present, with the following columns:}
-#'    \itemize{
+#'    \describe{
 #'      \item{Date}{: Dates of study period}
 #'      \item{Individual}{: the names of each ranked individual, for each date they were present}
 #'      \item{Elo}{: fitted Elo scores for each individual on each day}
@@ -74,6 +74,7 @@
 #' @importFrom stats approx ave optim reshape
 #' @importFrom utils read.csv write.csv
 #' @importFrom rlang .data
+#' @importFrom methods is
 #' @import reshape2
 #' @import BAMMtools
 #' @importFrom magrittr "%>%"
@@ -106,9 +107,10 @@ eloratingfixed <- function(agon_data, pres_data, k = 100, init_elo = 1000,
     stop("can't have same ID win and lose in one interaction")
   }
   
-  if(class(ago$Date) != "Date"){
-    ago$Date = lubridate::mdy(ago$Date)
-  }
+  # if(class(ago$Date) != "Date"){
+  #   ago$Date = lubridate::mdy(ago$Date)
+  # }
+  if(!is(ago$Date, "Date")) ago$Date = lubridate::mdy(ago$Date)
   
   if(any(ago$Date < dplyr::lag(x = ago$Date, 
                                n = 1, 
@@ -140,10 +142,12 @@ eloratingfixed <- function(agon_data, pres_data, k = 100, init_elo = 1000,
     if(!all(names(presence) %in% c("id", "start_date", "end_date"))){
       stop("colnames in presence data should be 'id', 'start_date', 'end_date' (not case sensitive)")
     }
-    if(class(presence$start_date) != "Date"){
-      presence$start_date = lubridate::mdy(presence$start_date)}
-    if(class(presence$end_date) != "Date"){
-      presence$end_date = lubridate::mdy(presence$end_date)}
+    # if(class(presence$start_date) != "Date"){
+    #   presence$start_date = lubridate::mdy(presence$start_date)}
+    if(!is(presence$start_date, "Date")) presence$start_date = lubridate::mdy(presence$start_date)
+    # if(class(presence$end_date) != "Date"){
+    #   presence$end_date = lubridate::mdy(presence$end_date)}
+    if(!is(presence$end_date, "Date")) presence$end_date = lubridate::mdy(presence$end_date)
     
     presence$id = as.character(presence$id)
     

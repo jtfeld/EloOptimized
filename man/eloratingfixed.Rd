@@ -32,9 +32,9 @@ equation (1) from Foerster, Franz et al 2016.  Use "pnorm" to use the
 }
 \value{
 Returns a list with six elements: 
-\itemize{
+\describe{
  \item{\strong{elo}}{ Data frame with all IDs and dates they were present, with the following columns:}
-   \itemize{
+   \describe{
      \item{Date}{: Dates of study period}
      \item{Individual}{: the names of each ranked individual, for each date they were present}
      \item{Elo}{: fitted Elo scores for each individual on each day}
