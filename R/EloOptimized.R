@@ -25,6 +25,5 @@
 #'   \item Add functionality to plot Elo trajectories from within package.
 #' }
 #'
-#' @docType package
 #' @name EloOptimized
-NULL
+"_PACKAGE"

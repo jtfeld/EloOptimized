@@ -1,3 +1,7 @@
+# EloOptimized 0.3.2.9000
+
+* updated documentation to prevent annoying '`@docType "package"` is deprecated, Please document "_PACKAGE" instead.' note by tweaking EloOptimized.R file
+
 # EloOptimized 0.3.2
 
 * Mostly a maintenance release to resubmit package to CRAN
